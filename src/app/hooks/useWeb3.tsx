@@ -1,54 +1,48 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import Web3 from "web3";
-import { AbiItem } from "web3-utils";
+import Web3, { Contract } from "web3";
 
-// import GrimaceMandalasNFT from "@/nftArtifacts/GrimaceMandalaNFT.json";
-// import TokenETH from "@/nftArtifacts/TokenETH.json";
+import StackingContract from "@/contracts/Stacking.json";
+import TokenContract from "@/contracts/TokenETH.json";
 
-const GrimaceMandalasNFT = {};
-const TokenETH = {};
-
-// Create a type for the contract methods
-type TokenContractMethods = {
-  [methodName: string]: (...args: any[]) => Promise<any>;
-};
-
-const Web3Context = createContext({
+const Web3Context = createContext<{
+  web3: Web3 | null;
+  stackingContract: Contract<typeof StackingContract.abi> | null;
+  tokenContract: Contract<typeof TokenContract.abi> | null;
+  tokenContractAddress: string | null;
+  stackingContractAddress: string | null;
+}>({
   web3: null,
-  nftContract: null,
+  stackingContract: null,
   tokenContract: null,
   tokenContractAddress: null,
-  nftContractAddress: null,
-  isRealUser: null,
-  setIsRealUser: null,
-  signature: "",
-  setSignature: null,
+  stackingContractAddress: null,
 });
 
 const Web3Provider = ({ children }) => {
-  const [isRealUser, setIsRealUser] = useState(false);
-  const [signature, setSignature] = useState("");
-
-  const [web3, setWeb3] = useState(null);
-  const [nftContract, setnftContract] = useState(null);
-  const [tokenContract, setTokenContract] = useState(null);
+  const [web3, setWeb3] = useState<Web3 | null>(null);
+  const [stackingContract, setStackingContract] = useState<Contract<
+    typeof StackingContract.abi
+  > | null>(null);
+  const [tokenContract, setTokenContract] = useState<Contract<
+    typeof TokenContract.abi
+  > | null>(null);
 
   useEffect(() => {
     const initializeWeb3 = async () => {
-      if (window.ethereum) {
-        const web3Instance = new Web3(window.ethereum);
+      if (window?.ethereum) {
+        const web3Instance = new Web3(window?.ethereum);
         setWeb3(web3Instance);
 
-        const nftContractAbi: AbiItem[] = GrimaceMandalasNFT.abi;
-        const nftContractInstance = new web3Instance.eth.Contract(
-          GrimaceMandalasNFT.abi,
+        const stackingContractABI = StackingContract?.abi;
+        const stackingContractInstance = new web3Instance.eth.Contract(
+          stackingContractABI,
           process.env.NEXT_PUBLIC_CONTRACT_ADDRESS
         );
-        setnftContract(nftContractInstance);
+        setStackingContract(stackingContractInstance);
 
-        const tokenEthABI: AbiItem[] = TokenETH.abi;
+        const tokenContractABI = TokenContract.abi;
         const tokenContractInstance = new web3Instance.eth.Contract(
-          TokenETH.abi,
+          tokenContractABI,
           process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS
         );
 
@@ -63,14 +57,12 @@ const Web3Provider = ({ children }) => {
     <Web3Context.Provider
       value={{
         web3,
-        nftContract,
+        stackingContract,
         tokenContract,
-        tokenContractAddress: process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS,
-        nftContractAddress: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-        isRealUser,
-        setIsRealUser,
-        signature,
-        setSignature,
+        tokenContractAddress:
+          process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS ?? null,
+        stackingContractAddress:
+          process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? null,
       }}
     >
       {children}
@@ -81,26 +73,18 @@ const Web3Provider = ({ children }) => {
 const useWeb3Context = () => {
   const {
     web3,
-    nftContract,
+    stackingContract,
     tokenContract,
     tokenContractAddress,
-    nftContractAddress,
-    isRealUser,
-    setIsRealUser,
-    signature,
-    setSignature,
+    stackingContractAddress,
   } = useContext(Web3Context);
 
   return {
     web3,
-    nftContract,
+    stackingContract,
     tokenContract,
     tokenContractAddress,
-    nftContractAddress,
-    isRealUser,
-    setIsRealUser,
-    signature,
-    setSignature,
+    stackingContractAddress,
   };
 };
 
