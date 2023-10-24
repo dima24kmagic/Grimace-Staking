@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
 import styled from "@emotion/styled";
-import { Spinner } from "@/app/collection/[collectionID]/[nftID]/page";
 
 interface ITransactionMessage {
   preAcceptMessage?: string;
@@ -78,6 +77,26 @@ export const Text = styled.p`
   margin-bottom: ${({ marginBottom }) => marginBottom};
   font-weight: ${({ fontWeight }) => fontWeight};
   text-align: ${({ textAlign }) => textAlign};
+`;
+export const Spinner = styled.div`
+  display: inline-block;
+  width: ${({ width }) => (width ? width + "px" : "80px")};
+  height: ${({ height }) => (height ? height + "px" : "80px")};
+  border: ${({ borderWidth }) => borderWidth || "4px"} solid #f3f3f3;
+  border-top: ${({ borderWidth }) => borderWidth || "4px"} solid #9747ff;
+  margin-bottom: ${({ marginBottom }) => marginBottom || "8px"};
+  margin-left: ${({ marginLeft }) => marginLeft || "0px"};
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 /**
