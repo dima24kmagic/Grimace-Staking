@@ -39,6 +39,18 @@
   }
 }
 
+@media (min-width: 1400px) {
+  :root {
+    --container-width: 1280px;
+  }
+}
+
+@media (min-width: 1800px) {
+  :root {
+    --container-width: 1740px;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
   }
