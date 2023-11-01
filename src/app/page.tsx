@@ -3,8 +3,9 @@
 import React from "react"
 import styled from "@emotion/styled"
 import BitGetBanner from "@/components/banners/BitGet"
-import GrimaceSwap from "@/components/banners/GrimaceSwap"
+import GrimaceSwapBanner from "@/components/banners/GrimaceSwap"
 import Container from "@/components/Container"
+import FormInitial from "@/components/forms/FormInitial"
 
 const ContainerStyled = styled(Container)`
   width: 600px;
@@ -16,8 +17,9 @@ const ContainerStyled = styled(Container)`
 export default function Home() {
   return (
     <ContainerStyled>
+      <FormInitial />
       <BitGetBanner />
-      <GrimaceSwap />
+      <GrimaceSwapBanner />
     </ContainerStyled>
   )
 }
