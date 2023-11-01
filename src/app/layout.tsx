@@ -11,7 +11,7 @@ import { Web3Provider } from "@/app/hooks/useWeb3"
 import Header from "@/components/Header"
 import { ProgressLoaderProvider } from "@/components/ProgressLoader/ProgressLoader"
 
-import "./globals.css"
+import "@/assets/styles/globals.css"
 import "react-toastify/dist/ReactToastify.css"
 
 const fredoka = Fredoka({
