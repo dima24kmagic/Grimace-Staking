@@ -7,6 +7,7 @@ import GrimaceSwapBanner from "@/components/banners/GrimaceSwap"
 import Container from "@/components/Container"
 import FormInitial from "@/components/forms/FormInitial"
 import { useConnectMetamask } from "@/app/hooks/useConnectMetamask"
+import { useMetaMask } from "metamask-react"
 
 const ContainerStyled = styled(Container)`
   width: 600px;
@@ -17,10 +18,11 @@ const ContainerStyled = styled(Container)`
 
 export default function Home() {
   const { handleConnect } = useConnectMetamask()
+  const { account } = useMetaMask()
 
   return (
     <ContainerStyled>
-      <FormInitial onConnectClick={handleConnect} />
+      <FormInitial onConnectClick={handleConnect} account={account} />
       <BitGetBanner />
       <GrimaceSwapBanner />
     </ContainerStyled>
