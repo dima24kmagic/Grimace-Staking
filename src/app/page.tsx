@@ -15,7 +15,7 @@ const ContainerStyled = styled(Container)`
 `
 
 export default function Home() {
-  return (  
+  return (
     <ContainerStyled>
       <FormInitial />
       <BitGetBanner />

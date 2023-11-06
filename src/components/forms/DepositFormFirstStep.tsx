@@ -48,11 +48,11 @@ function DepositFormFirstStep({onNext} : {onNext: () => void}) {
       <input
         value={amount ?? ''}
         onChange={(event) => {
-          dispatch(setAmount(parseFloat(event.target.value)));
+          dispatch(setAmount(parseFloat(event.target.value)))
         }}
       ></input>
       <Balance onClick={(balance) => dispatch(setAmount(balance))}/>
-      <ButtonStyled onClick={onNext}>Step 2</ButtonStyled>
+      <ButtonStyled onClick={ amount ?? 0 > 0.001 ? onNext : ()=>{}}>Step 2</ButtonStyled>
     </RootStyled>
   )
 }

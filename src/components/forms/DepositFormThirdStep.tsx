@@ -41,16 +41,12 @@ const ButtonStyled = styled.button`
 
 function DepositFormFirstStep({onNext} : {onNext: () => void}) {
   const dispatch = useAppDispatch()
-  const depositAmount = useAppSelector(state => state.depositForm.amount)
-  const amountToWithdraw = useAppSelector(state => state.depositForm.amountToWithdraw)
-  const selectedPlan = useAppSelector(state => state.depositForm.selectedPlan)
-  const selectedPlanIndex = useAppSelector(state => state.depositForm.selectedPlanIndex)
-  const unstakeDate = useAppSelector(state => state.depositForm.unstakeDate)
+  const depositForm = useAppSelector(state => state.depositForm)
   const accountAddress = useAppSelector(state => state.account.address)
   const { tokenContract, stackingContract, ethers } = useEthersContext()
 
   const handleDeposit = async () => {
-    const amountBigInt = BigInt(ethers.parseEther(depositAmount!.toString()))
+    const amountBigInt = BigInt(ethers.parseEther(depositForm.amount!.toString()))
     
     const isApproved = await approveTokenSpending({
       tokenContract: tokenContract,
@@ -58,13 +54,11 @@ function DepositFormFirstStep({onNext} : {onNext: () => void}) {
       account: accountAddress!,
       amount: amountBigInt,
     }).catch((err) => {
-      debugger
-      toast.error(err);
-      console.log(err)
+      toast.error(err)
     });
     if (isApproved) {
       // TODO: check if new deposit appeared
-      await stackingContract!.deposit(selectedPlanIndex, amountBigInt)
+      await stackingContract!.deposit(depositForm.selectedPlanIndex, amountBigInt)
 
       dispatch(clearDepositForm())
       onNext()
@@ -75,10 +69,10 @@ function DepositFormFirstStep({onNext} : {onNext: () => void}) {
     <RootStyled>
       <HeadingStyled>Step 3:</HeadingStyled>
       <Subheading>Confirmation</Subheading>
-      <Subheading>{depositAmount}</Subheading>
-      <Subheading>{amountToWithdraw}</Subheading>
-      <Subheading>{selectedPlan?.days}</Subheading>
-      <Subheading>{unstakeDate}</Subheading>
+      <Subheading>{depositForm.amount}</Subheading>
+      <Subheading>{depositForm.amountToWithdraw}</Subheading>
+      <Subheading>{depositForm.selectedPlan?.days}</Subheading>
+      <Subheading>{depositForm.unstakeDate}</Subheading>
       <ButtonStyled onClick={handleDeposit}>Stake</ButtonStyled>
     </RootStyled>
   )

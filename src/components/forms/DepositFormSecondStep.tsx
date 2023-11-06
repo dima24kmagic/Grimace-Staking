@@ -49,14 +49,14 @@ function DepositFormSecondStep({onNext} : {onNext: () => void}) {
 
     const getPlans = async () => {
       const penaltyPercent = await stackingContract!.PENALTY_PERCENT()
-      const percentDivider = parseInt(await stackingContract!.PERCENT_DIVIDER()) / 100
+      const percentDivider = 100
       const ewp = parseInt(penaltyPercent) / percentDivider
 
       const result = new Array<Plan>
       for (let index = 0; index < plansCount; index++) {
         const planInfo = await stackingContract!.getPlanInfo(index)
         result.push({
-          persent: parseInt(planInfo.percent) / percentDivider,
+          percent: parseInt(planInfo.percent) / percentDivider,
           days: parseInt(planInfo.time),
           ewp: ewp
         })
@@ -80,7 +80,7 @@ function DepositFormSecondStep({onNext} : {onNext: () => void}) {
         <div key={index} onClick={() => dispatch(selectPlan(index))}>
           {selectedPlanIndex === index && (<span>selected</span>) }
           <Subheading>{plan.days}</Subheading>
-          <Subheading>{plan.persent}</Subheading>
+          <Subheading>{plan.percent}</Subheading>
           <Subheading>{plan.ewp}</Subheading>
         </div>
       ))}
