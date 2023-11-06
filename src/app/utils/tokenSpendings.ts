@@ -42,9 +42,7 @@ export const getApprovedAmount = async ({
   spenderContract: any;
   account: string;
 }) => {
-  const approvedAmount = await tokenContract.methods
-    .allowance(account, spenderContract)
-    .call();
+  const approvedAmount = await tokenContract.allowance(account, spenderContract);
   return { approvedAmount: BigInt(approvedAmount) };
 };
 
@@ -59,7 +57,7 @@ export const approveTokenSpending = async ({
   amount: bigint;
   account: string;
 }) => {
-  const balance = await tokenContract.methods.balanceOf(account).call();
+  const balance = await tokenContract.balanceOf(account);
 
   if (balance < amount) {
     throw new Error("Insufficient funds");
@@ -74,14 +72,11 @@ export const approveTokenSpending = async ({
   if (approvedAmount >= amount) {
     return true;
   }
-
-  const gasEstimate = await tokenContract.methods
-    .approve(spenderContract, amount.toString())
-    .estimateGas({ from: account });
+  
+  const gasEstimate = await tokenContract.approve.estimateGas(spenderContract, amount.toString());
   const gasLimit = Number(gasEstimate) * 2; // You can adjust this multiplier as needed
-  await tokenContract.methods
-    .approve(spenderContract, amount.toString())
-    .send({ from: account, gas: gasLimit });
+
+  await tokenContract.approve(spenderContract, amount.toString(), { from: account, gas: gasLimit });
 
   const newApprovedAmount = await waitForNewAllowanceUpdate({
     previousAllowance: approvedAmount,
