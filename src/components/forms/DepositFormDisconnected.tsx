@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
 import Subheading from "./Subheading"
-import { useAccountBalance } from "@/app/hooks/useAccountBalance"
+import { useConnectMetamask } from "@/app/hooks/useConnectMetamask"
 
 const RootStyled = styled.div`
   width: 100%;
@@ -35,23 +35,20 @@ const ButtonStyled = styled.button`
   padding: 12px 48px;
 `
 
-export type FormConnectedProps = {
-}
-
-function FormConnected({
-}: FormConnectedProps) {
-  const { balance } = useAccountBalance()
-
-  //handleDeposit({}, BigInt("1"))
-
+function DepositFormDisconnected() {
+  const { handleConnect } = useConnectMetamask()
+  
   return (
     <RootStyled>
-      <HeadingStyled>Step 1:</HeadingStyled>
-      <Subheading>Enter amount</Subheading>
-      <Subheading>Current balance: {balance}</Subheading>
-      <ButtonStyled>Step 2</ButtonStyled>
+      <HeadingStyled>
+        STAKE
+        {" "}
+        <b>GRIMACE</b>
+      </HeadingStyled>
+      <Subheading>Protecting You from You</Subheading>
+      <ButtonStyled onClick={handleConnect}>Connect</ButtonStyled>
     </RootStyled>
   )
 }
 
-export default FormConnected
+export default DepositFormDisconnected

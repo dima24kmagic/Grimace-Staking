@@ -7,9 +7,11 @@ import { MetaMaskProvider } from "metamask-react"
 import { ToastContainer } from "react-toastify"
 import Footer from "@/components/Footer"
 import RootStyleRegistry from "@/app/emotion"
-import { Web3Provider } from "@/app/hooks/useWeb3"
 import Header from "@/components/Header"
 import { ProgressLoaderProvider } from "@/components/ProgressLoader/ProgressLoader"
+import { Provider } from 'react-redux'
+import store from "./store/store"
+import { EthersProvider } from "./hooks/useEthers"
 
 import "@/assets/styles/globals.css"
 import "react-toastify/dist/ReactToastify.css"
@@ -42,14 +44,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={fredoka.variable}>
       <ProgressLoaderProvider>
-        <Web3Provider>
           <BodyStyled>
             <MetaMaskProvider>
-              <RootStyleRegistry>
-                <Header />
-                <MainStyled id="page-wrap">{children}</MainStyled>
-                <Footer />
-              </RootStyleRegistry>
+            <EthersProvider>
+              <Provider store={store}> 
+                <RootStyleRegistry>
+                  <Header />
+                  <MainStyled id="page-wrap">{children}</MainStyled>
+                  <Footer />
+                </RootStyleRegistry> 
+              </Provider>
+            </EthersProvider>
             </MetaMaskProvider>
             <ToastContainer
               position="bottom-right"
@@ -59,7 +64,6 @@ export default function RootLayout({
               theme="dark"
             />
           </BodyStyled>
-        </Web3Provider>
       </ProgressLoaderProvider>
     </html>
   )

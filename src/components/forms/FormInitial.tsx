@@ -1,19 +1,14 @@
-import FormConnected from "./FormConnected"
-import FormDisconnected from "./FormDisconnected"
+import DepositFormConnected from "./DepositFormConnected"
+import DepositFormDisconnected from "./DepositFormDisconnected"
+import { useAppSelector, useAppDispatch } from '../../app/store/hooks'
 
-export type FormInitialProps = {
-  onConnectClick?: () => Promise<void>,
-  account: string | null
-}
+function FormInitial() {
+  const accountAddress = useAppSelector(state => state.account.address)
 
-function FormInitial({
-  onConnectClick,
-  account
-}: FormInitialProps) {
   return (
     <div>
-      { account ? 
-        <FormConnected/> : <FormDisconnected onConnectClick={onConnectClick}/>
+      { accountAddress ? 
+        <DepositFormConnected/> : <DepositFormDisconnected />
       }
     </div>
   )
