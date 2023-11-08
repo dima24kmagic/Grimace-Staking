@@ -2,7 +2,7 @@ import styled from "@emotion/styled"
 import Subheading from "./Subheading"
 import { useAppSelector, useAppDispatch } from '../../app/store/hooks'
 import Balance from "../Balance"
-import { setAmount, setAmountString } from "@/app/store/depositFormState"
+import { setAmountString } from "@/app/store/depositFormState"
 import { toast } from "react-toastify"
 
 const RootStyled = styled.div`
