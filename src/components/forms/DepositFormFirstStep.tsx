@@ -2,7 +2,8 @@ import styled from "@emotion/styled"
 import Subheading from "./Subheading"
 import { useAppSelector, useAppDispatch } from '../../app/store/hooks'
 import Balance from "../Balance"
-import { setAmount } from "@/app/store/depositFormState"
+import { setAmount, setAmountString } from "@/app/store/depositFormState"
+import { toast } from "react-toastify"
 
 const RootStyled = styled.div`
   width: 100%;
@@ -38,6 +39,7 @@ const ButtonStyled = styled.button`
 `
 
 function DepositFormFirstStep({onNext} : {onNext: () => void}) {
+  const amountString = useAppSelector(state => state.depositForm.amountString)
   const amount = useAppSelector(state => state.depositForm.amount)
   const dispatch = useAppDispatch()
 
@@ -46,13 +48,15 @@ function DepositFormFirstStep({onNext} : {onNext: () => void}) {
       <HeadingStyled>Step 1:</HeadingStyled>
       <Subheading>Enter amount</Subheading>
       <input
-        value={amount ?? ''}
+        value={amountString ?? ''}
         onChange={(event) => {
-          dispatch(setAmount(parseFloat(event.target.value)))
+          dispatch(setAmountString(event.target.value))
         }}
       ></input>
-      <Balance onClick={(balance) => dispatch(setAmount(balance))}/>
-      <ButtonStyled onClick={ amount ?? 0 > 0.001 ? onNext : ()=>{}}>Step 2</ButtonStyled>
+      <Balance onClick={(balance) => dispatch(setAmountString(balance))}/>
+      <ButtonStyled onClick={ amount && amount >= 0.001 ? onNext : ()=>{toast.error("Minimum 0.001 GRIMACE")}}>
+        Step 2
+      </ButtonStyled>
     </RootStyled>
   )
 }

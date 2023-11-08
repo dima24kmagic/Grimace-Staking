@@ -43,7 +43,7 @@ function DepositFormSecondStep({onNext} : {onNext: () => void}) {
   const selectedPlanIndex = useAppSelector(state => state.depositForm.selectedPlanIndex)
   const dispatch = useAppDispatch()
   const { stackingContract, ethers } = useEthersContext()
-  const plansCount = parseInt(process.env.NEXT_STAKING_PLANS_COUNT ?? '4')
+  const plansCount = parseInt(process.env.NEXT_PUBLIC_STAKING_PLANS_COUNT ?? '4')
 
   useEffect(() =>{
 

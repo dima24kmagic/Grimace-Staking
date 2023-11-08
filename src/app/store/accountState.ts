@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface AccountState {
   address: string | null,
-  balance: number | null
+  balance: string | null
 }
 
 const initialState: AccountState = {
-    address: null,
-    balance: null,
+  address: null,
+  balance: null,
 }
 
 export const accountSlice = createSlice({
@@ -17,7 +17,7 @@ export const accountSlice = createSlice({
     setAccountAddress: (state, action: PayloadAction<string | null>) => {
       state.address = action.payload
     },
-    setBalance: (state, action: PayloadAction<number | null>) => {
+    setBalance: (state, action: PayloadAction<string | null>) => {
       state.balance = action.payload
     }
   }

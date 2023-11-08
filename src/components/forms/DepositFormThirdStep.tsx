@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from '../../app/store/hooks'
 import { clearDepositForm } from "@/app/store/depositFormState"
 import { approveTokenSpending } from "@/app/utils/tokenSpendings"
 import { useEthersContext } from "@/app/hooks/useEthers"
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
 
 const RootStyled = styled.div`
   width: 100%;
@@ -54,7 +54,7 @@ function DepositFormFirstStep({onNext} : {onNext: () => void}) {
       account: accountAddress!,
       amount: amountBigInt,
     }).catch((err) => {
-      toast.error(err)
+      toast.error(err.message)
     });
     if (isApproved) {
       // TODO: check if new deposit appeared

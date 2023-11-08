@@ -7,6 +7,7 @@ export interface Plan {
 }
 
 export interface DepositFormState {
+  amountString: string | null,
   amount: number | null,
   amountToWithdraw: number | null,
   plans: Array<Plan>,
@@ -16,6 +17,7 @@ export interface DepositFormState {
 }
 
 const initialState: DepositFormState = {
+  amountString: null,
   amount: null,
   plans: [],
   selectedPlanIndex: null,
@@ -38,6 +40,20 @@ export const depositFormSlice = createSlice({
   reducers: {
     setAmount: (state, action: PayloadAction<number | null>) => {
       state.amount = action.payload
+      state.amountString = action.payload?.toString() ?? ''
+    },
+    setAmountString: (state, action: PayloadAction<string | null>) => {
+      state.amountString = action.payload
+
+      if(!state.amountString) return
+      
+      const val = parseFloat(state.amountString)
+      if(isNaN(val)){
+        state.amount = null
+      }
+      else{
+        state.amount = val
+      }
     },
     setPlans: (state, action: PayloadAction<Array<Plan>>) => {
       state.plans = action.payload
@@ -54,6 +70,7 @@ export const depositFormSlice = createSlice({
       }
     },
     clearDepositForm: (state) => {
+      state.amountString = null
       state.amount = null
       state.selectedPlanIndex = null
       state.selectedPlan = null
@@ -63,6 +80,6 @@ export const depositFormSlice = createSlice({
   }
 })
 
-export const { setAmount, setPlans, selectPlan, clearDepositForm } = depositFormSlice.actions
+export const { setAmount, setAmountString, setPlans, selectPlan, clearDepositForm } = depositFormSlice.actions
 
 export default depositFormSlice.reducer

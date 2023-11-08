@@ -45,17 +45,17 @@ export default function RootLayout({
     <html lang="en" className={fredoka.variable}>
       <ProgressLoaderProvider>
           <BodyStyled>
-            <MetaMaskProvider>
-            <EthersProvider>
-              <Provider store={store}> 
-                <RootStyleRegistry>
-                  <Header />
-                  <MainStyled id="page-wrap">{children}</MainStyled>
-                  <Footer />
-                </RootStyleRegistry> 
-              </Provider>
-            </EthersProvider>
-            </MetaMaskProvider>
+            <Provider store={store}> 
+              <MetaMaskProvider>
+                <EthersProvider>
+                  <RootStyleRegistry>
+                    <Header />
+                    <MainStyled id="page-wrap">{children}</MainStyled>
+                    <Footer />
+                  </RootStyleRegistry> 
+                </EthersProvider>
+              </MetaMaskProvider>
+            </Provider>
             <ToastContainer
               position="bottom-right"
               autoClose={5000}
