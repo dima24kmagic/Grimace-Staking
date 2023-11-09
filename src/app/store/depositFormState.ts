@@ -13,7 +13,8 @@ export interface DepositFormState {
   plans: Array<Plan>,
   selectedPlanIndex: number | null,
   selectedPlan: Plan | null,
-  unstakeDate: string | null
+  unstakeDate: string | null,
+  step: number
 }
 
 const initialState: DepositFormState = {
@@ -23,7 +24,8 @@ const initialState: DepositFormState = {
   selectedPlanIndex: null,
   selectedPlan: null,
   unstakeDate: null,
-  amountToWithdraw: null
+  amountToWithdraw: null,
+  step: 1
 }
 
 const getUserNegativeDividends = (amount: number, plan : Plan, finish: Date) => {  
@@ -38,10 +40,6 @@ export const depositFormSlice = createSlice({
   name: 'depositForm',
   initialState,
   reducers: {
-    setAmount: (state, action: PayloadAction<number | null>) => {
-      state.amount = action.payload
-      state.amountString = action.payload?.toString() ?? ''
-    },
     setAmountString: (state, action: PayloadAction<string | null>) => {
       state.amountString = action.payload
 
@@ -76,10 +74,14 @@ export const depositFormSlice = createSlice({
       state.selectedPlan = null
       state.unstakeDate = null
       state.amountToWithdraw = null
-    }
+      state.step = 1
+    },
+    setStep: (state, action: PayloadAction<number>) => {
+      state.step = action.payload
+    },
   }
 })
 
-export const { setAmount, setAmountString, setPlans, selectPlan, clearDepositForm } = depositFormSlice.actions
+export const { setStep, setAmountString, setPlans, selectPlan, clearDepositForm } = depositFormSlice.actions
 
 export default depositFormSlice.reducer

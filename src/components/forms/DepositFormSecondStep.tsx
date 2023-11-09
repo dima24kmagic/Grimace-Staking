@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from '../../app/store/hooks'
 import { useEffect } from "react"
 import { Plan, selectPlan, setPlans } from "@/app/store/depositFormState"
 import { useEthersContext } from "@/app/hooks/useEthers"
+import useUpdatePlans from "@/app/hooks/useUpdatePlans"
 
 const RootStyled = styled.div`
   width: 100%;
@@ -42,34 +43,9 @@ function DepositFormSecondStep({onNext} : {onNext: () => void}) {
   const plans = useAppSelector(state => state.depositForm.plans)
   const selectedPlanIndex = useAppSelector(state => state.depositForm.selectedPlanIndex)
   const dispatch = useAppDispatch()
-  const { stackingContract, ethers } = useEthersContext()
-  const plansCount = parseInt(process.env.NEXT_PUBLIC_STAKING_PLANS_COUNT ?? '4')
+  const {updatePlans} = useUpdatePlans()
 
-  useEffect(() =>{
-
-    const getPlans = async () => {
-      const penaltyPercent = await stackingContract!.PENALTY_PERCENT()
-      const percentDivider = 100
-      const ewp = parseInt(penaltyPercent) / percentDivider
-
-      const result = new Array<Plan>
-      for (let index = 0; index < plansCount; index++) {
-        const planInfo = await stackingContract!.getPlanInfo(index)
-        result.push({
-          percent: parseInt(planInfo.percent) / percentDivider,
-          days: parseInt(planInfo.time),
-          ewp: ewp
-        })
-      }
-
-      return result
-    }
-
-    getPlans().then(result => {
-      dispatch(setPlans(result))
-      dispatch(selectPlan(2))
-    })    
-  }, [])
+  useEffect(() =>{ updatePlans() }, [])
 
   return (
     <RootStyled>

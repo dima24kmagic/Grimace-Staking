@@ -1,31 +1,34 @@
-import { useWeb3Context } from "@/app/hooks/useWeb3";
-import { useMetaMask } from "metamask-react";
-import { toast } from "react-toastify";
-import { approveTokenSpending } from "@/app/utils/tokenSpendings";
+import { useAppSelector, useAppDispatch } from '../../app/store/hooks'
+import { clearDepositForm } from "@/app/store/depositFormState"
+import { approveTokenSpending } from "@/app/utils/tokenSpendings"
+import { useEthersContext } from "@/app/hooks/useEthers"
+import { toast } from "react-toastify"
 
 const usePutDeposit = () => {
-  const { account } = useMetaMask();
-  const { stackingContract, tokenContract } = useWeb3Context();
+  const accountAddress = useAppSelector(state => state.account.address)
+  const { tokenContract, stackingContract, ethers } = useEthersContext()
+  const dispatch = useAppDispatch()
+  const depositForm = useAppSelector(state => state.depositForm)
 
-  // TODO: set types for plans
-  const handleDeposit = async (plan: any, amount: bigint) => {
-    if (account) {
-      const isApproved = await approveTokenSpending({
-        tokenContract,
-        spenderContract: stackingContract,
-        account,
-        amount,
-      }).catch((err) => {
-        toast.error(err);
-      });
-      if (isApproved) {
-        // TODO: check if new deposit appeared
-        await stackingContract?.methods
-          .deposit(plan, amount)
-          ?.call({ from: account });
-      }
+  const handleDeposit = async () => {
+    const amountBigInt = BigInt(ethers.parseEther(depositForm.amount!.toString()))
+    
+    const isApproved = await approveTokenSpending({
+      tokenContract: tokenContract,
+      spenderContract: stackingContract,
+      account: accountAddress!,
+      amount: amountBigInt,
+    }).catch((err) => {
+      toast.error(err.shortMessage ?? err.message)
+    });
+    if (isApproved) {
+      await stackingContract!.deposit(depositForm.selectedPlanIndex, amountBigInt)
+
+      dispatch(clearDepositForm())
     }
   };
 
   return { handleDeposit };
 };
+
+export default usePutDeposit

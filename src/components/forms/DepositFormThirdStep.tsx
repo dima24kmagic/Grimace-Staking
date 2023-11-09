@@ -1,10 +1,7 @@
 import styled from "@emotion/styled"
 import Subheading from "./Subheading"
-import { useAppSelector, useAppDispatch } from '../../app/store/hooks'
-import { clearDepositForm } from "@/app/store/depositFormState"
-import { approveTokenSpending } from "@/app/utils/tokenSpendings"
-import { useEthersContext } from "@/app/hooks/useEthers"
-import { toast } from "react-toastify"
+import { useAppSelector } from "@/app/store/hooks"
+import usePutDeposit from "@/app/hooks/usePutDeposit"
 
 const RootStyled = styled.div`
   width: 100%;
@@ -39,31 +36,9 @@ const ButtonStyled = styled.button`
   padding: 12px 48px;
 `
 
-function DepositFormFirstStep({onNext} : {onNext: () => void}) {
-  const dispatch = useAppDispatch()
+function DepositFormThirdStep({onNext} : {onNext: () => void}) {
   const depositForm = useAppSelector(state => state.depositForm)
-  const accountAddress = useAppSelector(state => state.account.address)
-  const { tokenContract, stackingContract, ethers } = useEthersContext()
-
-  const handleDeposit = async () => {
-    const amountBigInt = BigInt(ethers.parseEther(depositForm.amount!.toString()))
-    
-    const isApproved = await approveTokenSpending({
-      tokenContract: tokenContract,
-      spenderContract: stackingContract,
-      account: accountAddress!,
-      amount: amountBigInt,
-    }).catch((err) => {
-      toast.error(err.message)
-    });
-    if (isApproved) {
-      // TODO: check if new deposit appeared
-      await stackingContract!.deposit(depositForm.selectedPlanIndex, amountBigInt)
-
-      dispatch(clearDepositForm())
-      onNext()
-    }
-  }
+  const { handleDeposit } = usePutDeposit()
 
   return (
     <RootStyled>
@@ -78,4 +53,4 @@ function DepositFormFirstStep({onNext} : {onNext: () => void}) {
   )
 }
 
-export default DepositFormFirstStep
+export default DepositFormThirdStep
