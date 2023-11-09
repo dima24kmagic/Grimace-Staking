@@ -1,10 +1,9 @@
 import styled from "@emotion/styled"
 import Subheading from "./Subheading"
 import { useAppSelector, useAppDispatch } from '../../app/store/hooks'
+import { selectPlan } from "@/app/store/depositFormState"
+import usePlans from "@/app/hooks/usePlans"
 import { useEffect } from "react"
-import { Plan, selectPlan, setPlans } from "@/app/store/depositFormState"
-import { useEthersContext } from "@/app/hooks/useEthers"
-import useUpdatePlans from "@/app/hooks/useUpdatePlans"
 
 const RootStyled = styled.div`
   width: 100%;
@@ -40,10 +39,9 @@ const ButtonStyled = styled.button`
 `
 
 function DepositFormSecondStep({onNext} : {onNext: () => void}) {
-  const plans = useAppSelector(state => state.depositForm.plans)
   const selectedPlanIndex = useAppSelector(state => state.depositForm.selectedPlanIndex)
   const dispatch = useAppDispatch()
-  const {updatePlans} = useUpdatePlans()
+  const {plans, updatePlans} = usePlans()
 
   useEffect(() =>{ updatePlans() }, [])
 

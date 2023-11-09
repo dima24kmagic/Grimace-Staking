@@ -1,11 +1,10 @@
-import { useAppDispatch, useAppSelector } from "@/app/store/hooks"
+import { useEffect } from "react";
 import Subheading from "./forms/Subheading"
-import { useEffect } from "react"
-import useUpdateBalance from "@/app/hooks/useUpdateBalance"
+import useBalance from "@/app/hooks/useBalance"
+import { useAppSelector } from "@/app/store/hooks";
 
 function Balance({onClick}: {onClick: (balance : string | null) => void}) {
-  const balance = useAppSelector(state => state.account.balance)
-  const { updateBalance } = useUpdateBalance()
+  const { balance, updateBalance } = useBalance()
 
   useEffect(() => { updateBalance() });
 

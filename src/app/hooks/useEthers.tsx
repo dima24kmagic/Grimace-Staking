@@ -5,7 +5,7 @@ import StackingContract from "@/contracts/Stacking.json"
 import TokenContract from "@/contracts/TokenETH.json"
 import { useMetaMask } from "metamask-react"
 import { toast } from "react-toastify"
-import useUpdateBalance from "./useUpdateBalance"
+import useBalance from "./useBalance"
 
 const EthersContext = createContext<{
     ethers: any
@@ -25,7 +25,7 @@ const EthersProvider = ({ children }) => {
   const [stackingContract, setStackingContract] = useState<Contract | null>(null)
   const [tokenContract, setTokenContract] = useState<Contract | null>(null)
   const { account } = useMetaMask()
-  const { updateBalance } = useUpdateBalance()
+  const { updateBalance } = useBalance()
 
   const setContractInstances = (provider : any) => {
     const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, provider)
@@ -47,24 +47,21 @@ const EthersProvider = ({ children }) => {
     })
   }
 
+  const initialize = async () => {
+    if (!window?.ethereum) return  
+
+    const provider = new ethers.BrowserProvider(window.ethereum)
+    setContractInstances(provider)
+
+    if (!account) return
+    
+    const signer = await provider.getSigner()
+    setContractInstances(signer)
+    registerEventHandlers()
+  }
+
   useEffect(() => {
-    const initialize = async () => {
-      if (window?.ethereum) {
-        const provider = new ethers.BrowserProvider(window.ethereum)
-
-        if(!account){
-          setContractInstances(provider)
-          return
-        }
-
-        const signer = await provider.getSigner()
-        setContractInstances(signer)
-
-        registerEventHandlers()
-      }
-    }
-
-    initialize()
+    initialize() 
   }, [account])
 
   return (
