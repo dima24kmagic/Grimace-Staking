@@ -2,6 +2,8 @@ import { useState } from "react"
 import DepositFormFirstStep from "./DepositFormFirstStep"
 import DepositFormSecondStep from "./DepositFormSecondStep"
 import DepositFormThirdStep from "./DepositFormThirdStep"
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks"
+import { setStep } from "@/app/store/depositFormState"
 
 function RenderStep({step, onNext} : {step: number, onNext: () => void}) {
   switch(step) {
@@ -15,16 +17,11 @@ function RenderStep({step, onNext} : {step: number, onNext: () => void}) {
 }
 
 function DepositFormConnected() {
-  const [step, setStep] = useState(1)
+  const step = useAppSelector(state => state.depositForm.step)
+  const dispatch = useAppDispatch()
 
   return (
-    <RenderStep step={step} onNext={() => {
-      if(step < 3){
-        setStep(step + 1)
-      } else {
-        setStep(1)
-      }
-    } }></RenderStep>
+    <RenderStep step={step} onNext={() => { dispatch(setStep(step + 1)) } }></RenderStep>
   )
 }
 

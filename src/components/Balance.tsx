@@ -1,30 +1,16 @@
-import { useAppDispatch, useAppSelector } from "@/app/store/hooks"
+import { useEffect } from "react";
 import Subheading from "./forms/Subheading"
-import { setBalance } from "@/app/store/accountState"
-import { useEffect } from "react"
-import { useEthersContext } from "@/app/hooks/useEthers"
+import useBalance from "@/app/hooks/useBalance"
+import { useAppSelector } from "@/app/store/hooks";
 
-function Balance({onClick}: {onClick: (balance : number) => void}) {
-  const accountAddress = useAppSelector(state => state.account.address)
-  const balance = useAppSelector(state => state.account.balance)
-  const dispatch = useAppDispatch()
-  const { tokenContract, ethers } = useEthersContext()
+function Balance({onClick}: {onClick: (balance : string | null) => void}) {
+  const { balance, updateBalance } = useBalance()
 
-useEffect(() => {
-    if (!accountAddress){
-        dispatch(setBalance(null))
-        return
-    }
-    
-    tokenContract!.balanceOf(accountAddress)
-      .then((result) => {
-        dispatch(setBalance(parseFloat(ethers.formatEther(result))))
-      })
-  });
+  useEffect(() => { updateBalance() });
 
   return (
     //TODO: cursor pointer
-    <Subheading onClick={() => onClick(balance ?? 0)}>Current balance: {balance}</Subheading>
+    <Subheading onClick={() => onClick(balance)}>Current balance: {balance}</Subheading>
   )
 }
 

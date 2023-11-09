@@ -4,6 +4,8 @@ import { Contract, ethers } from "ethers"
 import StackingContract from "@/contracts/Stacking.json"
 import TokenContract from "@/contracts/TokenETH.json"
 import { useMetaMask } from "metamask-react"
+import { toast } from "react-toastify"
+import useBalance from "./useBalance"
 
 const EthersContext = createContext<{
     ethers: any
@@ -23,31 +25,43 @@ const EthersProvider = ({ children }) => {
   const [stackingContract, setStackingContract] = useState<Contract | null>(null)
   const [tokenContract, setTokenContract] = useState<Contract | null>(null)
   const { account } = useMetaMask()
+  const { updateBalance } = useBalance()
 
   const setContractInstances = (provider : any) => {
     const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, provider)
     setStackingContract(stackingContractInstance)
     
     const tokenContractInstance = new Contract(process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS!, TokenContract.abi, provider)
-    setTokenContract(tokenContractInstance)        
+    setTokenContract(tokenContractInstance)
+  }
+
+  const registerEventHandlers = () => {
+    const wsProvider = new ethers.WebSocketProvider(process.env.NEXT_PUBLIC_WEBSOCKET_ENDPOINT!)
+    const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, wsProvider)
+
+    stackingContractInstance.on("NewDeposit", (address, plan, amount) => {
+      if(account && account.toLowerCase() === address.toLowerCase()){
+        toast.info(ethers.formatEther(amount) + " GRIMACE successfully deposited")
+        updateBalance()
+      }
+    })
+  }
+
+  const initialize = async () => {
+    if (!window?.ethereum) return  
+
+    const provider = new ethers.BrowserProvider(window.ethereum)
+    setContractInstances(provider)
+
+    if (!account) return
+    
+    const signer = await provider.getSigner()
+    setContractInstances(signer)
+    registerEventHandlers()
   }
 
   useEffect(() => {
-    const initialize = async () => {
-      if (window?.ethereum) {
-        const provider = new ethers.BrowserProvider(window.ethereum)
-
-        if(!account){
-          setContractInstances(provider)
-          return
-        }
-
-        const signer = await provider.getSigner()
-        setContractInstances(signer)
-      }
-    }
-
-    initialize()
+    initialize() 
   }, [account])
 
   return (
