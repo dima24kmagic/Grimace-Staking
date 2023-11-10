@@ -2,6 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 
 export interface Deposit {
+  id: number
   days: number
   planIndex: number
   amount: number
@@ -9,6 +10,7 @@ export interface Deposit {
   start: string
   finish: string
   isTaken: boolean
+    withdrawable: boolean
 }
 
 export interface AccountState {

@@ -3,8 +3,9 @@ import { createSlice } from "@reduxjs/toolkit"
 import { getUserNegativeDividends } from "../utils/depositHelper"
 
 export interface Plan {
-  percent: number
-  ewp: number
+  id: number,
+  percent: number,
+  ewp: number,
   days: number
 }
 
@@ -56,9 +57,11 @@ export const depositFormSlice = createSlice({
       state.selectedPlanIndex = action.payload
       if (action.payload && state.amount) {
         state.selectedPlan = state.plans[action.payload]
-        const date = new Date()
+
+        var date = new Date()
         date.setDate(date.getDate() + state.selectedPlan.days)
         state.unstakeDate = date.toString()
+        
         state.amountToWithdraw = state.amount
           - getUserNegativeDividends(state.amount, state.selectedPlan, date, new Date())
       }

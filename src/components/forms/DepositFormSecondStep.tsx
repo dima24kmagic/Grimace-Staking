@@ -55,7 +55,7 @@ function DepositFormSecondStep({ onNext }: { onNext: () => void }) {
       {plans.map((plan, index) => (
         <div
           key={index}
-          onClick={() => dispatch(selectPlan(index))}
+          onClick={() => dispatch(selectPlan(plan.id))}
         >
           {selectedPlanIndex === index && (<span>selected</span>) }
           <Subheading>{plan.days}</Subheading>

@@ -15,13 +15,14 @@ const ContainerStyled = styled(Container)`
 `
 
 export default function Dashboard() {
-  const { deposits, updateDeposits } = useDeposits()
+  const { deposits, updateDeposits, handleWithdraw } = useDeposits()
   const { updatePlans, plans } = usePlans()
   const accountAddress = useAppSelector(state => state.account.address)
 
-  useEffect(() => {
+  useEffect(() => { 
+    if(!accountAddress) return
     updatePlans().then(() => updateDeposits())
-  }, [accountAddress, plans])
+   }, [accountAddress, plans])
 
   return (
     <ContainerStyled>
@@ -33,6 +34,7 @@ export default function Dashboard() {
             <p>{dep.amount}</p>
             <p>{dep.amountToWithdraw}</p>
             <p>{dep.finish.toString()}</p>
+            <button onClick={() => {handleWithdraw(dep.id)}}>{dep.withdrawable ? "withdrawal" : "early unstake"}</button>
           </li>
         ))}
       </ul>

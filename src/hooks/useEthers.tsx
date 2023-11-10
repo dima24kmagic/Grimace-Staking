@@ -48,7 +48,7 @@ const EthersProvider = ({ children }) => {
   }
 
   const initialize = async () => {
-    if (!window?.ethereum) {
+    if (!window.ethereum) {
       return
     }
 
