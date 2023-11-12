@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import Subheading from "./forms/Subheading"
-import useBalance from "@/app/hooks/useBalance"
+import useBalance from "@/hooks/useBalance"
 
 function Balance({ onClick }: { onClick: (balance: string | null) => void }) {
   const { balance, updateBalance } = useBalance()

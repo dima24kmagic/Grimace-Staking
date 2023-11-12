@@ -1,6 +1,6 @@
-import { useAppSelector } from "../../app/store/hooks"
 import DepositFormConnected from "./DepositFormConnected"
 import DepositFormDisconnected from "./DepositFormDisconnected"
+import { useAppSelector } from "@/store/hooks"
 
 function FormInitial() {
   const accountAddress = useAppSelector(state => state.account.address)

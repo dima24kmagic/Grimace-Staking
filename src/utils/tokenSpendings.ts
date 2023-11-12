@@ -1,4 +1,4 @@
-import { wait } from "@/app/utils"
+import { wait } from "@/utils"
 
 export const waitForNewAllowanceUpdate = ({
   previousAllowance,

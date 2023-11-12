@@ -1,9 +1,9 @@
 import { useMetaMask } from "metamask-react"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
-import { useAppDispatch } from "../../app/store/hooks"
-import { setAccountAddress } from "../store/accountState"
 import useCheckConnection from "./useCheckConnection"
+import { setAccountAddress } from "@/store/accountState"
+import { useAppDispatch } from "@/store/hooks"
 
 export const useConnectMetamask = () => {
   const { connect, account } = useMetaMask()

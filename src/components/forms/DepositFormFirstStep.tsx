@@ -1,9 +1,9 @@
 import styled from "@emotion/styled"
 import { toast } from "react-toastify"
-import { useAppDispatch, useAppSelector } from "../../app/store/hooks"
-import Balance from "../Balance"
 import Subheading from "./Subheading"
-import { setAmountString } from "@/app/store/depositFormState"
+import Balance from "@/components/Balance"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { setAmountString } from "@/store/depositFormState"
 
 const RootStyled = styled.div`
   width: 100%;

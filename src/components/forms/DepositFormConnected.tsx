@@ -1,8 +1,8 @@
 import DepositFormFirstStep from "./DepositFormFirstStep"
 import DepositFormSecondStep from "./DepositFormSecondStep"
 import DepositFormThirdStep from "./DepositFormThirdStep"
-import { useAppDispatch, useAppSelector } from "@/app/store/hooks"
-import { setStep } from "@/app/store/depositFormState"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { setStep } from "@/store/depositFormState"
 
 function RenderStep({ step, onNext }: { step: number; onNext: () => void }) {
   switch (step) {

@@ -2,9 +2,9 @@
 
 import React, { useEffect } from "react"
 import styled from "@emotion/styled"
-import useDeposits from "../hooks/useDeposits"
-import { useAppSelector } from "../store/hooks"
-import usePlans from "../hooks/usePlans"
+import { useAppSelector } from "@/store/hooks"
+import usePlans from "@/hooks/usePlans"
+import useDeposits from "@/hooks/useDeposits"
 import Container from "@/components/Container"
 
 const ContainerStyled = styled(Container)`

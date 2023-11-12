@@ -4,7 +4,10 @@ import Link from "next/link"
 import { css } from "@emotion/css"
 import classNames from "classnames"
 
-export type ButtonProps = { buttonType?: "filled" | "outlined" } & (
+export type ButtonProps = {
+  buttonType?: "filled" | "outlined"
+  disabled?: boolean
+} & (
   | React.ComponentProps<typeof Link>
   | HTMLAttributes<HTMLButtonElement>
 )

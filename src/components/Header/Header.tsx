@@ -9,7 +9,7 @@ import { useMetaMask } from "metamask-react"
 import Hamburger from "hamburger-react"
 import { useWindowSize } from "@uidotdev/usehooks"
 import AccountIcon from "@/components/icons/AccountIcon"
-import { useConnectMetamask } from "@/app/hooks/useConnectMetamask"
+import { useConnectMetamask } from "@/hooks/useConnectMetamask"
 import Container from "@/components/Container"
 
 const Root = styled.header`

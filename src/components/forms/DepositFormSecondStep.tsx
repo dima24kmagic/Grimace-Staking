@@ -1,9 +1,9 @@
-import styled from "@emotion/styled"
 import { useEffect } from "react"
-import { useAppDispatch, useAppSelector } from "../../app/store/hooks"
+import styled from "@emotion/styled"
 import Subheading from "./Subheading"
-import { selectPlan } from "@/app/store/depositFormState"
-import usePlans from "@/app/hooks/usePlans"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { selectPlan } from "@/store/depositFormState"
+import usePlans from "@/hooks/usePlans"
 
 const RootStyled = styled.div`
   width: 100%;
