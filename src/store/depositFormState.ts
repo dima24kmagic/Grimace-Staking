@@ -1,20 +1,21 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getUserNegativeDividends } from '../utils/depositHelper'
+import type { PayloadAction } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
+import { getUserNegativeDividends } from "../utils/depositHelper"
 
 export interface Plan {
-  percent: number,
-  ewp: number,
+  percent: number
+  ewp: number
   days: number
 }
 
 export interface DepositFormState {
-  amountString: string | null,
-  amount: number | null,
-  amountToWithdraw: number | null,
-  plans: Array<Plan>,
-  selectedPlanIndex: number | null,
-  selectedPlan: Plan | null,
-  unstakeDate: string | null,
+  amountString: string | null
+  amount: number | null
+  amountToWithdraw: number | null
+  plans: Array<Plan>
+  selectedPlanIndex: number | null
+  selectedPlan: Plan | null
+  unstakeDate: string | null
   step: number
 }
 
@@ -26,26 +27,25 @@ const initialState: DepositFormState = {
   selectedPlan: null,
   unstakeDate: null,
   amountToWithdraw: null,
-  step: 1
+  step: 1,
 }
 
 export const depositFormSlice = createSlice({
-  name: 'depositForm',
+  name: "depositForm",
   initialState,
   reducers: {
     setAmountString: (state, action: PayloadAction<string | null>) => {
       state.amountString = action.payload
 
-      if(!state.amountString) {
+      if (!state.amountString) {
         state.amount = null
         return
       }
-      
-      const val = parseFloat(state.amountString)
-      if(isNaN(val)){
+
+      const val = Number.parseFloat(state.amountString)
+      if (Number.isNaN(val)) {
         state.amount = null
-      }
-      else{
+      } else {
         state.amount = val
       }
     },
@@ -54,12 +54,12 @@ export const depositFormSlice = createSlice({
     },
     selectPlan: (state, action: PayloadAction<number | null>) => {
       state.selectedPlanIndex = action.payload
-      if(action.payload && state.amount){
+      if (action.payload && state.amount) {
         state.selectedPlan = state.plans[action.payload]
-        var date = new Date()
+        const date = new Date()
         date.setDate(date.getDate() + state.selectedPlan.days)
         state.unstakeDate = date.toString()
-        state.amountToWithdraw = state.amount 
+        state.amountToWithdraw = state.amount
           - getUserNegativeDividends(state.amount, state.selectedPlan, date, new Date())
       }
     },
@@ -75,7 +75,7 @@ export const depositFormSlice = createSlice({
     setStep: (state, action: PayloadAction<number>) => {
       state.step = action.payload
     },
-  }
+  },
 })
 
 export const { setStep, setAmountString, setPlans, selectPlan, clearDepositForm } = depositFormSlice.actions

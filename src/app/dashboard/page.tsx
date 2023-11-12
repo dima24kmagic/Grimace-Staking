@@ -2,11 +2,10 @@
 
 import React, { useEffect } from "react"
 import styled from "@emotion/styled"
+import { useAppSelector } from "@/store/hooks"
+import usePlans from "@/hooks/usePlans"
+import useDeposits from "@/hooks/useDeposits"
 import Container from "@/components/Container"
-import useDeposits from "../hooks/useDeposits"
-import { useAppSelector } from "../store/hooks"
-import usePlans from "../hooks/usePlans"
-import { useEthersContext } from "../hooks/useEthers"
 
 const ContainerStyled = styled(Container)`
   width: 600px;
@@ -16,11 +15,13 @@ const ContainerStyled = styled(Container)`
 `
 
 export default function Dashboard() {
-  const {deposits, updateDeposits} = useDeposits()
+  const { deposits, updateDeposits } = useDeposits()
   const { updatePlans, plans } = usePlans()
   const accountAddress = useAppSelector(state => state.account.address)
 
-  useEffect(() => { updatePlans().then(() => updateDeposits()) }, [accountAddress, plans])
+  useEffect(() => {
+    updatePlans().then(() => updateDeposits())
+  }, [accountAddress, plans])
 
   return (
     <ContainerStyled>

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled"
 import Subheading from "./Subheading"
-import { useAppSelector } from "@/app/store/hooks"
-import useDeposits from "@/app/hooks/useDeposits"
+import { useAppSelector } from "@/store/hooks"
+import useDeposits from "@/hooks/useDeposits"
 
 const RootStyled = styled.div`
   width: 100%;
@@ -36,7 +36,7 @@ const ButtonStyled = styled.button`
   padding: 12px 48px;
 `
 
-function DepositFormThirdStep({onNext} : {onNext: () => void}) {
+function DepositFormThirdStep(_: { onNext: () => void }) {
   const depositForm = useAppSelector(state => state.depositForm)
   const { handleDeposit } = useDeposits()
 

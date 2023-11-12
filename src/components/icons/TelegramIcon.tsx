@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 export default function TelegramIcon(props: React.SVGAttributes<SVGElement>) {
   return (
@@ -7,5 +7,5 @@ export default function TelegramIcon(props: React.SVGAttributes<SVGElement>) {
         d="M20.9459 5.45659L18.0786 19.0342C17.8623 19.9924 17.2982 20.2309 16.4966 19.7795L12.1279 16.5469L10.0199 18.5827C9.78661 18.817 9.5915 19.0129 9.14191 19.0129L9.45578 14.5452L17.5527 7.19851C17.9047 6.88334 17.4764 6.70873 17.0056 7.02389L6.99573 13.3527L2.68642 11.9984C1.74906 11.7045 1.7321 11.0571 2.88153 10.6057L19.737 4.0852C20.5175 3.79134 21.2003 4.25982 20.9459 5.45659Z"
       />
     </svg>
-  );
+  )
 }

@@ -5,13 +5,12 @@ import { Fredoka } from "next/font/google"
 import styled from "@emotion/styled"
 import { MetaMaskProvider } from "metamask-react"
 import { ToastContainer } from "react-toastify"
+import { Provider } from "react-redux"
+import store from "@/store/store"
+import { EthersProvider } from "@/hooks/useEthers"
 import Footer from "@/components/Footer"
 import RootStyleRegistry from "@/app/emotion"
 import Header from "@/components/Header"
-import { ProgressLoaderProvider } from "@/components/ProgressLoader/ProgressLoader"
-import { Provider } from 'react-redux'
-import store from "./store/store"
-import { EthersProvider } from "./hooks/useEthers"
 
 import "@/assets/styles/globals.css"
 import "react-toastify/dist/ReactToastify.css"
@@ -43,28 +42,26 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={fredoka.variable}>
-      <ProgressLoaderProvider>
-          <BodyStyled>
-            <Provider store={store}> 
-              <MetaMaskProvider>
-                <EthersProvider>
-                  <RootStyleRegistry>
-                    <Header />
-                    <MainStyled id="page-wrap">{children}</MainStyled>
-                    <Footer />
-                  </RootStyleRegistry> 
-                </EthersProvider>
-              </MetaMaskProvider>
-            </Provider>
-            <ToastContainer
-              position="bottom-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              theme="dark"
-            />
-          </BodyStyled>
-      </ProgressLoaderProvider>
+      <BodyStyled>
+        <Provider store={store}>
+          <MetaMaskProvider>
+            <EthersProvider>
+              <RootStyleRegistry>
+                <Header />
+                <MainStyled id="page-wrap">{children}</MainStyled>
+                <Footer />
+              </RootStyleRegistry>
+            </EthersProvider>
+          </MetaMaskProvider>
+        </Provider>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          theme="dark"
+        />
+      </BodyStyled>
     </html>
   )
 }

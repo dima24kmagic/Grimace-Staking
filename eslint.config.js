@@ -21,13 +21,16 @@ export default antfu(
   },
   {
     rules: {
-      "arrow-parens": ["error", "always"],
       "curly": ["error", "all"],
       "style/quotes": ["error", "double"],
       "style/brace-style": ["error", "1tbs"],
-      "ts/consistent-type-definitions": ["error", "type"],
-      "no-console": "warn",
       "node/prefer-global/process": ["error", "always"],
+
+      "antfu/consistent-list-newline": "off",
+      "ts/no-use-before-define": "warn",
+      "no-console": "warn",
+      "ts/consistent-type-definitions": "off",
+      "antfu/top-level-function": "off",
     },
   },
 )
