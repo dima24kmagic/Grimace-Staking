@@ -37,7 +37,7 @@ const ButtonStyled = styled.button`
 
 function DepositFormDisconnected() {
   const { handleConnect } = useConnectMetamask()
-  
+
   return (
     <RootStyled>
       <HeadingStyled>

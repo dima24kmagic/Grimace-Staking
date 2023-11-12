@@ -1,15 +1,16 @@
-import React, { HTMLAttributes } from "react";
-import Link from "next/link";
-import { css } from "@emotion/css";
-import classNames from "classnames";
+import type { HTMLAttributes } from "react"
+import React from "react"
+import Link from "next/link"
+import { css } from "@emotion/css"
+import classNames from "classnames"
 
 export type ButtonProps = { buttonType?: "filled" | "outlined" } & (
   | React.ComponentProps<typeof Link>
   | HTMLAttributes<HTMLButtonElement>
-);
+)
 
 function Button(props: ButtonProps) {
-  const { children, buttonType, className, disabled, ...rest } = props;
+  const { children, buttonType, className, disabled, ...rest } = props
 
   if ("href" in rest) {
     if (buttonType === "filled") {
@@ -19,12 +20,12 @@ function Button(props: ButtonProps) {
           className={classNames(
             className,
             buttonFilledStyles,
-            disabled && "disabled"
+            disabled && "disabled",
           )}
         >
           {children}
         </Link>
-      );
+      )
     } else {
       return (
         <Link
@@ -32,12 +33,12 @@ function Button(props: ButtonProps) {
           className={classNames(
             className,
             buttonOutlinedStyles,
-            disabled && "disabled"
+            disabled && "disabled",
           )}
         >
           <span>{children}</span>
         </Link>
-      );
+      )
     }
   } else {
     if (buttonType === "filled") {
@@ -49,7 +50,7 @@ function Button(props: ButtonProps) {
         >
           {children}
         </button>
-      );
+      )
     } else {
       return (
         <button
@@ -59,13 +60,10 @@ function Button(props: ButtonProps) {
         >
           <span>{children}</span>
         </button>
-      );
+      )
     }
   }
 }
-
-const StyledLink = `
-`;
 
 const commonButtonStyles = css`
   border-radius: 12px;
@@ -74,7 +72,7 @@ const commonButtonStyles = css`
   @media (max-width: 768px) {
     font-size: 1rem;
   }
-`;
+`
 
 const buttonFilledStyles = css`
   ${commonButtonStyles};
@@ -100,7 +98,7 @@ const buttonFilledStyles = css`
     background: linear-gradient(270deg, #454545 0%, #676767 100%);
     cursor: not-allowed;
   }
-`;
+`
 
 const buttonOutlinedStyles = css`
   ${commonButtonStyles};
@@ -131,6 +129,6 @@ const buttonOutlinedStyles = css`
   &:hover > span {
     background: transparent;
   }
-`;
+`
 
-export default Button;
+export default Button

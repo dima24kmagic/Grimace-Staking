@@ -1,24 +1,24 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { Contract, ethers } from "ethers"
 
-import StackingContract from "@/contracts/Stacking.json"
-import TokenContract from "@/contracts/TokenETH.json"
 import { useMetaMask } from "metamask-react"
 import { toast } from "react-toastify"
 import useBalance from "./useBalance"
+import TokenContract from "@/contracts/TokenETH.json"
+import StackingContract from "@/contracts/Stacking.json"
 
 const EthersContext = createContext<{
-    ethers: any
-    stackingContract: Contract | null
-    tokenContract: Contract | null
-    tokenContractAddress: string | null
-    stackingContractAddress: string | null
+  ethers: any
+  stackingContract: Contract | null
+  tokenContract: Contract | null
+  tokenContractAddress: string | null
+  stackingContractAddress: string | null
 }>({
-    ethers: ethers,
-    stackingContract: null,
-    tokenContract: null,
-    tokenContractAddress: null,
-    stackingContractAddress: null,
+  ethers,
+  stackingContract: null,
+  tokenContract: null,
+  tokenContractAddress: null,
+  stackingContractAddress: null,
 })
 
 const EthersProvider = ({ children }) => {
@@ -27,10 +27,10 @@ const EthersProvider = ({ children }) => {
   const { account } = useMetaMask()
   const { updateBalance } = useBalance()
 
-  const setContractInstances = (provider : any) => {
+  const setContractInstances = (provider: any) => {
     const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, provider)
     setStackingContract(stackingContractInstance)
-    
+
     const tokenContractInstance = new Contract(process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS!, TokenContract.abi, provider)
     setTokenContract(tokenContractInstance)
   }
@@ -40,28 +40,32 @@ const EthersProvider = ({ children }) => {
     const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, wsProvider)
 
     stackingContractInstance.on("NewDeposit", (address, plan, amount) => {
-      if(account && account.toLowerCase() === address.toLowerCase()){
-        toast.info(ethers.formatEther(amount) + " GRIMACE successfully deposited")
+      if (account && account.toLowerCase() === address.toLowerCase()) {
+        toast.info(`${ethers.formatEther(amount)} GRIMACE successfully deposited`)
         updateBalance()
       }
     })
   }
 
   const initialize = async () => {
-    if (!window?.ethereum) return  
+    if (!window?.ethereum) {
+      return
+    }
 
     const provider = new ethers.BrowserProvider(window.ethereum)
     setContractInstances(provider)
 
-    if (!account) return
-    
+    if (!account) {
+      return
+    }
+
     const signer = await provider.getSigner()
     setContractInstances(signer)
     registerEventHandlers()
   }
 
   useEffect(() => {
-    initialize() 
+    initialize()
   }, [account])
 
   return (

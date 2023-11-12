@@ -3,6 +3,7 @@
 import React from "react"
 import styled from "@emotion/styled"
 import Container from "@/components/Container"
+
 const ContainerStyled = styled(Container)`
   width: 600px;
   display: flex;

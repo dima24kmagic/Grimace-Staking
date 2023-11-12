@@ -36,7 +36,7 @@ const ButtonStyled = styled.button`
   padding: 12px 48px;
 `
 
-function DepositFormThirdStep({onNext} : {onNext: () => void}) {
+function DepositFormThirdStep(_: { onNext: () => void }) {
   const depositForm = useAppSelector(state => state.depositForm)
   const { handleDeposit } = useDeposits()
 

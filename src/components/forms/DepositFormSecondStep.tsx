@@ -1,9 +1,9 @@
 import styled from "@emotion/styled"
+import { useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "../../app/store/hooks"
 import Subheading from "./Subheading"
-import { useAppSelector, useAppDispatch } from '../../app/store/hooks'
 import { selectPlan } from "@/app/store/depositFormState"
 import usePlans from "@/app/hooks/usePlans"
-import { useEffect } from "react"
 
 const RootStyled = styled.div`
   width: 100%;
@@ -38,12 +38,14 @@ const ButtonStyled = styled.button`
   padding: 12px 48px;
 `
 
-function DepositFormSecondStep({onNext} : {onNext: () => void}) {
+function DepositFormSecondStep({ onNext }: { onNext: () => void }) {
   const selectedPlanIndex = useAppSelector(state => state.depositForm.selectedPlanIndex)
   const dispatch = useAppDispatch()
-  const {plans, updatePlans} = usePlans()
+  const { plans, updatePlans } = usePlans()
 
-  useEffect(() =>{ updatePlans() }, [])
+  useEffect(() => {
+    updatePlans()
+  }, [])
 
   return (
     <RootStyled>
@@ -51,14 +53,17 @@ function DepositFormSecondStep({onNext} : {onNext: () => void}) {
       <Subheading>Choose plan</Subheading>
 
       {plans.map((plan, index) => (
-        <div key={index} onClick={() => dispatch(selectPlan(index))}>
+        <div
+          key={index}
+          onClick={() => dispatch(selectPlan(index))}
+        >
           {selectedPlanIndex === index && (<span>selected</span>) }
           <Subheading>{plan.days}</Subheading>
           <Subheading>{plan.percent}</Subheading>
           <Subheading>{plan.ewp}</Subheading>
         </div>
       ))}
-      
+
       <Subheading>EWP - Early Withdrawal Penalty</Subheading>
       <ButtonStyled onClick={onNext}>Step 3</ButtonStyled>
     </RootStyled>

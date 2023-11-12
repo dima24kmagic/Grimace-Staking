@@ -1,12 +1,12 @@
-import { configureStore } from '@reduxjs/toolkit'
-import account from './accountState'
-import depositForm from './depositFormState'
+import { configureStore } from "@reduxjs/toolkit"
+import account from "./accountState"
+import depositForm from "./depositFormState"
 
 const store = configureStore({
   reducer: {
-    account: account,
-    depositForm: depositForm
-  }
+    account,
+    depositForm,
+  },
 })
 
 export default store
