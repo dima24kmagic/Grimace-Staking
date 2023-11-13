@@ -12,7 +12,8 @@ const useCheckConnection = () => {
     test: "0x61",
     production: "0x7d0",
   }
-  const targetChainId = chainIds[process.env.NODE_ENV]
+  //TODO: temp for test stand
+  const targetChainId = "0x61" //chainIds[process.env.NODE_ENV]
 
   useEffect(() => {
     if (status !== "initializing") {
