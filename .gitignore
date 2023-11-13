@@ -36,6 +36,8 @@ yarn-error.log*
 next-env.d.ts
 
 .idea
+.vscode/*
+!.vscode/settings.template.json
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend

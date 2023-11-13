@@ -1,116 +1,82 @@
-import React, { useState } from "react";
-import Link from "next/link";
-import styled from "@emotion/styled";
-import { css } from "@emotion/css";
-import classNames from "classnames";
-import { usePathname } from "next/navigation";
-import { useMetaMask } from "metamask-react";
-import { useConnectMetamask } from "@/app/hooks/useConnectMetamask";
-import Container from "@/components/Container";
-import metamaskLogoIcon from "../../../public/matamask_logo.png";
-import Image from "next/image";
-import { media } from "@/app/utils";
-import Hamburger from "hamburger-react";
-import { useWindowSize } from "@uidotdev/usehooks";
+import React, { useState } from "react"
+import type { ComponentProps, MouseEventHandler } from "react"
+import Link from "next/link"
+import styled from "@emotion/styled"
+import { css } from "@emotion/css"
+import classNames from "classnames"
+import { usePathname } from "next/navigation"
+import { useMetaMask } from "metamask-react"
+import Hamburger from "hamburger-react"
+import { useWindowSize } from "@uidotdev/usehooks"
+import AccountIcon from "@/components/icons/AccountIcon"
+import { useConnectMetamask } from "@/hooks/useConnectMetamask"
+import Container from "@/components/Container"
 
 const Root = styled.header`
   display: flex;
   justify-content: center;
   padding: 24px 24px;
-`;
+`
 
-const Wrapper = styled(Container)`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  width: 100%;
-`;
+const navLinkActiveStyle = css`
+  color: var(--color-accent);
+`
 
-const OutlinedButton = styled.button`
+const NavLinkStyled = styled(Link)`
+  text-transform: uppercase;
   font-size: 1.5rem;
-  border: 3px solid var(--color-orange);
-  background-color: rgba(0, 0, 0, 0%);
-  color: var(--color-white);
-  font-family: var(--font-family);
-  border-radius: 100px;
-  padding: 8px 12px;
-  transition-timing-function: ease;
-  transition-duration: 150ms;
-  transition-property: background-color, color;
+  transition: color 0.2s ease-in-out;
 
   &:hover {
-    color: var(--color-dark);
-    background-color: var(--color-orange);
-    cursor: pointer;
+    color: var(--color-accent);
   }
 
-  ${media["992px"](
-          `font-size: 1rem; margin-top: 12px`
-  )}
-`;
-
-const AccountAddressWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  //margin-top: 6px;
-  color: rgb(255, 255, 255);
-  font-size: 1rem;
-
-  img {
-    margin-right: 4px;
+  @media screen and (max-width: 992px) {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid gray;
+    width: 100%;
   }
-`;
+`
 
-const ItemsLeft = styled.div``;
-const ItemsRight = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 36px;
-  margin-bottom: 4px;
-`;
-
-const navLinkStyle = css`
-  font-size: 1.5rem;
-`;
-
-const navLinkActiveStyle = css``;
-
-export type NavLinkProps = React.ComponentProps<typeof Link>;
-
-const StyledNavLink = styled(Link)`
-  ${media["992px"](
-          `margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid gray; width: 100%;`
-  )}
-`;
-
-function NavLink(props: NavLinkProps) {
-  const { className, href, ...rest } = props;
-  const pathname = usePathname();
-  const isActive = pathname?.startsWith(href.toString()) ?? false;
+function NavLink(props: ComponentProps<typeof Link>) {
+  const { className, href, ...rest } = props
+  const pathname = usePathname()
+  const isActive = pathname?.startsWith(href.toString()) ?? false
 
   return (
-    <StyledNavLink
+    <NavLinkStyled
       {...rest}
-      className={classNames(className, navLinkStyle, {
+      className={classNames(className, {
         [navLinkActiveStyle]: isActive,
       })}
       href={href}
     />
-  );
+  )
 }
 
-const StyledHamburgerWrapper = styled.div`
+function NavLinks() {
+  return (
+    <>
+      <NavLink href="/dashboard">Dashboard</NavLink>
+      <NavLink href="/rank">Rank</NavLink>
+      <NavLink href="/withdrawals">Withdrawals</NavLink>
+      <NavLink href="/faq">FAQ</NavLink>
+    </>
+  )
+}
+
+const BurgerWrapperStyled = styled.div`
   display: none;
-  ${media["992px"](`
+
+  @media screen and (max-width: 992px) {
     display: inline;
     font-size: 1.5rem;
-    z-index: 99999999999999;
-  `)}
-`;
+    z-index: 999999;
+  }
+`
 
-const StyledMenuWrapper = styled.div`
+const StyledMenuWrapper = styled.div<{ isOpen: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -124,9 +90,9 @@ const StyledMenuWrapper = styled.div`
   opacity: ${({ isOpen }) => (isOpen ? "1" : "0")};
   display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
   z-index: 99999;
-`;
+`
 
-const StyledMenuBackgroundDrop = styled.div`
+const StyledMenuBackgroundDrop = styled.div<{ isOpen: boolean }>`
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
@@ -139,107 +105,228 @@ const StyledMenuBackgroundDrop = styled.div`
   opacity: ${({ isOpen }) => (isOpen ? "1" : "0")};
   display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
   z-index: 99999;
-`;
+`
 
-const LogoLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const LogoLinkStyled = styled(Link)`
   font-weight: 300;
-  font-size: 2.5rem;
+  font-size: 2.375rem;
 
-  ${media["992px"](`
+  @media screen and (max-width: 992px) {
     font-size: 1.5rem;
-  `)}
+  }
+
   & b {
     font-weight: 700;
   }
-`;
+`
+
+const HeaderRowStyled = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+`
+
+const HrStyled = styled.hr`
+  display: block;
+  background: #454545;
+  border: none;
+  outline: none;
+  height: 1px;
+  flex-grow: 1;
+`
+
+const HeaderDesktopStyled = styled(Container)`
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-direction: column;
+`
+
+const HeaderTabletStyled = styled(Container)`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const NavLinksContainerStyled = styled.div`
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+`
 
 function Logo() {
   return (
-    <LogoLink href="/">
-      <b>Grimace NFT</b> View
-    </LogoLink>
-  );
+    <LogoLinkStyled href="/">
+      <b>GRIMACE</b>
+      {" "}
+      <span>STAKING</span>
+    </LogoLinkStyled>
+  )
 }
 
-const ConnectMetamaskWrapper = ({
+const ConnectButton = styled.button`
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  border: 3px solid var(--color-orange);
+  color: var(--color-white);
+  background: transparent;
+  font-family: var(--font-family);
+  overflow: hidden;
+  border-radius: 100px;
+  transition-timing-function: ease;
+  transition-duration: 150ms;
+  transition-property: background-color, color;
+  height: 42px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:not(.connected):hover {
+    color: var(--color-dark);
+    background-color: var(--color-orange);
+  }
+
+  @media screen and (max-width: 992px) {
+    font-size: 1rem;
+    margin-top: 12px;
+  }
+
+  & > div::before {
+    background: var(--color-dark);
+  }
+
+  &.connected {
+    background: var(--color-purple);
+    border-color: var(--color-purple);
+
+    & > div {
+      background: rgba(0, 0, 0, 75%);
+
+      &::before {
+        background: transparent;
+      }
+    }
+  }
+`
+
+const ConnectButtonWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 50px;
+  padding-right: 16px;
+
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    bottom: 1px;
+    width: 34px;
+    height: 34px;
+    border-radius: 100px;
+  }
+`
+
+const ConnectButtonIconStyles = css`
+  fill: var(--color-orange);
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  bottom: -3px;
+
+  &.connected {
+    fill: var(--color-purple);
+  }
+`
+
+function ConnectMetamaskWrapper({
   account,
   handleConnect,
 }: {
-  account: string;
-  handleConnect: () => Promise<void>;
-}) => {
-  if (account) {
-    return (
-      <AccountAddressWrapper>
-        <Image
-          width={30}
-          height={30}
-          src={metamaskLogoIcon}
-          alt="metamask logo"
+  account: string | null
+  handleConnect: () => Promise<void>
+}) {
+  return (
+    <ConnectButton
+      onClick={handleConnect}
+      className={classNames({
+        connected: !!account,
+      })}
+    >
+      <ConnectButtonWrapper>
+        <AccountIcon
+          className={classNames({
+            [ConnectButtonIconStyles]: true,
+            connected: !!account,
+          })}
+          width={42}
+          height={42}
         />
-        <p>{account.substring(0, 8)}...</p>
-      </AccountAddressWrapper>
-    );
-  }
-  return (
-    <OutlinedButton onClick={handleConnect}>Connect MetaMask</OutlinedButton>
-  );
-};
-
-/**
- * Header
- */
-function Header() {
-  const { handleConnect } = useConnectMetamask();
-  const { account } = useMetaMask();
-  const [isOpen, setOpen] = useState(false);
-  const handleCloseMenu = (e: Event) => {
-    e.stopPropagation();
-    setOpen(false);
-  };
-  const size = useWindowSize();
-  return (
-    <Root>
-      <Wrapper>
-        <ItemsLeft>
-          <Logo/>
-        </ItemsLeft>
-        <ItemsRight>
-          {size.width > 992 && (
-            <>
-              <NavLink href="/my-nfts">My NFTs</NavLink>
-              <NavLink href="/collection">Collection</NavLink>
-              <ConnectMetamaskWrapper
-                account={account}
-                handleConnect={handleConnect}
-              />
-            </>
-          )}
-          <StyledHamburgerWrapper>
-            <Hamburger toggled={isOpen} toggle={setOpen}/>
-          </StyledHamburgerWrapper>
-        </ItemsRight>
-      </Wrapper>
-      {size.width <= 992 && (
-        <StyledMenuBackgroundDrop isOpen={isOpen} onClick={handleCloseMenu}>
-          <StyledMenuWrapper
-            isOpen={isOpen}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <NavLink href="/my-nfts">My NFTs</NavLink>
-            <NavLink href="/collection">Collection</NavLink>
-            <ConnectMetamaskWrapper
-              account={account}
-              handleConnect={handleConnect}
-            />
-          </StyledMenuWrapper>
-        </StyledMenuBackgroundDrop>
-      )}
-    </Root>
-  );
+        <span>
+          {account
+            ? `${account.substring(0, 5)}...${account.substring(account.length - 3)}`
+            : "Connect"}
+        </span>
+      </ConnectButtonWrapper>
+    </ConnectButton>
+  )
 }
 
-export default Header;
+function Header() {
+  const { handleConnect } = useConnectMetamask()
+  const { account } = useMetaMask()
+  const [isOpen, setOpen] = useState(false)
+  const handleCloseMenu: MouseEventHandler = (event) => {
+    event.stopPropagation()
+    setOpen(false)
+  }
+  const size = useWindowSize()
+  const isWideScreen = (size.width ?? 1280) > 992
+
+  return (
+    <Root>
+      {isWideScreen
+        ? (
+          <HeaderDesktopStyled>
+            <HeaderRowStyled>
+              <Logo />
+              <HrStyled />
+              <ConnectMetamaskWrapper account={account} handleConnect={handleConnect} />
+            </HeaderRowStyled>
+            <NavLinksContainerStyled>
+              <NavLinks />
+            </NavLinksContainerStyled>
+          </HeaderDesktopStyled>
+          )
+        : (
+          <>
+            <HeaderTabletStyled>
+              <Logo />
+              <BurgerWrapperStyled>
+                <Hamburger toggled={isOpen} toggle={setOpen} />
+              </BurgerWrapperStyled>
+            </HeaderTabletStyled>
+            <StyledMenuBackgroundDrop isOpen={isOpen} onClick={handleCloseMenu}>
+              <StyledMenuWrapper isOpen={isOpen}>
+                <NavLinks />
+                <ConnectMetamaskWrapper account={account} handleConnect={handleConnect} />
+              </StyledMenuWrapper>
+            </StyledMenuBackgroundDrop>
+          </>
+          )}
+    </Root>
+  )
+}
+
+export default Header
