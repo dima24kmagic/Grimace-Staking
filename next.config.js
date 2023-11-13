@@ -6,6 +6,7 @@ export default {
   typescript: {
     ignoreBuildErrors: true,
   },
+  reactStrictMode: false,
   webpack(config) {
     config.resolve.fallback = {
       ...config.resolve.fallback,

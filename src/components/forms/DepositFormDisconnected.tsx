@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
 import Subheading from "./Subheading"
-import { useConnectMetamask } from "@/hooks/useConnectMetamask"
+import { useMetamaskContext } from "@/hooks/useConnectMetamask"
 
 const RootStyled = styled.div`
   width: 100%;
@@ -36,7 +36,7 @@ const ButtonStyled = styled.button`
 `
 
 function DepositFormDisconnected() {
-  const { handleConnect } = useConnectMetamask()
+  const { handleConnect } = useMetamaskContext()
 
   return (
     <RootStyled>

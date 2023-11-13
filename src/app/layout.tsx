@@ -14,6 +14,7 @@ import Header from "@/components/Header"
 
 import "@/assets/styles/globals.css"
 import "react-toastify/dist/ReactToastify.css"
+import { MetamaskContextProvider } from "@/hooks/useConnectMetamask"
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -45,13 +46,15 @@ export default function RootLayout({
       <BodyStyled>
         <Provider store={store}>
           <MetaMaskProvider>
-            <EthersProvider>
-              <RootStyleRegistry>
-                <Header />
-                <MainStyled id="page-wrap">{children}</MainStyled>
-                <Footer />
-              </RootStyleRegistry>
-            </EthersProvider>
+            <MetamaskContextProvider>
+              <EthersProvider>
+                <RootStyleRegistry>
+                  <Header />
+                  <MainStyled id="page-wrap">{children}</MainStyled>
+                  <Footer />
+                </RootStyleRegistry>
+              </EthersProvider>
+            </MetamaskContextProvider>
           </MetaMaskProvider>
         </Provider>
         <ToastContainer

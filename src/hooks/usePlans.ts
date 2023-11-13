@@ -11,13 +11,15 @@ const usePlans = () => {
 
   const updatePlans = async () => {
     if (!stackingContract) {
-      return
+      return plans
     }
 
     if (plans.length) {
       dispatch(selectPlan(2))
-      return
+      return plans
     }
+
+    console.log('plans update')
 
     const penaltyPercent = await stackingContract!.PENALTY_PERCENT()
     const percentDivider = 100
@@ -36,6 +38,8 @@ const usePlans = () => {
 
     dispatch(setPlans(result))
     dispatch(selectPlan(2))
+
+    return result
   }
 
   return { updatePlans, plans }

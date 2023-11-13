@@ -11,6 +11,8 @@ const useRank = () => {
             return
         }
 
+        console.log('ranks update')
+
         const result : Array<any> = []
         const newbieEvents = await stackingContract.queryFilter(stackingContract.filters.Newbie)
 

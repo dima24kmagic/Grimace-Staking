@@ -10,7 +10,7 @@ export interface Deposit {
   start: string
   finish: string
   isTaken: boolean
-    withdrawable: boolean
+  withdrawable: boolean
 }
 
 export interface AccountState {

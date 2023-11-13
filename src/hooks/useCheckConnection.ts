@@ -3,19 +3,22 @@ import { useMetaMask } from "metamask-react"
 import { toast } from "react-toastify"
 
 const useCheckConnection = () => {
-  const { status, chainId, switchChain, account } = useMetaMask()
-  const [isOnRightChain, setIsOnRightChain] = useState(true)
-  const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(true)
-  const [isConnected, setIsConnected] = useState(true)
+  const { status, chainId, switchChain } = useMetaMask()
+  const [isOnRightChain, setIsOnRightChain] = useState(false)
+  const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(false)
+  const [isConnected, setIsConnected] = useState(false)
   const chainIds = {
-    development: "0x61", // hardhat 0x7a69; bsc 0x61
-    test: "0x7d0",
+    development: "0x61", // hardhat 0x7a69; bsc testnet 0x61
+    test: "0x61",
     production: "0x7d0",
   }
   const targetChainId = chainIds[process.env.NODE_ENV]
 
   useEffect(() => {
     if (status !== "initializing") {
+
+    console.log("status:", status);
+    console.log("chainId:", chainId);
       (() => {
         if (status === "unavailable") {
           // MetaMask is not installed
@@ -41,7 +44,7 @@ const useCheckConnection = () => {
         }
       })()
     }
-  }, [status, chainId, account])
+  }, [status, chainId])
 
   return {
     isMetamaskInstalled,

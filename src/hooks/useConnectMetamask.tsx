@@ -1,11 +1,13 @@
 import { useMetaMask } from "metamask-react"
-import { useEffect } from "react"
+import { createContext, useContext, useEffect } from "react"
 import { toast } from "react-toastify"
 import useCheckConnection from "./useCheckConnection"
 import { setAccountAddress } from "@/store/accountState"
 import { useAppDispatch } from "@/store/hooks"
 
-export const useConnectMetamask = () => {
+const MetamaskContext = createContext<{handleConnect:any}>({handleConnect:null})
+
+const MetamaskContextProvider = ({ children }) => {
   const { connect, account } = useMetaMask()
   const dispatch = useAppDispatch()
   const { isConnected, isOnRightChain, isMetamaskInstalled } = useCheckConnection()
@@ -26,5 +28,13 @@ export const useConnectMetamask = () => {
     })
   }
 
-  return { handleConnect }
+  return (
+    <MetamaskContext.Provider value={{ handleConnect }}>
+      {children}
+    </MetamaskContext.Provider>
+  )
 }
+
+const useMetamaskContext = () => useContext(MetamaskContext)
+
+export { MetamaskContextProvider, useMetamaskContext }

@@ -16,20 +16,20 @@ const ContainerStyled = styled(Container)`
 
 export default function Dashboard() {
   const { deposits, updateDeposits, handleWithdraw } = useDeposits()
-  const { updatePlans, plans } = usePlans()
+  const { updatePlans } = usePlans()
   const accountAddress = useAppSelector(state => state.account.address)
 
   useEffect(() => { 
     if(!accountAddress) return
-    updatePlans().then(() => updateDeposits())
-   }, [accountAddress, plans])
+      updatePlans().then((plans) => updateDeposits(plans))
+  }, [accountAddress])
 
   return (
     <ContainerStyled>
       <h1>Dashboard</h1>
 
       <ul>
-        {deposits.map((dep, index) => (
+        {deposits.filter((dep) => !dep.isTaken).map((dep, index) => (
           <li key={index}>
             <p>{dep.amount}</p>
             <p>{dep.amountToWithdraw}</p>

@@ -9,7 +9,7 @@ import { useMetaMask } from "metamask-react"
 import Hamburger from "hamburger-react"
 import { useWindowSize } from "@uidotdev/usehooks"
 import AccountIcon from "@/components/icons/AccountIcon"
-import { useConnectMetamask } from "@/hooks/useConnectMetamask"
+import { useMetamaskContext } from "@/hooks/useConnectMetamask"
 import Container from "@/components/Container"
 
 const Root = styled.header`
@@ -284,7 +284,7 @@ function ConnectMetamaskWrapper({
 }
 
 function Header() {
-  const { handleConnect } = useConnectMetamask()
+  const { handleConnect } = useMetamaskContext()
   const { account } = useMetaMask()
   const [isOpen, setOpen] = useState(false)
   const handleCloseMenu: MouseEventHandler = (event) => {

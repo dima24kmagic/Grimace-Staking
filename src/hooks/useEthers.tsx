@@ -42,7 +42,7 @@ const EthersProvider = ({ children }) => {
     stackingContractInstance.on("NewDeposit", (address, plan, amount) => {
       if (account && account.toLowerCase() === address.toLowerCase()) {
         toast.info(`${ethers.formatEther(amount)} GRIMACE successfully deposited`)
-        updateBalance()
+        //updateBalance()
       }
     })
   }
