@@ -8,7 +8,7 @@ const useCheckConnection = () => {
   const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(true)
   const [isConnected, setIsConnected] = useState(true)
   const chainIds = {
-    development: "0x7a69", // hardhat 31337
+    development: "0x61", // hardhat 0x7a69; bsc 0x61
     test: "0x7d0",
     production: "0x7d0",
   }

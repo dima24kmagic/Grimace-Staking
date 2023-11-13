@@ -27,6 +27,7 @@ const usePlans = () => {
     for (let index = 0; index < plansCount; index++) {
       const planInfo = await stackingContract!.getPlanInfo(index)
       result.push({
+        id: index,
         percent: Number.parseInt(planInfo.percent) / percentDivider,
         days: Number.parseInt(planInfo.time),
         ewp,

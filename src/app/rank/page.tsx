@@ -2,6 +2,8 @@
 
 import styled from "@emotion/styled"
 import Container from "@/components/Container"
+import useRank from "@/hooks/useRank"
+import useTable from "@/hooks/useTable"
 
 const ContainerStyled = styled(Container)`
   width: 600px;
@@ -10,7 +12,7 @@ const ContainerStyled = styled(Container)`
   gap: 12px;
 `
 
-export default function Dashboard() {
+export default function Rank() {
   const {rankData} = useRank()
   const {slice} = useTable({
     data: rankData,
