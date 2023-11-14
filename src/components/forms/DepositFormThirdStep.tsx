@@ -2,6 +2,7 @@ import styled from "@emotion/styled"
 import Subheading from "./Subheading"
 import { useAppSelector } from "@/store/hooks"
 import useDeposits from "@/hooks/useDeposits"
+import { daysToReadablePeriod } from "./DepositFormSecondStep"
 
 const RootStyled = styled.div`
   width: 100%;
@@ -46,7 +47,7 @@ function DepositFormThirdStep(_: { onNext: () => void }) {
       <Subheading>Confirmation</Subheading>
       <Subheading>{depositForm.amount}</Subheading>
       <Subheading>{depositForm.amountToWithdraw}</Subheading>
-      <Subheading>{depositForm.selectedPlan?.days}</Subheading>
+      <Subheading>{daysToReadablePeriod[depositForm.selectedPlan!.days]}</Subheading>
       <Subheading>{depositForm.unstakeDate}</Subheading>
       <ButtonStyled onClick={handleDeposit}>Stake</ButtonStyled>
     </RootStyled>

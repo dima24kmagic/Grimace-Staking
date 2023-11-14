@@ -38,7 +38,7 @@ const ButtonStyled = styled.button`
   padding: 12px 48px;
 `
 
-const daysToReadablePeriod = {90: "3 months", 180: "6 months", 360: "1 year", 1800: "5 years"}
+export const daysToReadablePeriod = {90: "3 months", 180: "6 months", 360: "1 year", 1800: "5 years"}
 
 function DepositFormSecondStep({ onNext }: { onNext: () => void }) {
   const selectedPlanIndex = useAppSelector(state => state.depositForm.selectedPlanIndex)
