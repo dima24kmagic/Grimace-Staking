@@ -7,7 +7,7 @@ const useCheckConnection = () => {
   const [isOnRightChain, setIsOnRightChain] = useState(false)
   const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
-  const targetChainId = process.env.NEXT_PUBLIC_TARGET_CHAIN_ID ?? "0x61" //0x61 - bsc testnet
+  const targetChainId = process.env.NEXT_PUBLIC_TARGET_CHAIN_ID ?? "0x61" // 0x61 - bsc testnet
 
   useEffect(() => {
     if (status !== "initializing") {

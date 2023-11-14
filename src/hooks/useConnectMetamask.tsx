@@ -5,7 +5,7 @@ import useCheckConnection from "./useCheckConnection"
 import { setAccountAddress } from "@/store/accountState"
 import { useAppDispatch } from "@/store/hooks"
 
-const MetamaskContext = createContext<{handleConnect:any}>({handleConnect:null})
+const MetamaskContext = createContext<{ handleConnect: any }>({ handleConnect: null })
 
 const MetamaskContextProvider = ({ children }) => {
   const { connect, account } = useMetaMask()

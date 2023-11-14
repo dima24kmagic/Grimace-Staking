@@ -19,8 +19,6 @@ const usePlans = () => {
       return plans
     }
 
-    console.log('plans update')
-
     const penaltyPercent = await stackingContract!.PENALTY_PERCENT()
     const percentDivider = 100
     const ewp = Number.parseInt(penaltyPercent) / percentDivider

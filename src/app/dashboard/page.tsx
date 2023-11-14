@@ -19,9 +19,11 @@ export default function Dashboard() {
   const { updatePlans } = usePlans()
   const accountAddress = useAppSelector(state => state.account.address)
 
-  useEffect(() => { 
-    if(!accountAddress) return
-      updatePlans().then((plans) => updateDeposits(plans))
+  useEffect(() => {
+    if (!accountAddress) {
+      return
+    }
+    updatePlans().then(plans => updateDeposits(plans))
   }, [accountAddress])
 
   return (
@@ -29,12 +31,17 @@ export default function Dashboard() {
       <h1>Dashboard</h1>
 
       <ul>
-        {deposits.filter((dep) => !dep.isTaken).map((dep, index) => (
+        {deposits.filter(dep => !dep.isTaken).map((dep, index) => (
           <li key={index}>
             <p>{dep.amount}</p>
             <p>{dep.amountToWithdraw}</p>
             <p>{dep.finish.toString()}</p>
-            <button onClick={() => {handleWithdraw(dep.id)}}>{dep.withdrawable ? "withdrawal" : "early unstake"}</button>
+            <button onClick={() => {
+              handleWithdraw(dep.id)
+            }}
+            >
+              {dep.withdrawable ? "withdrawal" : "early unstake"}
+            </button>
           </li>
         ))}
       </ul>

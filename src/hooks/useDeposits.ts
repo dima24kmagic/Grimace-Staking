@@ -21,7 +21,6 @@ const useDeposits = () => {
       return
     }
 
-    console.log('deposits update')
     const depositsCount = await stackingContract.getUserAmountOfDeposits(accountAddress)
 
     const result = new Array<Deposit>()
@@ -39,39 +38,39 @@ const useDeposits = () => {
         finish: finish.toString(),
         isTaken: depInfo.isTaken,
         amountToWithdraw: 0,
-        withdrawable: finish < new Date()
-      } 
-      deposit.amountToWithdraw = deposit.amount 
+        withdrawable: finish < new Date(),
+      }
+      deposit.amountToWithdraw = deposit.amount
         - getUserNegativeDividends(deposit.amount, plans[deposit.planIndex], finish, start)
       result.push(deposit)
-      }
-
-      dispatch(setDeposits(result))
     }
 
-    const handleDeposit = async () => {
-      const amountBigInt = BigInt(ethers.parseEther(depositForm.amount!.toString()))
-      
-      const isApproved = await approveTokenSpending({
-        tokenContract,
-        spenderContract: stackingContract,
-        account: accountAddress!,
-        amount: amountBigInt,
-      }).catch((err) => {
-        toast.error(err.shortMessage ?? err.message)
+    dispatch(setDeposits(result))
+  }
+
+  const handleDeposit = async () => {
+    const amountBigInt = BigInt(ethers.parseEther(depositForm.amount!.toString()))
+
+    const isApproved = await approveTokenSpending({
+      tokenContract,
+      spenderContract: stackingContract,
+      account: accountAddress!,
+      amount: amountBigInt,
+    }).catch((err) => {
+      toast.error(err.shortMessage ?? err.message)
     })
-      if (isApproved) {
-        await stackingContract!.deposit(depositForm.selectedPlanIndex, amountBigInt)
-  
-        dispatch(clearDepositForm())
-      }
-    }
+    if (isApproved) {
+      await stackingContract!.deposit(depositForm.selectedPlanIndex, amountBigInt)
 
-    const handleWithdraw = async (depositId : number) => {
-      await stackingContract!.withdraw(depositId)
+      dispatch(clearDepositForm())
     }
+  }
 
-    return { deposits, updateDeposits, handleDeposit, handleWithdraw }
+  const handleWithdraw = async (depositId: number) => {
+    await stackingContract!.withdraw(depositId)
+  }
+
+  return { deposits, updateDeposits, handleDeposit, handleWithdraw }
 }
 
 export default useDeposits
