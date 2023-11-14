@@ -38,6 +38,8 @@ const ButtonStyled = styled.button`
   padding: 12px 48px;
 `
 
+const daysToReadablePeriod = {90: "3 months", 180: "6 months", 360: "1 year", 1800: "5 years"}
+
 function DepositFormSecondStep({ onNext }: { onNext: () => void }) {
   const selectedPlanIndex = useAppSelector(state => state.depositForm.selectedPlanIndex)
   const dispatch = useAppDispatch()
@@ -58,9 +60,9 @@ function DepositFormSecondStep({ onNext }: { onNext: () => void }) {
           onClick={() => dispatch(selectPlan(plan.id))}
         >
           {selectedPlanIndex === index && (<span>selected</span>) }
-          <Subheading>{plan.days}</Subheading>
-          <Subheading>{plan.percent}</Subheading>
-          <Subheading>{plan.ewp}</Subheading>
+          <Subheading>{daysToReadablePeriod[plan.days]}</Subheading>
+          <Subheading>{plan.percent}%</Subheading>
+          <Subheading>{plan.ewp}%</Subheading>
         </div>
       ))}
 

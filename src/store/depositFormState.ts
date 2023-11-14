@@ -60,7 +60,7 @@ export const depositFormSlice = createSlice({
 
         const date = new Date()
         date.setDate(date.getDate() + state.selectedPlan.days)
-        state.unstakeDate = date.toString()
+        state.unstakeDate = date.toLocaleString()
 
         state.amountToWithdraw = state.amount
           - getUserNegativeDividends(state.amount, state.selectedPlan, date, new Date())
