@@ -26,6 +26,7 @@ export default function Rank() {
       <ul>
         {slice.map((user, index) => (
           <li key={index}>
+            <p>{user.number}</p>
             <p>{user.address}</p>
             <p>{user.negativeDividentsTotal}</p>
           </li>

@@ -17,7 +17,7 @@ const useBalance = () => {
       dispatch(setBalance(null))
       return
     }
-
+    
     const balance = await tokenContract.balanceOf(accountAddress)
     dispatch(setBalance(ethers.formatEther(balance)))
   }
