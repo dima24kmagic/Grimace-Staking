@@ -8,17 +8,17 @@ import TokenContract from "@/contracts/TokenETH.json"
 import StackingContract from "@/contracts/Stacking.json"
 
 const EthersContext = createContext<{
-    ethers: any
-    stackingContract: Contract | null
-    tokenContract: Contract | null
-    tokenContractAddress: string | null
-    stackingContractAddress: string | null
+  ethers: any
+  stackingContract: Contract | null
+  tokenContract: Contract | null
+  tokenContractAddress: string | null
+  stackingContractAddress: string | null
 }>({
   ethers,
-    stackingContract: null,
-    tokenContract: null,
-    tokenContractAddress: null,
-    stackingContractAddress: null,
+  stackingContract: null,
+  tokenContract: null,
+  tokenContractAddress: null,
+  stackingContractAddress: null,
 })
 
 const EthersProvider = ({ children }) => {
@@ -30,7 +30,7 @@ const EthersProvider = ({ children }) => {
   const setContractInstances = (provider: any) => {
     const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, provider)
     setStackingContract(stackingContractInstance)
-    
+
     const tokenContractInstance = new Contract(process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS!, TokenContract.abi, provider)
     setTokenContract(tokenContractInstance)
   }
@@ -42,7 +42,7 @@ const EthersProvider = ({ children }) => {
     stackingContractInstance.on("NewDeposit", (address, plan, amount) => {
       if (account && account.toLowerCase() === address.toLowerCase()) {
         toast.info(`${ethers.formatEther(amount)} GRIMACE successfully deposited`)
-        //updateBalance()
+        updateBalance()
       }
     })
   }
@@ -58,14 +58,14 @@ const EthersProvider = ({ children }) => {
     if (!account) {
       return
     }
-    
+
     const signer = await provider.getSigner()
     setContractInstances(signer)
     registerEventHandlers()
   }
 
   useEffect(() => {
-    initialize() 
+    initialize()
   }, [account])
 
   return (

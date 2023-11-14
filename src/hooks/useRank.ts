@@ -1,44 +1,36 @@
-import { EventLog, ethers } from "ethers";
-import { useEthersContext } from "./useEthers";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import { useAppSelector } from "@/store/hooks"
 
 const useRank = () => {
-    const { stackingContract } = useEthersContext()
-    const [rankData, setRankData] = useState<Array<any>>([])
+  const accountAddress = useAppSelector(state => state.account.address)
+  const [rankData, setRankData] = useState<Array<any>>([])
+  const [myRankNumber, setMyRankNumber] = useState<number>(0)
 
-    const updateRank = async () => {
-        if(!stackingContract || rankData.length) {
-            return
-        }
+  const updateRank = async () => {
+    const response = await fetch("/api/rank")
+    const result = await response.json()
 
-        console.log('ranks update')
+    setRankData(result)
+    return result
+  }
 
-        const result : Array<any> = []
-        const newbieEvents = await stackingContract.queryFilter(stackingContract.filters.Newbie)
+  useEffect(() => {
+    updateRank().then((rankData) => {
+      if (!accountAddress || !rankData.length) {
+        return
+      }
 
-        for (const newbieEvent of newbieEvents) {
-            const userAddress = (newbieEvent as EventLog).args[0]
-            const depositsCount = await stackingContract.getUserAmountOfDeposits(userAddress)
-            var negativeDividentsTotal = 0
-            for (let depositIndex = 0; depositIndex < depositsCount; depositIndex++) {
-                const negativeDividents = await stackingContract
-                .getUserNegativeDividends(userAddress, depositIndex)
+      const number = rankData.filter((item) => {
+        return item.address.toLowerCase() === accountAddress.toLowerCase()
+      })[0]?.number
 
-                negativeDividentsTotal += parseFloat(negativeDividents)
-            }
+      if (number) {
+        setMyRankNumber(number)
+      }
+    })
+  }, [accountAddress])
 
-            result.push({
-                address: userAddress,
-                negativeDividentsTotal: ethers.formatEther(negativeDividentsTotal)
-            })
-          }
-
-        setRankData(result)
-    }
-
-    useEffect(() => {updateRank()}, [stackingContract])
-
-    return { updateRank, rankData };
-};
+  return { updateRank, rankData, myRankNumber }
+}
 
 export default useRank

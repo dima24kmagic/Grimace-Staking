@@ -7,19 +7,10 @@ const useCheckConnection = () => {
   const [isOnRightChain, setIsOnRightChain] = useState(false)
   const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
-  const chainIds = {
-    development: "0x61", // hardhat 0x7a69; bsc testnet 0x61
-    test: "0x61",
-    production: "0x7d0",
-  }
-  //TODO: temp for test stand
-  const targetChainId = "0x61" //chainIds[process.env.NODE_ENV]
+  const targetChainId = process.env.NEXT_PUBLIC_TARGET_CHAIN_ID ?? "0x61" // 0x61 - bsc testnet
 
   useEffect(() => {
     if (status !== "initializing") {
-
-    console.log("status:", status);
-    console.log("chainId:", chainId);
       (() => {
         if (status === "unavailable") {
           // MetaMask is not installed

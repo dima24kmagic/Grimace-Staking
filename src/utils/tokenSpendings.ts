@@ -1,5 +1,18 @@
 import { wait } from "@/utils"
 
+export const getApprovedAmount = async ({
+  tokenContract,
+  spenderContract,
+  account,
+}: {
+  tokenContract: any
+  spenderContract: any
+  account: string
+}) => {
+  const approvedAmount = await tokenContract.allowance(account, spenderContract)
+  return { approvedAmount: BigInt(approvedAmount) }
+}
+
 export const waitForNewAllowanceUpdate = ({
   previousAllowance,
   tokenContract,
@@ -32,19 +45,6 @@ export const waitForNewAllowanceUpdate = ({
       }
     }
   })
-}
-
-export const getApprovedAmount = async ({
-  tokenContract,
-  spenderContract,
-  account,
-}: {
-  tokenContract: any
-  spenderContract: any
-  account: string
-}) => {
-  const approvedAmount = await tokenContract.allowance(account, spenderContract)
-  return { approvedAmount: BigInt(approvedAmount) }
 }
 
 export const approveTokenSpending = async ({
