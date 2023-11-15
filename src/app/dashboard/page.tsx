@@ -8,13 +8,19 @@ import Card from "@/components/Card"
 import UnlockIcon from "@/components/icons/UnlockIcon"
 import PlusIcon from "@/components/icons/PlusIcon"
 import Button from "@/components/Button"
+import Page from "@/components/Page"
 
-export default function Dashboard() {
+export default () => {
   return (
-    <div className="container px-3">
-      <h1 className="uppercase text-right font-medium text-[2rem] md:text-[3rem] leading-none">My Dashboard</h1>
-      <p className="uppercase text-hint text-right font-light text-sm sm:text-base md:text-lg">0x644b0452d4a5b7CCe9261b1f5cB1b0ccA12B91f3</p>
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 auto-rows-fr">
+    <Page
+      heading="My Dashboard"
+      subheading={(
+        <p className="text-hint font-light text-sm sm:text-base md:text-lg">
+          0x644b0452d4a5b7CCe9261b1f5cB1b0ccA12B91f3
+        </p>
+      )}
+    >
+      <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 auto-rows-fr">
         <Deposit
           id={1}
           readyToWithdrawals={true}
@@ -37,7 +43,7 @@ export default function Dashboard() {
           <PlusIcon className="text-[100px]" />
         </button>
       </div>
-    </div>
+    </Page>
   )
 }
 
