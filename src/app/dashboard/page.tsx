@@ -3,7 +3,7 @@
 import React from "react"
 import clsx from "clsx"
 import { twMerge } from "tailwind-merge"
-import dateToFullTimeString from "@/utils/dateToFullTimeString"
+import formatUnstakeDate from "@/utils/formatUnstakeDate"
 import Card from "@/components/Card"
 import UnlockIcon from "@/components/icons/UnlockIcon"
 import PlusIcon from "@/components/icons/PlusIcon"
@@ -58,7 +58,7 @@ const Deposit = ({
   readyToWithdrawals: boolean
   timeLeftSeconds: number
 }) => {
-  const unstakeDateString = dateToFullTimeString(unstakeDate)
+  const unstakeDateString = formatUnstakeDate(unstakeDate)
   const {
     seconds,
     minutes,

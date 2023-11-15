@@ -1,6 +1,7 @@
 import Image from "next/image"
 import FormContainer from "@/components/Card"
 import grimaceManImg from "@/assets/img/grimace-man.png"
+import formatUnstakeDate from "@/utils/formatUnstakeDate"
 
 export default () => {
   return (
@@ -38,7 +39,7 @@ export default () => {
           <div className="basis-2/4">
             <h4 className="sm:text-lg text-purple-950">Unstake date</h4>
             <p className="md:text-lg">
-              10/09/2023 11:00 AM
+              {formatUnstakeDate(new Date("2023-02-10T10:40:23.000Z"))}
             </p>
           </div>
         </div>
