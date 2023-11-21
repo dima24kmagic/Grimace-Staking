@@ -6,7 +6,7 @@ import FormDisconnected from "@/components/forms/FormDisconnected"
 import FormEnterAmount from "@/components/forms/FormEnterAmount"
 
 export default function Home() {
-  const formNo = 4 as number
+  const formNo = 1 as number
 
   let content = "🤔" as any
   if (formNo === 1) {
