@@ -24,9 +24,9 @@ export default ({
         {heading}
       </h1>
       {subheading && (
-        <p className="uppercase text-right">
+        <div className="uppercase text-right">
           {subheading}
-        </p>
+        </div>
       )}
     </div>
     {children}
