@@ -16,6 +16,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@headlessui/react": "^1.7.17",
     "@metamask/eth-sig-util": "^7.0.0",
     "@metamask/sdk": "^0.7.1",
     "@next/eslint-plugin-next": "^13.5.6",
