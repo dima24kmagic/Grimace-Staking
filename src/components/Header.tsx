@@ -31,7 +31,6 @@ const NavLinks = () => (
   <>
     <NavLink href="/dashboard">Dashboard</NavLink>
     <NavLink href="/rank">Rank</NavLink>
-    <NavLink href="/withdrawals">Withdrawals</NavLink>
     <NavLink href="/faq">FAQ</NavLink>
   </>
 )
