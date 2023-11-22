@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit"
 import account from "./accountState"
 import depositForm from "./depositFormState"
+import rank from "./rankState"
 
 const store = configureStore({
   reducer: {
     account,
     depositForm,
+    rank,
   },
 })
 

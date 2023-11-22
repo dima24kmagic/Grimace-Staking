@@ -1,19 +1,12 @@
-import { css } from "@emotion/css"
 import type { BannerProps } from "./Banner"
-import Base from "./Banner"
+import Banner from "./Banner"
 import grimaceSwapImg from "@/assets/img/grimace-swap.png"
 
-const buttonStyles = css`
-  border-color: #32155B;
-  background: linear-gradient(90deg, #7A30DC -3.06%, #271145 100%);
-  color: #fff;
-`
-
 export default (props: Partial<BannerProps>) => (
-  <Base
+  <Banner
     heading={(
       <>
-        <b>GRIMACE</b>
+        <b className="font-normal">GRIMACE</b>
         {" "}
         SWAP
       </>
@@ -21,7 +14,7 @@ export default (props: Partial<BannerProps>) => (
     subheading="SWAP GRIMACE ON DOGECHAIN"
     imageAlt="Grimace Swap"
     imageData={grimaceSwapImg}
-    className={buttonStyles}
+    className="text-white border-[#32155B] bg-gradient-to-r from-[#7A30DC] to-[#271145]"
     {...props}
   />
 )

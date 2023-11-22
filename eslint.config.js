@@ -27,7 +27,7 @@ export default antfu(
       "node/prefer-global/process": ["error", "always"],
 
       "antfu/consistent-list-newline": "off",
-      "ts/no-use-before-define": "warn",
+      "ts/no-use-before-define": "off",
       "no-console": "warn",
       "ts/consistent-type-definitions": "off",
       "antfu/top-level-function": "off",

@@ -1,19 +1,12 @@
-import { css } from "@emotion/css"
 import type { BannerProps } from "./Banner"
-import Base from "./Banner"
+import Banner from "./Banner"
 import bitGetImg from "@/assets/img/bitget.png"
 
-const buttonStyles = css`
-  border-color: #055257;
-  background: linear-gradient(90deg, #00F0FF -3.06%, #00DDEB 100%);
-  color: #000;
-`
-
 export default (props: Partial<BannerProps>) => (
-  <Base
+  <Banner
     heading={(
       <>
-        <b>BitGet</b>
+        <b className="font-normal">BitGet</b>
         {" "}
         EXCHANGE
       </>
@@ -21,7 +14,7 @@ export default (props: Partial<BannerProps>) => (
     subheading="Buy Grimace token on Bitget CEX"
     imageAlt="BitGet Exchange"
     imageData={bitGetImg}
-    className={buttonStyles}
+    className="text-[#000] border-[#055257] bg-gradient-to-r from-[#00F0FF] to-[#00DDEB]"
     {...props}
   />
 )

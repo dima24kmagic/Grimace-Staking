@@ -1,37 +1,23 @@
 "use client"
 
-import styled from "@emotion/styled"
-import { useEffect, useState } from "react"
-import Container from "@/components/Container"
+import React, { useEffect, useState } from "react"
+import Page from "@/components/Page"
+import StakingTable from "@/components/StakingTable"
 import useRank from "@/hooks/useRank"
+import { useAppSelector } from "@/store/hooks"
 import useTable from "@/hooks/useTable"
-
-const ContainerStyled = styled(Container)`
-  width: 600px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
 
 const rowsPerPage = 10
 
-export default function Rank() {
-  const { rankData, myRankNumber } = useRank()
+export default () => {
+  const accountAddress = useAppSelector(state => state.account.address)
+  const { rank, myRankNumber, updateRank } = useRank()
   const [page, setPage] = useState<number>(0)
-  const [pageNumbers, setPpageNumbers] = useState<Array<number>>([1, 2, 3, 4, 5])
   const { slice } = useTable({
-    data: rankData,
+    data: rank,
     page,
     rowsPerPage,
   })
-
-  useEffect(() => {
-    if (page <= 3) {
-      setPpageNumbers([1, 2, 3, 4, 5])
-    } else {
-      setPpageNumbers([page - 2, page - 1, page, page + 1, page + 2])
-    }
-  }, [page])
 
   useEffect(() => {
     if (page === 0 && myRankNumber > 0) {
@@ -39,45 +25,23 @@ export default function Rank() {
     }
   }, [myRankNumber])
 
+  useEffect(() => {
+    updateRank()
+  }, [accountAddress])
+
   return (
-    <ContainerStyled>
-      <h1>Leaderboard</h1>
-      <ul>
-        {slice.map((user, index) => (
-          <li key={index}>
-            <p>{user.number}</p>
-            <p>{user.address}</p>
-            <p>{user.negativeDividentsTotal}</p>
-          </li>
-        ))}
-      </ul>
-      <div>
-        <button
-          disabled={page === 1}
-          onClick={() => {
-            setPage(page - 1)
-          }}
-        >
-          prev
-        </button>
-        {pageNumbers.map((p, index) => (
-          <button
-            key={index}
-            disabled={p === page}
-            onClick={() => {
-              setPage(p)
-            }}
-          >
-            {p}
-          </button>
-        ))}
-        <button onClick={() => {
-          setPage(page + 1)
-        }}
-        >
-          next
-        </button>
+    <Page
+      heading="Leaderboard"
+    >
+      <div className="max-w-[min(1000px,100%)] mx-auto">
+        <StakingTable
+          rows={slice}
+          rowsTotal={rank.length}
+          pagesTotal={Math.ceil(rank.length / rowsPerPage)}
+          currentPage={page}
+          onPageSelect={i => setPage(i)}
+        />
       </div>
-    </ContainerStyled>
+    </Page>
   )
 }

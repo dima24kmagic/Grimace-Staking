@@ -6,6 +6,9 @@ import { toast } from "react-toastify"
 import useBalance from "./useBalance"
 import TokenContract from "@/contracts/TokenETH.json"
 import StackingContract from "@/contracts/Stacking.json"
+import useDeposits from "./useDeposits"
+import usePlans from "./usePlans"
+import useRank from "./useRank"
 
 const EthersContext = createContext<{
   ethers: any
@@ -26,25 +29,33 @@ const EthersProvider = ({ children }) => {
   const [tokenContract, setTokenContract] = useState<Contract | null>(null)
   const { account } = useMetaMask()
   const { updateBalance } = useBalance()
-
-  const setContractInstances = (provider: any) => {
-    const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, provider)
-    setStackingContract(stackingContractInstance)
-
-    const tokenContractInstance = new Contract(process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS!, TokenContract.abi, provider)
-    setTokenContract(tokenContractInstance)
-  }
+  const { updateDeposits } = useDeposits()
+  const { updatePlans } = usePlans()
+  const { updateRank } = useRank()
 
   const registerEventHandlers = () => {
     const wsProvider = new ethers.WebSocketProvider(process.env.NEXT_PUBLIC_WEBSOCKET_ENDPOINT!)
     const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, wsProvider)
 
-    stackingContractInstance.on("NewDeposit", (address, plan, amount) => {
-      if (account && account.toLowerCase() === address.toLowerCase()) {
-        toast.info(`${ethers.formatEther(amount)} GRIMACE successfully deposited`)
-        updateBalance()
-      }
+    stackingContractInstance.on("NewDeposit", (user, plan, amount) => {
+      fetch("/api/dashboard?address=" + user, {method: "DELETE"}).then(() => { 
+        if (account && account.toLowerCase() === user.toLowerCase()) {
+          toast.info(`${ethers.formatEther(amount)} GRIMACE successfully deposited`)
+          updateBalance()
+          updatePlans().then(plans => { updateDeposits(user) })
+        }
+      })
+      
+      fetch("/api/rank", {method: "DELETE"}).then(() => { updateRank()})
     })
+  }
+
+  const setContractInstances = (provider: any) => {
+    const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, provider)
+    const tokenContractInstance = new Contract(process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS!, TokenContract.abi, provider)
+
+    setStackingContract(stackingContractInstance)
+    setTokenContract(tokenContractInstance)
   }
 
   const initialize = async () => {
@@ -53,9 +64,9 @@ const EthersProvider = ({ children }) => {
     }
 
     const provider = new ethers.BrowserProvider(window.ethereum)
-    setContractInstances(provider)
 
     if (!account) {
+      setContractInstances(provider)
       return
     }
 
