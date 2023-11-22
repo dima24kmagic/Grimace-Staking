@@ -7,6 +7,10 @@ import StackingContract from "@/contracts/Stacking.json"
 const cashKey = "rank"
 const startBlock = Number.parseInt(process.env.NEXT_PUBLIC_START_BLOCK ?? "-10000")
 
+export async function DELETE(){
+  cache.del(cashKey)
+}
+
 export async function GET() {
   const cachedResult = cache.get(cashKey)
   if (cachedResult) {

@@ -11,23 +11,24 @@ const useRank = () => {
     const result = await response.json()
 
     setRankData(result)
+
+    if (!accountAddress || !rankData.length) {
+      return result
+    }
+
+    const number = rankData.filter((item) => {
+      return item.address.toLowerCase() === accountAddress.toLowerCase()
+    })[0]?.number
+
+    if (number) {
+      setMyRankNumber(number)
+    }
+
     return result
   }
 
   useEffect(() => {
-    updateRank().then((rankData) => {
-      if (!accountAddress || !rankData.length) {
-        return
-      }
-
-      const number = rankData.filter((item) => {
-        return item.address.toLowerCase() === accountAddress.toLowerCase()
-      })[0]?.number
-
-      if (number) {
-        setMyRankNumber(number)
-      }
-    })
+    updateRank()
   }, [accountAddress])
 
   return { updateRank, rankData, myRankNumber }
