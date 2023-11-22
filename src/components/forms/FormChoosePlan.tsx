@@ -5,6 +5,7 @@ import Button from "@/components/Button"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import usePlans from "@/hooks/usePlans"
 import { selectPlan } from "@/store/depositFormState"
+import { LoadingSpinner, Spinner } from "@/app/page"
 
 const PlanItem = ({
   durationNumber,
@@ -83,7 +84,7 @@ export default ({ onNext }: { onNext: () => void }) => {
           Choose plan
         </h2>
         <div className="w-full flex flex-col gap-2 mb-4">
-          {plans.map((plan, index) => (
+          {plans.length ? plans.map((plan, index) => (
             <PlanItem
               key={index}
               durationNumber={daysToReadablePeriod[plan.days].number}
@@ -93,7 +94,12 @@ export default ({ onNext }: { onNext: () => void }) => {
               selected={selectedPlanIndex === plan.id}
               onClick={() => dispatch(selectPlan(plan.id))}
             />
-          ))}
+          ))
+            : 
+            <LoadingSpinner>
+              <Spinner />
+            </LoadingSpinner>
+          }
         </div>
         <p className="text-hint">EWP - Early Withdrawal Penalty</p>
         <Button disabled={!selectedPlanIndex} className="self-center mt-6 w-[220px]" onClick={onNext}>

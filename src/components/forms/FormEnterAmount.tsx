@@ -47,7 +47,7 @@ export default ({ onNext }: { onNext: () => void }) => {
             placeholder="GRIMACE amount"
           />
         </div>
-        <p onClick={() => dispatch(setAmountString(balance))} className="uppercase font-light self-end">
+        <p onClick={() => dispatch(setAmountString(balance))} className="cursor-pointer uppercase font-light self-end">
           Current balance:
           {" "}
           {balance}

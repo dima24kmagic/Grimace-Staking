@@ -12,19 +12,21 @@ import useDeposits from "@/hooks/useDeposits"
 import usePlans from "@/hooks/usePlans"
 import { useAppSelector } from "@/store/hooks"
 import { daysToReadablePeriod } from "@/components/forms/FormChoosePlan"
-import { useEthersContext } from "@/hooks/useEthers"
+import { LoadingSpinner, Spinner } from "../page"
+import { useRouter } from "next/navigation"
+import EarlyUnstakeAlert from "@/components/EarlyUnstakeAlert/EarlyUnstakeAlert"
 
 export default () => {
-  const { stackingContract } = useEthersContext()
   const { deposits, updateDeposits, handleWithdraw } = useDeposits()
   const { updatePlans, plans } = usePlans()
   const accountAddress = useAppSelector(state => state.account.address)
+  const router = useRouter()
 
   useEffect(() => {
-    if (!accountAddress) {
-      return
+    if (accountAddress) {
+      updatePlans().then(() => updateDeposits())
     }
-    updatePlans().then(plans => updateDeposits())
+    
   }, [accountAddress])
 
   return (
@@ -36,24 +38,30 @@ export default () => {
         </p>
       )}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 auto-rows-fr">
-        {deposits.filter(dep => !dep.isTaken).map((dep, index) => (
-          <Deposit
-            key={index}
-            id={dep.id}
-            readyToWithdrawals={dep.withdrawable}
-            depositAmount={dep.amount}
-            withdrawalAmount={dep.amountToWithdraw}
-            period={`${daysToReadablePeriod[plans[dep.planIndex].days].number} ${daysToReadablePeriod[plans[dep.planIndex].days].unit}`}
-            unstakeDate={dep.finish}
-            unstakeDateSeconds={dep.finishDateSeconds}
-            handleWithdraw={handleWithdraw}
-          />
-        ))}
-        <button className="w-full h-full flex justify-center items-center border-[3px] border-solid border-[#454545] text-[#242424]">
-          <PlusIcon className="text-[100px]" />
-        </button>
-      </div>
+      {deposits.length ? 
+        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 auto-rows-fr">
+          {deposits.filter(dep => !dep.isTaken).map((dep, index) => (
+            <Deposit
+              key={index}
+              id={dep.id}
+              readyToWithdrawals={dep.withdrawable}
+              depositAmount={dep.amount}
+              withdrawalAmount={dep.amountToWithdraw}
+              period={`${daysToReadablePeriod[plans[dep.planIndex].days].number} ${daysToReadablePeriod[plans[dep.planIndex].days].unit}`}
+              unstakeDate={dep.finish}
+              unstakeDateSeconds={dep.finishDateSeconds}
+              handleWithdraw={handleWithdraw}
+            />
+          ))}
+          <button onClick={() => { router.push("/")}} className="w-full h-full flex justify-center items-center border-[3px] border-solid border-[#454545] text-[#242424]">
+            <PlusIcon className="text-[100px]" />
+          </button>
+        </div>
+        : 
+        <LoadingSpinner>
+          <Spinner />
+        </LoadingSpinner>
+      }      
     </Page>
   )
 }
@@ -102,6 +110,7 @@ const Deposit = ({
   handleWithdraw: (id: number) => Promise<void>
 }) => {
   const [timeLeftSeconds, setTimeLeftSeconds] = useState(0)
+  const [openAlert, setOpenAlert] = useState(false)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -179,15 +188,19 @@ const Deposit = ({
       <div className="self-center my-auto flex items-stretch justify-center flex-col xl:flex-row gap-2">
         {readyToWithdrawals
           ? (
-            <Button onClick={() => handleWithdraw(id)} className="flex items-center gap-2 justify-center self-center from-success-800 to-success-500">Withdrawal</Button>
+            <Button onClick={() => {handleWithdraw(id)}} className="flex items-center gap-2 justify-center self-center from-success-800 to-success-500">Withdrawal</Button>
             )
           : (
-            <Button onClick={() => handleWithdraw(id)} className="flex items-center gap-2 justify-center self-center from-danger-800 to-danger-500">
+            <Button onClick={() => {setOpenAlert(!openAlert)}} className="flex items-center gap-2 justify-center self-center from-danger-800 to-danger-500">
               <UnlockIcon className="text-[24px]" />
               Early unstake
             </Button>
             )}
       </div>
+      <EarlyUnstakeAlert handleClose={() => {setOpenAlert(!openAlert)}} handleWithdraw={() => {
+        handleWithdraw(id)
+        setOpenAlert(!openAlert)
+      }} isOpenProp={openAlert}></EarlyUnstakeAlert>
     </Card>
   )
 }

@@ -13,9 +13,9 @@ const Socials = ({ className, ...rest }: React.ComponentProps<"div">) => (
       className,
     )}
   >
-    <Link className="hover:text-purple transition-colors" href="#"><DiscordIcon /></Link>
-    <Link className="hover:text-purple transition-colors" href="#"><TelegramIcon /></Link>
-    <Link className="hover:text-purple transition-colors" href="#"><TwitterIcon /></Link>
+    <Link className="hover:text-purple transition-colors" href="https://discord.com/invite/grimacedoge"><DiscordIcon /></Link>
+    <Link className="hover:text-purple transition-colors" href="https://t.me/grimacecommunity"><TelegramIcon /></Link>
+    <Link className="hover:text-purple transition-colors" href="https://twitter.com/Grimacedogchain"><TwitterIcon /></Link>
   </div>
 )
 

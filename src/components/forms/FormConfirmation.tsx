@@ -58,7 +58,10 @@ export default ({ onNext }: { onNext: () => void }) => {
           <br />
           of GRIMACE STAKING
         </p>
-        <button onClick={handleDeposit} className="uppercase self-center text-2xl text-purple-700 font-bold leading-none py-3 px-12 md:px-16 bg-white rounded-xl absolute left-auto right-[120px] bottom-[34px] md:right-auto md:left-2/4 md:-translate-x-2/4 md:bottom-[48px] z-10">
+        <button onClick={() => {
+          onNext()
+          handleDeposit()
+        }} className="uppercase self-center text-2xl text-purple-700 font-bold leading-none py-3 px-12 md:px-16 bg-white rounded-xl absolute left-auto right-[120px] bottom-[34px] md:right-auto md:left-2/4 md:-translate-x-2/4 md:bottom-[48px] z-10">
           Stake
         </button>
         <Image
