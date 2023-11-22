@@ -1,7 +1,6 @@
 import Image from "next/image"
 import FormContainer from "@/components/Card"
 import grimaceManImg from "@/assets/img/grimace-man.png"
-import formatUnstakeDate from "@/utils/formatUnstakeDate"
 import { useAppSelector } from "@/store/hooks"
 import useDeposits from "@/hooks/useDeposits"
 import { daysToReadablePeriod } from "./FormChoosePlan"
@@ -30,7 +29,7 @@ export default ({ onNext }: { onNext: () => void }) => {
           <div className="basis-2/4">
             <h4 className="sm:text-lg text-purple-950">Withdrawal amount</h4>
             <p className="md:text-lg">
-              {depositForm.amountToWithdraw}
+              {depositForm.amountToWithdraw?.toFixed(7)}
               {" "}
               <span className="text-sm">GRIMACE</span>
             </p>

@@ -4,15 +4,16 @@ import { NextResponse } from "next/server"
 import cache from "memory-cache"
 import StackingContract from "@/contracts/Stacking.json"
 
-const cashKey = "rank"
+const cacheKey = "rank"
 const startBlock = Number.parseInt(process.env.NEXT_PUBLIC_START_BLOCK ?? "-10000")
 
 export async function DELETE(){
-  cache.del(cashKey)
+  cache.del(cacheKey)
+  return NextResponse.json({}, {status:200})
 }
 
 export async function GET() {
-  const cachedResult = cache.get(cashKey)
+  const cachedResult = cache.get(cacheKey)
   if (cachedResult) {
     return NextResponse.json(cachedResult, { status: 200 })
   }
@@ -50,7 +51,7 @@ export async function GET() {
     i.number = index++
   })
 
-  cache.put(cashKey, result)
+  cache.put(cacheKey, result)
 
   return NextResponse.json(result, { status: 200 })
 }

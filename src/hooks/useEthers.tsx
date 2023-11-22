@@ -33,19 +33,26 @@ const EthersProvider = ({ children }) => {
   const { updatePlans } = usePlans()
   const { updateRank } = useRank()
 
+  const registerEventHandlers = () => {
+    const wsProvider = new ethers.WebSocketProvider(process.env.NEXT_PUBLIC_WEBSOCKET_ENDPOINT!)
+    const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, wsProvider)
+
+    stackingContractInstance.on("NewDeposit", (user, plan, amount) => {
+      fetch("/api/dashboard?address=" + user, {method: "DELETE"}).then(() => { 
+        if (account && account.toLowerCase() === user.toLowerCase()) {
+          toast.info(`${ethers.formatEther(amount)} GRIMACE successfully deposited`)
+          updateBalance()
+          updatePlans().then(plans => { updateDeposits(user) })
+        }
+      })
+      
+      fetch("/api/rank", {method: "DELETE"}).then(() => { updateRank()})
+    })
+  }
+
   const setContractInstances = (provider: any) => {
     const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, provider)
     const tokenContractInstance = new Contract(process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS!, TokenContract.abi, provider)
-
-    stackingContractInstance.on("NewDeposit", (address, plan, amount) => {
-      fetch("/api/rank", {method: "DELETE"})
-      if (account && account.toLowerCase() === address.toLowerCase()) {
-        toast.info(`${ethers.formatEther(amount)} GRIMACE successfully deposited`)
-        updateBalance()
-        updatePlans().then(plans => updateDeposits(plans))
-      }
-      updateRank()
-    })
 
     setStackingContract(stackingContractInstance)
     setTokenContract(tokenContractInstance)
@@ -65,6 +72,7 @@ const EthersProvider = ({ children }) => {
 
     const signer = await provider.getSigner()
     setContractInstances(signer)
+    registerEventHandlers()
   }
 
   useEffect(() => {

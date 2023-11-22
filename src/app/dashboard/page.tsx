@@ -12,8 +12,10 @@ import useDeposits from "@/hooks/useDeposits"
 import usePlans from "@/hooks/usePlans"
 import { useAppSelector } from "@/store/hooks"
 import { daysToReadablePeriod } from "@/components/forms/FormChoosePlan"
+import { useEthersContext } from "@/hooks/useEthers"
 
 export default () => {
+  const { stackingContract } = useEthersContext()
   const { deposits, updateDeposits, handleWithdraw } = useDeposits()
   const { updatePlans, plans } = usePlans()
   const accountAddress = useAppSelector(state => state.account.address)
@@ -22,7 +24,7 @@ export default () => {
     if (!accountAddress) {
       return
     }
-    updatePlans().then(plans => updateDeposits(plans))
+    updatePlans().then(plans => updateDeposits())
   }, [accountAddress])
   
   return (

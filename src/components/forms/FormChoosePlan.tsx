@@ -96,7 +96,7 @@ export default ({ onNext }: { onNext: () => void }) => {
           ))}
         </div>
         <p className="text-hint">EWP - Early Withdrawal Penalty</p>
-        <Button className="self-center mt-6 w-[220px]" onClick={onNext}>
+        <Button disabled={!selectedPlanIndex} className="self-center mt-6 w-[220px]" onClick={onNext}>
           Step 3
         </Button>
       </FormContainer>

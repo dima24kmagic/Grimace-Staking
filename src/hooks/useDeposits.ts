@@ -15,42 +15,15 @@ const useDeposits = () => {
   const deposits = useAppSelector(state => state.account.deposits)
   const depositForm = useAppSelector(state => state.depositForm)
 
-  const updateDeposits = async (plans) => {
-    plans = plans ?? depositForm.plans
-
-    if (!stackingContract || !plans.length) {
-      return
-    }
-
-    const depositsCount = await stackingContract.getUserAmountOfDeposits(accountAddress)
-
-    const result = new Array<Deposit>()
-    for (let index = 0; index < depositsCount; index++) {
-      const depInfo = await stackingContract.getUserDepositInfo(accountAddress, index)
-      const start = new Date(Number.parseInt(depInfo.start) * 1000)
-      const finish = new Date(Number.parseInt(depInfo.finish) * 1000)
-
-      const deposit: Deposit = {
-        id: index,
-        planIndex: Number.parseInt(depInfo.plan),
-        days: plans[Number.parseInt(depInfo.plan)].days,
-        amount: Number.parseInt(ethers.formatEther(depInfo.amount)),
-        start: formatUnstakeDate(start),
-        finish: formatUnstakeDate(finish),
-        finishDateSeconds: finish.getTime() / 1000,
-        isTaken: depInfo.isTaken,
-        amountToWithdraw: 0,
-        withdrawable: finish < new Date(),
-      }
-      deposit.amountToWithdraw = deposit.amount
-        - getUserNegativeDividends(deposit.amount, plans[deposit.planIndex], finish, start)
-      result.push(deposit)
-    }
-
+  const updateDeposits = async (address?: string | null) => {
+    address = address ?? accountAddress
+    const response = await fetch("/api/dashboard?address=" + address)
+    const result = await response.json()    
     dispatch(setDeposits(result))
   }
 
   const handleDeposit = async () => {
+    dispatch(clearDepositForm())
     const amountBigInt = BigInt(ethers.parseEther(depositForm.amount!.toString()))
 
     const isApproved = await approveTokenSpending({
@@ -63,8 +36,6 @@ const useDeposits = () => {
     })
     if (isApproved) {
       await stackingContract!.deposit(depositForm.selectedPlanIndex, amountBigInt)
-
-      dispatch(clearDepositForm())
     }
   }
 

@@ -4,11 +4,13 @@ import React, { useEffect, useState } from "react"
 import Page from "@/components/Page"
 import StakingTable from "@/components/StakingTable"
 import useRank from "@/hooks/useRank"
+import { useAppSelector } from "@/store/hooks"
 
 const rowsPerPage = 10
 
 export default () => {
-  const { rankData, myRankNumber } = useRank()
+  const accountAddress = useAppSelector(state => state.account.address)
+  const { rank, myRankNumber, updateRank } = useRank()
   const [page, setPage] = useState<number>(0)
 
   useEffect(() => {
@@ -16,6 +18,10 @@ export default () => {
       setPage(Math.ceil(myRankNumber / rowsPerPage))
     }
   }, [myRankNumber])
+
+  useEffect(() => {
+    updateRank()
+  }, [accountAddress])
 
   return (
     <Page
@@ -30,9 +36,9 @@ export default () => {
     >
       <div className="max-w-[min(1000px,100%)] mx-auto">
         <StakingTable
-          rows={rankData}
-          rowsTotal={rankData.length}
-          pagesTotal={Math.ceil(rankData.length / rowsPerPage)}
+          rows={rank}
+          rowsTotal={rank.length}
+          pagesTotal={Math.ceil(rank.length / rowsPerPage)}
           currentPage={page}
           onPageSelect={i => setPage(i)}
         />
