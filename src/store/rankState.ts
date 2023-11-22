@@ -1,7 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
-import { getUserNegativeDividends } from "../utils/depositHelper"
-import formatUnstakeDate from "@/utils/formatUnstakeDate"
 
 export interface rankState {
   rank: Array<any>
@@ -17,7 +15,7 @@ export const depositFormSlice = createSlice({
   reducers: {
     setRank: (state, action: PayloadAction<Array<any>>) => {
       state.rank = action.payload
-    }
+    },
   },
 })
 

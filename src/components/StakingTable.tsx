@@ -72,7 +72,7 @@ const Row = ({
   >
     <td className="py-1 pr-4">{number}</td>
     <td className="py-1 pr-4">
-      {"-"}
+      -
       {negativeDividentsTotal}
       {" "}
       GRIMACE

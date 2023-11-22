@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import FormContainer from "@/components/Card"
 import Button from "@/components/Button"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
@@ -62,7 +62,7 @@ const PlanItem = ({
   )
 }
 
-export const daysToReadablePeriod = {90: { number:3, unit:"months" }, 180: { number:6, unit:"months" }, 360: { number:1, unit:"year" }, 1800: { number:5, unit:"years" }}
+export const daysToReadablePeriod = { 90: { number: 3, unit: "months" }, 180: { number: 6, unit: "months" }, 360: { number: 1, unit: "year" }, 1800: { number: 5, unit: "years" } }
 
 export default ({ onNext }: { onNext: () => void }) => {
   const selectedPlanIndex = useAppSelector(state => state.depositForm.selectedPlanIndex)
@@ -85,14 +85,14 @@ export default ({ onNext }: { onNext: () => void }) => {
         <div className="w-full flex flex-col gap-2 mb-4">
           {plans.map((plan, index) => (
             <PlanItem
-            key={index}
-            durationNumber={daysToReadablePeriod[plan.days].number}
-            durationUnit={daysToReadablePeriod[plan.days].unit}
-            apr={plan.percent * -1}
-            ewp={plan.ewp}
-            selected={selectedPlanIndex === plan.id}
-            onClick={() => dispatch(selectPlan(plan.id))}
-          />
+              key={index}
+              durationNumber={daysToReadablePeriod[plan.days].number}
+              durationUnit={daysToReadablePeriod[plan.days].unit}
+              apr={plan.percent * -1}
+              ewp={plan.ewp}
+              selected={selectedPlanIndex === plan.id}
+              onClick={() => dispatch(selectPlan(plan.id))}
+            />
           ))}
         </div>
         <p className="text-hint">EWP - Early Withdrawal Penalty</p>

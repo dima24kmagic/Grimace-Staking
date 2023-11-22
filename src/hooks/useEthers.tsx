@@ -4,11 +4,11 @@ import { Contract, ethers } from "ethers"
 import { useMetaMask } from "metamask-react"
 import { toast } from "react-toastify"
 import useBalance from "./useBalance"
-import TokenContract from "@/contracts/TokenETH.json"
-import StackingContract from "@/contracts/Stacking.json"
 import useDeposits from "./useDeposits"
 import usePlans from "./usePlans"
 import useRank from "./useRank"
+import StackingContract from "@/contracts/Stacking.json"
+import TokenContract from "@/contracts/TokenETH.json"
 
 const EthersContext = createContext<{
   ethers: any
@@ -38,15 +38,19 @@ const EthersProvider = ({ children }) => {
     const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, wsProvider)
 
     stackingContractInstance.on("NewDeposit", (user, plan, amount) => {
-      fetch("/api/dashboard?address=" + user, {method: "DELETE"}).then(() => { 
+      fetch(`/api/dashboard?address=${user}`, { method: "DELETE" }).then(() => {
         if (account && account.toLowerCase() === user.toLowerCase()) {
           toast.info(`${ethers.formatEther(amount)} GRIMACE successfully deposited`)
           updateBalance()
-          updatePlans().then(plans => { updateDeposits(user) })
+          updatePlans().then((plans) => {
+            updateDeposits(user)
+          })
         }
       })
-      
-      fetch("/api/rank", {method: "DELETE"}).then(() => { updateRank()})
+
+      fetch("/api/rank", { method: "DELETE" }).then(() => {
+        updateRank()
+      })
     })
   }
 

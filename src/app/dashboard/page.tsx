@@ -26,7 +26,7 @@ export default () => {
     }
     updatePlans().then(plans => updateDeposits())
   }, [accountAddress])
-  
+
   return (
     <Page
       heading="My Dashboard"
@@ -44,12 +44,12 @@ export default () => {
             readyToWithdrawals={dep.withdrawable}
             depositAmount={dep.amount}
             withdrawalAmount={dep.amountToWithdraw}
-            period={daysToReadablePeriod[plans[dep.planIndex].days].number + " " + daysToReadablePeriod[plans[dep.planIndex].days].unit}
+            period={`${daysToReadablePeriod[plans[dep.planIndex].days].number} ${daysToReadablePeriod[plans[dep.planIndex].days].unit}`}
             unstakeDate={dep.finish}
             unstakeDateSeconds={dep.finishDateSeconds}
             handleWithdraw={handleWithdraw}
           />
-          ))}
+        ))}
         <button className="w-full h-full flex justify-center items-center border-[3px] border-solid border-[#454545] text-[#242424]">
           <PlusIcon className="text-[100px]" />
         </button>
@@ -61,9 +61,8 @@ export default () => {
 const Timer = ({
   timeLeftSeconds,
 }: {
-  timeLeftSeconds: number,
+  timeLeftSeconds: number
 }) => {
-
   const {
     seconds,
     minutes,
@@ -91,7 +90,7 @@ const Deposit = ({
   unstakeDate,
   readyToWithdrawals,
   unstakeDateSeconds,
-  handleWithdraw
+  handleWithdraw,
 }: {
   id: number
   depositAmount: number
@@ -99,7 +98,7 @@ const Deposit = ({
   period: string
   unstakeDate: string
   readyToWithdrawals: boolean
-  unstakeDateSeconds: number,
+  unstakeDateSeconds: number
   handleWithdraw: (id: number) => Promise<void>
 }) => {
   const [timeLeftSeconds, setTimeLeftSeconds] = useState(0)
@@ -107,10 +106,10 @@ const Deposit = ({
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeftSeconds(Math.floor(unstakeDateSeconds - (new Date().getTime() / 1000)))
-    }, 1000);
+    }, 1000)
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <Card className={clsx(readyToWithdrawals ? "bg-purple-700" : "")}>
@@ -180,7 +179,7 @@ const Deposit = ({
       <div className="self-center my-auto flex items-stretch justify-center flex-col xl:flex-row gap-2">
         {readyToWithdrawals
           ? (
-              <Button onClick={() => handleWithdraw(id)} className="flex items-center gap-2 justify-center self-center from-success-800 to-success-500">Withdrawal</Button>
+            <Button onClick={() => handleWithdraw(id)} className="flex items-center gap-2 justify-center self-center from-success-800 to-success-500">Withdrawal</Button>
             )
           : (
             <Button onClick={() => handleWithdraw(id)} className="flex items-center gap-2 justify-center self-center from-danger-800 to-danger-500">

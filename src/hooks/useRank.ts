@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { setRank } from "@/store/rankState"
 

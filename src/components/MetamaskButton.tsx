@@ -1,4 +1,3 @@
-import { useState } from "react"
 import clsx from "clsx"
 import AccountIcon from "@/components/icons/AccountIcon"
 import truncateAddress from "@/utils/truncateAddress"
@@ -10,7 +9,6 @@ const MetamaskButton = ({
   account: string | null
   handleConnect: () => Promise<void>
 }) => {
-  
   const text = account
     ? truncateAddress(account)
     : "Connect"

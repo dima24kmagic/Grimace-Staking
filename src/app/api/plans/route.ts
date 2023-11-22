@@ -1,4 +1,3 @@
-import type { EventLog } from "ethers"
 import { Contract, ethers } from "ethers"
 import { NextResponse } from "next/server"
 import cache from "memory-cache"
@@ -6,7 +5,7 @@ import StackingContract from "@/contracts/Stacking.json"
 
 export const plansCacheKey = "plans"
 
-export async function getPlans(){
+export async function getPlans() {
   const cachedResult = cache.get(plansCacheKey)
   if (cachedResult) {
     return cachedResult
@@ -18,7 +17,7 @@ export async function getPlans(){
   const penaltyPercent = await stackingContract!.PENALTY_PERCENT()
   const percentDivider = 100
   const ewp = Number.parseInt(penaltyPercent) / percentDivider
-  
+
   const result = new Array<any>()
   for (let index = 0; index < plansCount; index++) {
     const planInfo = await stackingContract!.getPlanInfo(index)
@@ -32,7 +31,7 @@ export async function getPlans(){
 
   cache.put(plansCacheKey, result)
 
-  return result;
+  return result
 }
 
 export async function GET() {

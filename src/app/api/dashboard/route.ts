@@ -1,25 +1,23 @@
-import type { EventLog } from "ethers"
 import { Contract, ethers } from "ethers"
 import { NextResponse } from "next/server"
 import cache from "memory-cache"
+import { getPlans } from "../plans/route"
 import StackingContract from "@/contracts/Stacking.json"
-import { getPlans, plansCacheKey } from "../plans/route"
-import { NextApiRequest } from "next"
-import { Deposit } from "@/store/accountState"
+import type { Deposit } from "@/store/accountState"
 import formatUnstakeDate from "@/utils/formatUnstakeDate"
 import { getUserNegativeDividends } from "@/utils/depositHelper"
 
 const cacheKeyPrefix = "dashboard:"
 
-export async function DELETE(req, res){
-  const accountAddress = req.nextUrl.searchParams.get('address')
+export async function DELETE(req, res) {
+  const accountAddress = req.nextUrl.searchParams.get("address")
   const cacheKey = cacheKeyPrefix + accountAddress
   cache.del(cacheKey)
-  return NextResponse.json({}, {status:200})
+  return NextResponse.json({}, { status: 200 })
 }
 
 export async function GET(req, res) {
-  const accountAddress = req.nextUrl.searchParams.get('address')
+  const accountAddress = req.nextUrl.searchParams.get("address")
   const cacheKey = cacheKeyPrefix + accountAddress
   const cachedResult = cache.get(cacheKey)
   if (cachedResult) {

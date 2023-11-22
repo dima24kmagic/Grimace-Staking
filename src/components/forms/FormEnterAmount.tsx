@@ -1,5 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
+import { useEffect } from "react"
+import { toast } from "react-toastify"
 import FormContainer from "@/components/Card"
 import Button from "@/components/Button"
 import BitGetBanner from "@/components/banners/BitGetBanner"
@@ -8,8 +10,6 @@ import grimaceCoinImg from "@/assets/img/grimace-coin.png"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { setAmountString } from "@/store/depositFormState"
 import useBalance from "@/hooks/useBalance"
-import { useEffect } from "react"
-import { toast } from "react-toastify"
 
 export default ({ onNext }: { onNext: () => void }) => {
   const amountString = useAppSelector(state => state.depositForm.amountString)
@@ -47,15 +47,19 @@ export default ({ onNext }: { onNext: () => void }) => {
             placeholder="GRIMACE amount"
           />
         </div>
-        <p onClick={() => dispatch(setAmountString(balance))}  className="uppercase font-light self-end">
+        <p onClick={() => dispatch(setAmountString(balance))} className="uppercase font-light self-end">
           Current balance:
           {" "}
           {balance}
           {" "}
           Grimace
         </p>
-        <Button className="self-center mt-6 w-[220px]" onClick={
-          amount && amount >= 0.001 ? onNext : () => toast.error("Minimum 0.001 GRIMACE")}>
+        <Button
+          className="self-center mt-6 w-[220px]"
+          onClick={
+          amount && amount >= 0.001 ? onNext : () => toast.error("Minimum 0.001 GRIMACE")
+}
+        >
           Step 2
         </Button>
       </FormContainer>

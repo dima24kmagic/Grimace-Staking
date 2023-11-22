@@ -7,9 +7,9 @@ import StackingContract from "@/contracts/Stacking.json"
 const cacheKey = "rank"
 const startBlock = Number.parseInt(process.env.NEXT_PUBLIC_START_BLOCK ?? "-10000")
 
-export async function DELETE(){
+export async function DELETE() {
   cache.del(cacheKey)
-  return NextResponse.json({}, {status:200})
+  return NextResponse.json({}, { status: 200 })
 }
 
 export async function GET() {
