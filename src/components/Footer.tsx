@@ -15,13 +15,13 @@ const Footer = () => (
     <Socials className="lg:order-4" />
     <Hr className="hidden lg:block lg:order-2" />
     <nav className="lg:order-3 flex gap-2 content-between items-center uppercase font-light text-base md:text-lg">
-      <NavLink href="#">Swap</NavLink>
+      <NavLink href="https://swap.grimacedoge.com">Swap</NavLink>
       |
-      <NavLink href="#">NFT</NavLink>
+      <NavLink href="https://nft-grimace.com">NFT</NavLink>
       |
-      <NavLink href="#">Whitepaper</NavLink>
+      <NavLink href="https://whitepaper.grimacedoge.com">Whitepaper</NavLink>
       |
-      <NavLink href="#">Grimace</NavLink>
+      <NavLink href="https://grimacedoge.com">Grimace</NavLink>
     </nav>
     <p className="text-base md:text-lg lg:order-1">
       <span className="font-bold">Grimace</span>
