@@ -30,26 +30,35 @@ const EthersProvider = ({ children }) => {
   const { account } = useMetaMask()
   const { updateBalance } = useBalance()
   const { updateDeposits } = useDeposits()
-  const { updatePlans } = usePlans()
   const { updateRank } = useRank()
 
   const registerEventHandlers = () => {
     const wsProvider = new ethers.WebSocketProvider(process.env.NEXT_PUBLIC_WEBSOCKET_ENDPOINT!)
     const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, wsProvider)
 
+    const updatePersonalData = (user: string) => {
+      updateDeposits(user)
+      updateBalance()
+    }
+
     stackingContractInstance.on("NewDeposit", (user, plan, amount) => {
+      fetch("/api/rank", { method: "DELETE" }).then(() => {
+        updateRank()
+      })
       fetch(`/api/dashboard?address=${user}`, { method: "DELETE" }).then(() => {
         if (account && account.toLowerCase() === user.toLowerCase()) {
           toast.info(`${ethers.formatEther(amount)} GRIMACE successfully deposited`)
-          updateBalance()
-          updatePlans().then((plans) => {
-            updateDeposits(user)
-          })
+          updatePersonalData(user)
         }
       })
-
-      fetch("/api/rank", { method: "DELETE" }).then(() => {
-        updateRank()
+    })
+    
+    stackingContractInstance.on("Withdrawn", (user, amount) => {
+      fetch(`/api/dashboard?address=${user}`, { method: "DELETE" }).then(() => {
+        if (account && account.toLowerCase() === user.toLowerCase()) {
+          toast.info(`${ethers.formatEther(amount)} GRIMACE successfully withdrawn`)
+          updatePersonalData(user)
+        }
       })
     })
   }

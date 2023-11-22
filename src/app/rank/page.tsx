@@ -6,6 +6,7 @@ import StakingTable from "@/components/StakingTable"
 import useRank from "@/hooks/useRank"
 import { useAppSelector } from "@/store/hooks"
 import useTable from "@/hooks/useTable"
+import { LoadingSpinner, Spinner } from "../page"
 
 const rowsPerPage = 10
 
@@ -38,13 +39,19 @@ export default () => {
       heading="Leaderboard"
     >
       <div className="max-w-[min(1000px,100%)] mx-auto">
-        <StakingTable
-          rows={slice}
-          rowsTotal={rank.length}
-          pagesTotal={Math.ceil(rank.length / rowsPerPage)}
-          currentPage={page}
-          onPageSelect={i => setPage(i)}
-        />
+          {rank.length ? 
+            <StakingTable
+              rows={slice}
+              rowsTotal={rank.length}
+              pagesTotal={Math.ceil(rank.length / rowsPerPage)}
+              currentPage={page}
+              onPageSelect={i => setPage(i)}
+            />
+            : 
+            <LoadingSpinner>
+              <Spinner />
+            </LoadingSpinner>
+          } 
       </div>
     </Page>
   )

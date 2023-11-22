@@ -9,6 +9,7 @@ import Socials from "@/components/Socials"
 import Hr from "@/components/Hr"
 import MetamaskButton from "@/components/MetamaskButton"
 import { useMetamaskContext } from "@/hooks/useConnectMetamask"
+import FAQSections from "./FAQSections/FAQSections"
 
 const NavLink = ({ href, className, ...rest }: ComponentProps<typeof Link>) => {
   const pathname = usePathname()
@@ -30,8 +31,8 @@ const NavLink = ({ href, className, ...rest }: ComponentProps<typeof Link>) => {
 const NavLinks = () => (
   <>
     <NavLink href="/dashboard">Dashboard</NavLink>
-    <NavLink href="/rank">Rank</NavLink>
-    <NavLink href="/faq">FAQ</NavLink>
+    <NavLink href="/rank">Rank</NavLink>    
+    <FAQSections />
   </>
 )
 

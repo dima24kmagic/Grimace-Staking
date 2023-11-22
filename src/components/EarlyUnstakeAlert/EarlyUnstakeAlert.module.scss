@@ -1,0 +1,130 @@
+.FAQButtonWrapper {
+  padding: 8px 8px;
+  //border: 1px solid rgb(166, 80, 159);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 100;
+  transition-timing-function: ease;
+  transition-duration: 150ms;
+  transition-property: color;
+
+  &:hover {
+    color: var(--color-accent);
+  }
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.89);
+  backdrop-filter: blur(3px);
+}
+
+.faqBox {
+  display: grid;
+  padding-right: 5px;
+  width: auto;
+  max-width: 95%;
+  height: auto;
+  border-radius: 8px;
+
+  background: var(--color-accent);
+  box-shadow: 0px 4px 4px var(--color-accent);
+  /* border-width: 0px, 0px, 100px, 100px;
+    border-style: solid;
+    border-color: #aa367c; */
+  box-shadow: 25px 20px 0px 0px #a25cff;
+}
+
+.questionBox {
+  display: flex;
+  margin-top: 5px;
+  margin-left: 5px;
+  width: auto;
+  max-width: 325px;
+  height: auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 3px;
+  background: #1b1c27;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background: #262835;
+  }
+}
+
+.questionBox p {
+  text-align: left;
+  color: white;
+  font-size: 1rem;
+  margin: 1px;
+}
+
+.questionBox:nth-child(n) {
+  margin-bottom: 5px;
+}
+
+.questionBoxElongate {
+  display: flex;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 0;
+  padding: 10px;
+  width: auto;
+  max-width: 325px;
+  height: auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  background: rgba(38, 40, 53, 0.84);
+  border-radius: 8px;
+}
+
+.questionBoxElongate p {
+  text-align: left;
+  color: white;
+  font-size: inherit;
+  overflow-wrap: break-word;
+  margin: 5px;
+}
+
+.questionBoxElongate:nth-child(n) {
+  margin-bottom: 5px;
+}
+
+.answerBox {
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  padding: 10px;
+  background: #1b1c27;
+  width: 500px;
+  max-width: 500px;
+  height: inherit;
+  grid-row: 1;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  border-radius: 8px;
+
+  @media (max-width: 900px) {
+    width: auto;
+  }
+}
+
+.answerBox p {
+  color: white;
+  text-align: left;
+  margin: 10px;
+}
