@@ -5,6 +5,7 @@ import Page from "@/components/Page"
 import StakingTable from "@/components/StakingTable"
 import useRank from "@/hooks/useRank"
 import { useAppSelector } from "@/store/hooks"
+import useTable from "@/hooks/useTable"
 
 const rowsPerPage = 10
 
@@ -12,6 +13,11 @@ export default () => {
   const accountAddress = useAppSelector(state => state.account.address)
   const { rank, myRankNumber, updateRank } = useRank()
   const [page, setPage] = useState<number>(0)
+  const { slice } = useTable({
+    data: rank,
+    page,
+    rowsPerPage,
+  })
 
   useEffect(() => {
     if (page === 0 && myRankNumber > 0) {
@@ -26,17 +32,10 @@ export default () => {
   return (
     <Page
       heading="Leaderboard"
-      subheading={(
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-lg uppercase">
-            {"Rank by: "}
-          </span>
-        </div>
-      )}
     >
       <div className="max-w-[min(1000px,100%)] mx-auto">
         <StakingTable
-          rows={rank}
+          rows={slice}
           rowsTotal={rank.length}
           pagesTotal={Math.ceil(rank.length / rowsPerPage)}
           currentPage={page}

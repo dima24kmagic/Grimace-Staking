@@ -12,20 +12,23 @@ const useRank = () => {
     const response = await fetch("/api/rank")
     const result = await response.json()
 
-    dispatch(setRank(result))
-
-    if (!accountAddress || !rank.length) {
+    if (!accountAddress || !result.length) {
+      dispatch(setRank(result))
       return result
     }
 
-    const number = rank.filter((item) => {
+    const myRank = result.filter((item) => {
       return item.address.toLowerCase() === accountAddress.toLowerCase()
-    })[0]?.number
+    })[0]
+
+    const number = myRank?.number
 
     if (number) {
+      myRank.highlighted = true
       setMyRankNumber(number)
     }
 
+    dispatch(setRank(result))
     return result
   }
 
