@@ -1,7 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../store/hooks"
-import type { Plan } from "../store/depositFormState"
 import { selectPlan, setPlans } from "../store/depositFormState"
-import { useEthersContext } from "./useEthers"
 
 const usePlans = () => {
   const dispatch = useAppDispatch()
@@ -12,7 +10,7 @@ const usePlans = () => {
       dispatch(selectPlan(2))
       return plans
     }
-    
+
     const response = await fetch("/api/plans")
     const result = await response.json()
 

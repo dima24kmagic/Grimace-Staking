@@ -24,11 +24,11 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <Provider store={store}>
       <MetaMaskProvider>
-          <MetamaskContextProvider>
-            <EthersProvider>
-              {children}
-            </EthersProvider>
-          </MetamaskContextProvider>
+        <MetamaskContextProvider>
+          <EthersProvider>
+            {children}
+          </EthersProvider>
+        </MetamaskContextProvider>
       </MetaMaskProvider>
     </Provider>
   )

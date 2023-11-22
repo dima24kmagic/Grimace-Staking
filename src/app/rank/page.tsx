@@ -20,8 +20,12 @@ export default () => {
   })
 
   useEffect(() => {
-    if (page === 0 && myRankNumber > 0) {
-      setPage(Math.ceil(myRankNumber / rowsPerPage))
+    if (page === 0) {
+      if (myRankNumber > 0) {
+        setPage(Math.ceil(myRankNumber / rowsPerPage))
+      } else {
+        setPage(1)
+      }
     }
   }, [myRankNumber])
 

@@ -1,12 +1,9 @@
 import { toast } from "react-toastify"
 import { useAppDispatch, useAppSelector } from "../store/hooks"
-import type { Deposit } from "../store/accountState"
 import { setDeposits } from "../store/accountState"
 import { approveTokenSpending } from "../utils/tokenSpendings"
 import { clearDepositForm } from "../store/depositFormState"
-import { getUserNegativeDividends } from "../utils/depositHelper"
 import { useEthersContext } from "./useEthers"
-import formatUnstakeDate from "@/utils/formatUnstakeDate"
 
 const useDeposits = () => {
   const dispatch = useAppDispatch()
@@ -17,8 +14,8 @@ const useDeposits = () => {
 
   const updateDeposits = async (address?: string | null) => {
     address = address ?? accountAddress
-    const response = await fetch("/api/dashboard?address=" + address)
-    const result = await response.json()    
+    const response = await fetch(`/api/dashboard?address=${address}`)
+    const result = await response.json()
     dispatch(setDeposits(result))
   }
 

@@ -2,13 +2,13 @@ import { type ComponentProps, useEffect, useState } from "react"
 import clsx from "clsx"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useMetaMask } from "metamask-react"
 import MenuIcon from "@/components/icons/MenuIcon"
 import CloseIcon from "@/components/icons/CloseIcon"
 import Socials from "@/components/Socials"
 import Hr from "@/components/Hr"
 import MetamaskButton from "@/components/MetamaskButton"
 import { useMetamaskContext } from "@/hooks/useConnectMetamask"
-import { useMetaMask } from "metamask-react"
 
 const NavLink = ({ href, className, ...rest }: ComponentProps<typeof Link>) => {
   const pathname = usePathname()

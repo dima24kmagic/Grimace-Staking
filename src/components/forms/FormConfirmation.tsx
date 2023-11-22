@@ -1,9 +1,9 @@
 import Image from "next/image"
+import { daysToReadablePeriod } from "./FormChoosePlan"
 import FormContainer from "@/components/Card"
 import grimaceManImg from "@/assets/img/grimace-man.png"
 import { useAppSelector } from "@/store/hooks"
 import useDeposits from "@/hooks/useDeposits"
-import { daysToReadablePeriod } from "./FormChoosePlan"
 
 export default ({ onNext }: { onNext: () => void }) => {
   const depositForm = useAppSelector(state => state.depositForm)
