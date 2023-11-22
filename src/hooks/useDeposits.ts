@@ -6,6 +6,7 @@ import { approveTokenSpending } from "../utils/tokenSpendings"
 import { clearDepositForm } from "../store/depositFormState"
 import { getUserNegativeDividends } from "../utils/depositHelper"
 import { useEthersContext } from "./useEthers"
+import formatUnstakeDate from "@/utils/formatUnstakeDate"
 
 const useDeposits = () => {
   const dispatch = useAppDispatch()
@@ -34,8 +35,9 @@ const useDeposits = () => {
         planIndex: Number.parseInt(depInfo.plan),
         days: plans[Number.parseInt(depInfo.plan)].days,
         amount: Number.parseInt(ethers.formatEther(depInfo.amount)),
-        start: start.toLocaleString(),
-        finish: finish.toLocaleString(),
+        start: formatUnstakeDate(start),
+        finish: formatUnstakeDate(finish),
+        finishDateSeconds: finish.getTime() / 1000,
         isTaken: depInfo.isTaken,
         amountToWithdraw: 0,
         withdrawable: finish < new Date(),

@@ -1,49 +1,83 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import clsx from "clsx"
 import { twMerge } from "tailwind-merge"
-import formatUnstakeDate from "@/utils/formatUnstakeDate"
 import Card from "@/components/Card"
 import UnlockIcon from "@/components/icons/UnlockIcon"
 import PlusIcon from "@/components/icons/PlusIcon"
 import Button from "@/components/Button"
 import Page from "@/components/Page"
+import useDeposits from "@/hooks/useDeposits"
+import usePlans from "@/hooks/usePlans"
+import { useAppSelector } from "@/store/hooks"
+import { daysToReadablePeriod } from "@/components/forms/FormChoosePlan"
 
 export default () => {
+  const { deposits, updateDeposits, handleWithdraw } = useDeposits()
+  const { updatePlans, plans } = usePlans()
+  const accountAddress = useAppSelector(state => state.account.address)
+
+  useEffect(() => {
+    if (!accountAddress) {
+      return
+    }
+    updatePlans().then(plans => updateDeposits(plans))
+  }, [accountAddress])
+  
   return (
     <Page
       heading="My Dashboard"
       subheading={(
         <p className="text-hint font-light text-sm sm:text-base md:text-lg">
-          0x644b0452d4a5b7CCe9261b1f5cB1b0ccA12B91f3
+          {accountAddress}
         </p>
       )}
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 auto-rows-fr">
-        <Deposit
-          id={1}
-          readyToWithdrawals={true}
-          timeLeftSeconds={0}
-          depositAmount={325}
-          withdrawalAmount={322.855}
-          period="1 year"
-          unstakeDate={new Date("2021-10-10T23:00:05Z")}
-        />
-        <Deposit
-          id={2}
-          readyToWithdrawals={false}
-          timeLeftSeconds={29516072}
-          depositAmount={325}
-          withdrawalAmount={322.855}
-          period="1 year"
-          unstakeDate={new Date("2021-10-10T23:00:05Z")}
-        />
+        {deposits.filter(dep => !dep.isTaken).map((dep, index) => (
+          <Deposit
+            key={index}
+            id={dep.id}
+            readyToWithdrawals={dep.withdrawable}
+            depositAmount={dep.amount}
+            withdrawalAmount={dep.amountToWithdraw}
+            period={daysToReadablePeriod[plans[dep.planIndex].days].number + " " + daysToReadablePeriod[plans[dep.planIndex].days].unit}
+            unstakeDate={dep.finish}
+            unstakeDateSeconds={dep.finishDateSeconds}
+            handleWithdraw={handleWithdraw}
+          />
+          ))}
         <button className="w-full h-full flex justify-center items-center border-[3px] border-solid border-[#454545] text-[#242424]">
           <PlusIcon className="text-[100px]" />
         </button>
       </div>
     </Page>
+  )
+}
+
+const Timer = ({
+  timeLeftSeconds,
+}: {
+  timeLeftSeconds: number,
+}) => {
+
+  const {
+    seconds,
+    minutes,
+    hours,
+    days,
+    years,
+  } = secondsToComponents(timeLeftSeconds)
+
+  return (
+    <div className="flex select-none">
+      <Slots slots={years} className="mr-3">Years</Slots>
+      <Slots slots={days} className="mr-5">Days</Slots>
+      <Slots slots={hours} className="mr-3">Hours</Slots>
+      <Slots slots={minutes} className="mr-3">Minutes</Slots>
+      <Slots slots={seconds}>Seconds</Slots>
+    </div>
   )
 }
 
@@ -54,24 +88,27 @@ const Deposit = ({
   period,
   unstakeDate,
   readyToWithdrawals,
-  timeLeftSeconds,
+  unstakeDateSeconds,
+  handleWithdraw
 }: {
   id: number
   depositAmount: number
   withdrawalAmount: number
   period: string
-  unstakeDate: Date
+  unstakeDate: string
   readyToWithdrawals: boolean
-  timeLeftSeconds: number
+  unstakeDateSeconds: number,
+  handleWithdraw: (id: number) => Promise<void>
 }) => {
-  const unstakeDateString = formatUnstakeDate(unstakeDate)
-  const {
-    seconds,
-    minutes,
-    hours,
-    days,
-    years,
-  } = secondsToComponents(timeLeftSeconds)
+  const [timeLeftSeconds, setTimeLeftSeconds] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeftSeconds(Math.floor(unstakeDateSeconds - (new Date().getTime() / 1000)))
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Card className={clsx(readyToWithdrawals ? "bg-purple-700" : "")}>
@@ -83,13 +120,7 @@ const Deposit = ({
         {readyToWithdrawals
           ? <h3 className="uppercase text-xl font-bold mb-6">Ready to withdrawals</h3>
           : (
-            <div className="flex select-none">
-              <Slots slots={years} className="mr-3">Years</Slots>
-              <Slots slots={days} className="mr-5">Days</Slots>
-              <Slots slots={hours} className="mr-3">Hours</Slots>
-              <Slots slots={minutes} className="mr-3">Minutes</Slots>
-              <Slots slots={seconds}>Seconds</Slots>
-            </div>
+            <Timer timeLeftSeconds={timeLeftSeconds} />
             )}
       </div>
 
@@ -117,7 +148,7 @@ const Deposit = ({
             Withdrawal amount
           </h4>
           <p className="md:text-lg">
-            {withdrawalAmount}
+            {withdrawalAmount.toFixed(7)}
             {" "}
             <span className="text-sm">GRIMACE</span>
           </p>
@@ -140,20 +171,17 @@ const Deposit = ({
           >
             Unstake date
           </h4>
-          <p className="md:text-lg">{unstakeDateString}</p>
+          <p className="md:text-lg">{unstakeDate}</p>
         </div>
       </div>
 
       <div className="self-center my-auto flex items-stretch justify-center flex-col xl:flex-row gap-2">
         {readyToWithdrawals
           ? (
-            <>
-              <Button className="from-success-400 to-success-700 px-6">Withdrawal</Button>
-              <Button className="from-orange-600 to-orange-500 px-6">Stake again</Button>
-            </>
+              <Button onClick={() => handleWithdraw(id)} className="flex items-center gap-2 justify-center self-center from-success-800 to-success-500">Withdrawal</Button>
             )
           : (
-            <Button className="flex items-center gap-2 justify-center self-center from-danger-800 to-danger-500">
+            <Button onClick={() => handleWithdraw(id)} className="flex items-center gap-2 justify-center self-center from-danger-800 to-danger-500">
               <UnlockIcon className="text-[24px]" />
               Early unstake
             </Button>

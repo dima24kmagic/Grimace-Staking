@@ -2,8 +2,13 @@ import Image from "next/image"
 import FormContainer from "@/components/Card"
 import grimaceManImg from "@/assets/img/grimace-man.png"
 import formatUnstakeDate from "@/utils/formatUnstakeDate"
+import { useAppSelector } from "@/store/hooks"
+import useDeposits from "@/hooks/useDeposits"
+import { daysToReadablePeriod } from "./FormChoosePlan"
 
-export default () => {
+export default ({ onNext }: { onNext: () => void }) => {
+  const depositForm = useAppSelector(state => state.depositForm)
+  const { handleDeposit } = useDeposits()
   return (
     <>
       <FormContainer className="text-white bg-purple-700 relative pb-[160px] md:pb-[160px]">
@@ -17,7 +22,7 @@ export default () => {
           <div className="basis-2/4">
             <h4 className="sm:text-lg text-purple-950">Deposit amount</h4>
             <p className="md:text-lg">
-              325
+              {depositForm.amount}
               {" "}
               <span className="text-sm">GRIMACE</span>
             </p>
@@ -25,7 +30,7 @@ export default () => {
           <div className="basis-2/4">
             <h4 className="sm:text-lg text-purple-950">Withdrawal amount</h4>
             <p className="md:text-lg">
-              322.855
+              {depositForm.amountToWithdraw}
               {" "}
               <span className="text-sm">GRIMACE</span>
             </p>
@@ -33,13 +38,15 @@ export default () => {
           <div className="basis-2/4">
             <h4 className="sm:text-lg text-purple-950">Period</h4>
             <p className="md:text-lg">
-              1 year
+              {daysToReadablePeriod[depositForm.selectedPlan!.days].number}
+              {" "}
+              {daysToReadablePeriod[depositForm.selectedPlan!.days].unit}
             </p>
           </div>
           <div className="basis-2/4">
             <h4 className="sm:text-lg text-purple-950">Unstake date</h4>
             <p className="md:text-lg">
-              {formatUnstakeDate(new Date("2023-02-10T10:40:23.000Z"))}
+              {depositForm.unstakeDate}
             </p>
           </div>
         </div>
@@ -52,7 +59,7 @@ export default () => {
           <br />
           of GRIMACE STAKING
         </p>
-        <button className="uppercase self-center text-2xl text-purple-700 font-bold leading-none py-3 px-12 md:px-16 bg-white rounded-xl absolute left-auto right-[120px] bottom-[34px] md:right-auto md:left-2/4 md:-translate-x-2/4 md:bottom-[48px] z-10">
+        <button onClick={handleDeposit} className="uppercase self-center text-2xl text-purple-700 font-bold leading-none py-3 px-12 md:px-16 bg-white rounded-xl absolute left-auto right-[120px] bottom-[34px] md:right-auto md:left-2/4 md:-translate-x-2/4 md:bottom-[48px] z-10">
           Stake
         </button>
         <Image

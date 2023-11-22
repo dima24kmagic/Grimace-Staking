@@ -3,7 +3,6 @@ import React from "react"
 import { twMerge } from "tailwind-merge"
 import ChevronLeftIcon from "./icons/ChevronLeftIcon"
 import ChevronRightIcon from "./icons/ChevronRightIcon"
-import formatUnstakeDate from "@/utils/formatUnstakeDate"
 
 export type StakingTableProps = {
   rows: RowProps[]
@@ -26,13 +25,12 @@ export default ({
         <thead>
           <tr className="text-left text-base text-hint uppercase">
             <td>№</td>
-            <td>Unstake date</td>
             <td>Amount</td>
             <td className="text-right">Address</td>
           </tr>
         </thead>
         <tbody className="text-lg font-light">
-          {rows.map(row => <Row key={row.no} {...row} />)}
+          {rows.map(row => <Row key={row.number} {...row} />)}
         </tbody>
       </table>
     </div>
@@ -54,17 +52,15 @@ export default ({
 )
 
 export type RowProps = {
-  no: number
-  unstakeDate: Date
-  grimaceAmount: number
+  number: number
+  negativeDividentsTotal: number
   address: string
   highlighted?: boolean
 }
 
 const Row = ({
-  no,
-  unstakeDate,
-  grimaceAmount,
+  number,
+  negativeDividentsTotal,
   address,
   highlighted = false,
 }: RowProps) => (
@@ -74,14 +70,9 @@ const Row = ({
       highlighted && "bg-gradient-to-r from-purple-900 to-purple-600",
     )}
   >
-    <td className="py-1 pr-4">{no}</td>
+    <td className="py-1 pr-4">{number}</td>
     <td className="py-1 pr-4">
-      <time dateTime={unstakeDate.toISOString()}>
-        {formatUnstakeDate(unstakeDate)}
-      </time>
-    </td>
-    <td className="py-1 pr-4">
-      {grimaceAmount}
+      {negativeDividentsTotal}
       {" "}
       GRIMACE
     </td>

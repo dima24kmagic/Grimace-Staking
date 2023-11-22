@@ -4,19 +4,23 @@ import FormChoosePlan from "@/components/forms/FormChoosePlan"
 import FormConfirmation from "@/components/forms/FormConfirmation"
 import FormDisconnected from "@/components/forms/FormDisconnected"
 import FormEnterAmount from "@/components/forms/FormEnterAmount"
+import { setStep } from "@/store/depositFormState"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
 
 export default function Home() {
-  const formNo = 1 as number
+  const accountAddress = useAppSelector(state => state.account.address)
+  const step = useAppSelector(state => state.depositForm.step)
+  const dispatch = useAppDispatch()
 
-  let content = "🤔" as any
-  if (formNo === 1) {
+  let content = "" as any
+  if (!accountAddress) {
     content = <FormDisconnected />
-  } else if (formNo === 2) {
-    content = <FormEnterAmount />
-  } else if (formNo === 3) {
-    content = <FormChoosePlan />
-  } else if (formNo === 4) {
-    content = <FormConfirmation />
+  } else if (step === 1) {
+    content = <FormEnterAmount onNext={() => dispatch(setStep(step + 1))} />
+  } else if (step === 2) {
+    content = <FormChoosePlan onNext={() => dispatch(setStep(step + 1))} />
+  } else if (step === 3) {
+    content = <FormConfirmation onNext={() => dispatch(setStep(step + 1))} />
   }
 
   return (

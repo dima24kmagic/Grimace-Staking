@@ -7,6 +7,8 @@ import CloseIcon from "@/components/icons/CloseIcon"
 import Socials from "@/components/Socials"
 import Hr from "@/components/Hr"
 import MetamaskButton from "@/components/MetamaskButton"
+import { useMetamaskContext } from "@/hooks/useConnectMetamask"
+import { useMetaMask } from "metamask-react"
 
 const NavLink = ({ href, className, ...rest }: ComponentProps<typeof Link>) => {
   const pathname = usePathname()
@@ -38,6 +40,8 @@ const Header = () => {
   const [sidebarOpened, setSidebarOpened] = useState(false)
   const pathname = usePathname()
   const handleMenuButtonClick = () => setSidebarOpened(prev => !prev)
+  const { handleConnect } = useMetamaskContext()
+  const { account } = useMetaMask()
 
   useEffect(() => {
     setSidebarOpened(false)
@@ -73,7 +77,7 @@ const Header = () => {
             </span>
           </Link>
           <Hr />
-          <MetamaskButton />
+          <MetamaskButton account={account} handleConnect={handleConnect} />
         </div>
         <nav className="flex content-start items-center gap-6 text-lg">
           <NavLinks />
@@ -85,7 +89,7 @@ const Header = () => {
           <div className="container mx-auto flex flex-col items-start">
             {mobileHeader}
             <div className="flex flex-col items-start gap-4 p-4">
-              <MetamaskButton />
+              <MetamaskButton account={account} handleConnect={handleConnect} />
               <div className="flex flex-col text-xl">
                 <NavLinks />
               </div>

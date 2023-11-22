@@ -1,7 +1,10 @@
 import clsx from "clsx"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import FormContainer from "@/components/Card"
 import Button from "@/components/Button"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import usePlans from "@/hooks/usePlans"
+import { selectPlan } from "@/store/depositFormState"
 
 const PlanItem = ({
   durationNumber,
@@ -59,8 +62,16 @@ const PlanItem = ({
   )
 }
 
-export default () => {
-  const [selected, setSelected] = useState(3)
+export const daysToReadablePeriod = {90: { number:3, unit:"months" }, 180: { number:6, unit:"months" }, 360: { number:1, unit:"year" }, 1800: { number:5, unit:"years" }}
+
+export default ({ onNext }: { onNext: () => void }) => {
+  const selectedPlanIndex = useAppSelector(state => state.depositForm.selectedPlanIndex)
+  const dispatch = useAppDispatch()
+  const { plans, updatePlans } = usePlans()
+
+  useEffect(() => {
+    updatePlans()
+  }, [])
 
   return (
     <>
@@ -72,41 +83,20 @@ export default () => {
           Choose plan
         </h2>
         <div className="w-full flex flex-col gap-2 mb-4">
-          <PlanItem
-            durationNumber={3}
-            durationUnit="months"
-            apr={-0.11}
-            ewp={66}
-            selected={selected === 1}
-            onClick={() => setSelected(1)}
+          {plans.map((plan, index) => (
+            <PlanItem
+            key={index}
+            durationNumber={daysToReadablePeriod[plan.days].number}
+            durationUnit={daysToReadablePeriod[plan.days].unit}
+            apr={plan.percent * -1}
+            ewp={plan.ewp}
+            selected={selectedPlanIndex === plan.id}
+            onClick={() => dispatch(selectPlan(plan.id))}
           />
-          <PlanItem
-            durationNumber={6}
-            durationUnit="months"
-            apr={-0.22}
-            ewp={66}
-            selected={selected === 2}
-            onClick={() => setSelected(2)}
-          />
-          <PlanItem
-            durationNumber={1}
-            durationUnit="year"
-            apr={-0.66}
-            ewp={66}
-            selected={selected === 3}
-            onClick={() => setSelected(3)}
-          />
-          <PlanItem
-            durationNumber={5}
-            durationUnit="years"
-            apr={-1.2}
-            ewp={66}
-            selected={selected === 4}
-            onClick={() => setSelected(4)}
-          />
+          ))}
         </div>
         <p className="text-hint">EWP - Early Withdrawal Penalty</p>
-        <Button className="self-center mt-6 w-[220px]">
+        <Button className="self-center mt-6 w-[220px]" onClick={onNext}>
           Step 3
         </Button>
       </FormContainer>

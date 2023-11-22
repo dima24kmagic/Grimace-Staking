@@ -11,6 +11,7 @@ export interface Deposit {
   finish: string
   isTaken: boolean
   withdrawable: boolean
+  finishDateSeconds: number
 }
 
 export interface AccountState {

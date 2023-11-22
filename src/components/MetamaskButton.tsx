@@ -3,23 +3,25 @@ import clsx from "clsx"
 import AccountIcon from "@/components/icons/AccountIcon"
 import truncateAddress from "@/utils/truncateAddress"
 
-const MetamaskButton = () => {
-  // TODO: add MetaMask connection logic
-  const [connectedAddress, setConnectedAddress] = useState<string>("")
-  const handleClick = () => setConnectedAddress("0xabcdef1234567890")
-
-  const connected = Boolean(connectedAddress)
-  const text = connectedAddress
-    ? truncateAddress(connectedAddress)
+const MetamaskButton = ({
+  account,
+  handleConnect,
+}: {
+  account: string | null
+  handleConnect: () => Promise<void>
+}) => {
+  
+  const text = account
+    ? truncateAddress(account)
     : "Connect"
 
   return (
     <button
-      title={connectedAddress || "Connect to MetaMask"}
-      onClick={handleClick}
+      title={account || "Connect to MetaMask"}
+      onClick={handleConnect}
       className={clsx(
         "flex items-center border-solid border-[3px] rounded-[30px]",
-        connected
+        account
           ? "text-purple border-purple bg-purple-950"
           : "text-orange border-orange",
       )}
