@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media only screen and (min-width: 768px) {
+  body {
+    background: url("/hexagons-bottom-left.svg") no-repeat bottom left, url("/hexagons-top-right.svg") no-repeat top right;
+  } 
+}

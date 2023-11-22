@@ -1,11 +1,4 @@
-import React from "react"
+import { createIconComponent } from "./createIconComponent"
 
-export default function TelegramIcon(props: React.SVGAttributes<SVGElement>) {
-  return (
-    <svg width={24} height={24} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path
-        d="M20.9459 5.45659L18.0786 19.0342C17.8623 19.9924 17.2982 20.2309 16.4966 19.7795L12.1279 16.5469L10.0199 18.5827C9.78661 18.817 9.5915 19.0129 9.14191 19.0129L9.45578 14.5452L17.5527 7.19851C17.9047 6.88334 17.4764 6.70873 17.0056 7.02389L6.99573 13.3527L2.68642 11.9984C1.74906 11.7045 1.7321 11.0571 2.88153 10.6057L19.737 4.0852C20.5175 3.79134 21.2003 4.25982 20.9459 5.45659Z"
-      />
-    </svg>
-  )
-}
+// eslint-disable-next-line style/quotes
+export default createIconComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23l7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3L3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z" fill="currentColor"/></svg>`)

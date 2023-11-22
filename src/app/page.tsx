@@ -1,25 +1,27 @@
 "use client"
 
-import React from "react"
-import styled from "@emotion/styled"
-import BitGetBanner from "@/components/banners/BitGet"
-import GrimaceSwapBanner from "@/components/banners/GrimaceSwap"
-import Container from "@/components/Container"
-import FormInitial from "@/components/forms/FormInitial"
-
-const ContainerStyled = styled(Container)`
-  width: 600px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`
+import FormChoosePlan from "@/components/forms/FormChoosePlan"
+import FormConfirmation from "@/components/forms/FormConfirmation"
+import FormDisconnected from "@/components/forms/FormDisconnected"
+import FormEnterAmount from "@/components/forms/FormEnterAmount"
 
 export default function Home() {
+  const formNo = 1 as number
+
+  let content = "🤔" as any
+  if (formNo === 1) {
+    content = <FormDisconnected />
+  } else if (formNo === 2) {
+    content = <FormEnterAmount />
+  } else if (formNo === 3) {
+    content = <FormChoosePlan />
+  } else if (formNo === 4) {
+    content = <FormConfirmation />
+  }
+
   return (
-    <ContainerStyled>
-      <FormInitial />
-      <BitGetBanner />
-      <GrimaceSwapBanner />
-    </ContainerStyled>
+    <div className="w-full h-full grow flex flex-col justify-center gap-3 max-w-[min(600px,100%)] mx-auto px-2">
+      {content}
+    </div>
   )
 }
