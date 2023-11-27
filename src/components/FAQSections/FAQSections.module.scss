@@ -30,11 +30,11 @@
 }
 
 .faqBox {
-  display: grid;
+  display: flex;
   padding-right: 5px;
   width: auto;
   max-width: 95%;
-  height: auto;
+  max-height: 90%;
   border-radius: 8px;
 
   background: var(--color-accent);
@@ -63,6 +63,9 @@
   &:hover {
     background: #262835;
   }
+  // @media (max-width: 500px) {
+  //   width: 50%;
+  // }
 }
 
 .questionBox p {
@@ -89,12 +92,15 @@
   flex-wrap: wrap;
   background: rgba(38, 40, 53, 0.84);
   border-radius: 8px;
+  // @media (max-width: 500px) {
+  //   width: 50%;
+  // }
 }
 
 .questionBoxElongate p {
   text-align: left;
   color: white;
-  font-size: inherit;
+  font-size: 1.3rem;
   overflow-wrap: break-word;
   margin: 5px;
 }
@@ -110,21 +116,23 @@
   display: flex;
   padding: 10px;
   background: #1b1c27;
-  width: 500px;
+  // width: 500px;
   max-width: 500px;
-  height: inherit;
-  grid-row: 1;
-  grid-column-start: 2;
-  grid-column-end: 3;
+  max-height: 90%;
+  // overflow: auto;
+  // grid-row: 1;
+  // grid-column-start: 2;
+  // grid-column-end: 3;
   border-radius: 8px;
 
-  @media (max-width: 900px) {
-    width: auto;
-  }
+  // @media (max-width: 900px) {
+  //   width: auto;
+  // }
 }
 
 .answerBox p {
   color: white;
   text-align: left;
+  font-size: 16px;
   margin: 10px;
 }

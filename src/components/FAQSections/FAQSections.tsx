@@ -1,14 +1,7 @@
 "use client";
 
 import { MouseEvent, useState } from "react";
-import {
-  answerBox,
-  faqBox,
-  FAQButtonWrapper,
-  questionBox,
-  questionBoxElongate,
-  wrapper,
-} from "./FAQSections.module.scss";
+import styles from "./FAQSections.module.scss";
 import Link from "next/link";
 
 const nftMarketplaceFAQ = [
@@ -20,12 +13,12 @@ const nftMarketplaceFAQ = [
   {
     question: "How to add GRIMACE token to MetaMask?",
     Answer: (
-      <div>
+      <>
         Once you connected your metamask and choose DogeChain network, in
-        Metamask click on &quot;Import Tokens&quot;, in Token Contract Address paste
+        Metamask click on "Import Tokens", in Token Contract Address paste
         0x2f90907fD1DC1B7a484b6f31Ddf012328c2baB28 (token contract address) and
         you will see GRIMACE in Token Symbol automatically
-      </div>
+      </>
     ),
   },
   // {
@@ -43,7 +36,7 @@ const nftMarketplaceFAQ = [
   {
     question: "How to view purchased NFTs?",
     Answer: (
-      <div>
+      <>
         Once you won the auction, you can navigate to{" "}
         <Link
           style={{ color: "var(--color-purple)", textDecoration: "underline" }}
@@ -52,7 +45,7 @@ const nftMarketplaceFAQ = [
           /my-nfts
         </Link>{" "}
         page and view NFT through our viewer that will allow you to explore NFT
-      </div>
+      </>
     ),
   },
 ];
@@ -72,12 +65,16 @@ const FAQSections = ({}) => {
 
   return (
     <>
-      <div className={FAQButtonWrapper} onClick={handleOpenSection}>
+      <div className={styles.FAQButtonWrapper} onClick={handleOpenSection}>
         FAQ
       </div>
       {isOpen && (
-        <div style={{zIndex: 1000}} className={wrapper} onClick={handleCloseSection}>
-          <div className={faqBox}>
+        <div
+          style={{ zIndex: 1000 }}
+          className={styles.wrapper}
+          onClick={handleCloseSection}
+        >
+          <div className={styles.faqBox}>
             <div>
               {nftMarketplaceFAQ.map((faq, index) => {
                 return (
@@ -85,8 +82,8 @@ const FAQSections = ({}) => {
                     key={index}
                     className={
                       activeQuestion === index && active
-                        ? `${questionBoxElongate}`
-                        : `${questionBox}`
+                        ? `${styles.questionBoxElongate}`
+                        : `${styles.questionBox}`
                     }
                     onClick={(e) => {
                       e.stopPropagation();
@@ -102,15 +99,16 @@ const FAQSections = ({}) => {
             {nftMarketplaceFAQ.map((faq, index) => {
               if (activeQuestion === index && active) {
                 return (
-                  <div key={index}
+                  <div
+                    key={index}
                     onClick={(e) => {
                       e.stopPropagation();
                       setActiveQuestion(index);
                       setActive(true);
                     }}
-                    className={answerBox}
+                    className={styles.answerBox}
                   >
-                    {faq.Answer}
+                    <p>{faq.Answer}</p>
                   </div>
                 );
               }
