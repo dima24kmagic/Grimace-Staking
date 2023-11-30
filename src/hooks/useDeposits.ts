@@ -55,8 +55,15 @@ const useDeposits = () => {
   };
 
   const handleWithdraw = async (depositId: number) => {
-    dispatch(setDeposits([]));
-    await stackingContract!.withdraw(depositId);
+    try {
+      dispatch(setDepositsLoaded(false));
+      await stackingContract!.withdraw(depositId);
+      dispatch(setDeposits(deposits.filter(e => e.id !== depositId)));
+    } catch (e) {
+      toast.error(e.shortMessage ?? e.message);
+    } finally {
+      dispatch(setDepositsLoaded(true));
+    }
   };
 
   return {
