@@ -38,35 +38,6 @@ const EthersProvider = ({ children }) => {
 
     setStackingContract(stackingContractInstance)
     setTokenContract(tokenContractInstance)
-
-    if (!account) 
-      return
-
-    const updatePersonalData = (user: string) => {
-      updateDeposits(user)
-      updateBalance()
-    }
-
-    stackingContractInstance.on("NewDeposit", (user, plan, amount) => {
-      fetch("/api/rank", { method: "DELETE" }).then(() => {
-        updateRank()
-      })
-      fetch(`/api/dashboard?address=${user}`, { method: "DELETE" }).then(() => {
-        if (account && account.toLowerCase() === user.toLowerCase()) {
-          toast.info(`${ethers.formatEther(amount)} GRIMACE successfully deposited`)
-          updatePersonalData(user)
-        }
-      })
-    })
-    
-    stackingContractInstance.on("Withdrawn", (user, amount) => {
-      fetch(`/api/dashboard?address=${user}`, { method: "DELETE" }).then(() => {
-        if (account && account.toLowerCase() === user.toLowerCase()) {
-          toast.info(`${ethers.formatEther(amount)} GRIMACE successfully withdrawn`)
-          updatePersonalData(user)
-        }
-      })
-    })
   }
 
   const initialize = async () => {
