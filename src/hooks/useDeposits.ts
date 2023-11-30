@@ -37,8 +37,6 @@ const useDeposits = () => {
         spenderContract: stackingContract,
         account: accountAddress!,
         amount: amountBigInt,
-      }).catch((err) => {
-        toast.error(err.shortMessage ?? err.message);
       });
       if (isApproved) {
         await stackingContract!.deposit(
@@ -49,7 +47,8 @@ const useDeposits = () => {
       }
 
       dispatch(clearDepositForm());
-    } catch (e) {
+    } catch (err) {
+      toast.error(err.shortMessage ?? err.message);
       dispatch(setStep(3));
     }
   };
