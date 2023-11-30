@@ -42,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={fredoka.variable}>
       <Providers>
-        <body className="min-h-screen flex flex-col font-sans bg-dark antialiased">
+        <body className="min-h-screen flex flex-col font-sans bg-dark antialiased text-white">
           <Header />
           <main className="flex flex-col content-start items-center grow border-y border-solid border-[#454545] md:border-none py-8">
             {children}
