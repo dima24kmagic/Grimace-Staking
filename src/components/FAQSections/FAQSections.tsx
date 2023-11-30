@@ -11,6 +11,16 @@ const nftMarketplaceFAQ = [
       "To prevent you from the worst sin to imagine - selling GRIMACE!",
   },
   {
+    question: "How it works?",
+    Answer:
+      "You can stake your GRIMACE to put them in good hands, so no shaking hands will lose them for you.",
+  },
+  {
+    question: "EWP",
+    Answer:
+      "Early withdrawal penalty - You will feel the wrath of the apostles and suffer a loss of 66% of your deposit.",
+  },
+  {
     question: "How to add GRIMACE token to MetaMask?",
     Answer: (
       <>
