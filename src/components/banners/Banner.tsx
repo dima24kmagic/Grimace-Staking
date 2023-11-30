@@ -2,12 +2,14 @@ import type { ComponentProps, ReactNode } from "react"
 import type { StaticImageData } from "next/image"
 import Image from "next/image"
 import { twMerge } from "tailwind-merge"
+import { useRouter } from "next/navigation"
 
 export type BannerProps = {
   heading: ReactNode
   subheading: ReactNode
   imageData: StaticImageData
-  imageAlt: string
+  imageAlt: string,
+  url: string
 } & ComponentProps<"button">
 
 function Banner({
@@ -16,10 +18,15 @@ function Banner({
   imageAlt,
   imageData,
   className,
+  url,
   ...rest
 }: BannerProps) {
+
+  const router = useRouter()
+
   return (
     <button
+      onClick={() => { router.push(url)}}
       className={twMerge(
         "flex justify-between items-center p-2 border-4 border-solid",
         className,

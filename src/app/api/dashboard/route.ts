@@ -41,7 +41,7 @@ export async function GET(req, res) {
       id: index,
       planIndex: Number.parseInt(depInfo.plan),
       days: plans[Number.parseInt(depInfo.plan)].days,
-      amount: Number.parseInt(ethers.formatEther(depInfo.amount)),
+      amount: Number.parseFloat(ethers.formatEther(depInfo.amount)),
       start: formatUnstakeDate(start),
       finish: formatUnstakeDate(finish),
       finishDateSeconds: finish.getTime() / 1000,

@@ -18,12 +18,14 @@ export interface AccountState {
   address: string | null
   balance: string | null
   deposits: Array<Deposit>
+  depositsLoaded: boolean
 }
 
 const initialState: AccountState = {
   address: null,
   balance: null,
   deposits: [],
+  depositsLoaded: false
 }
 
 export const accountSlice = createSlice({
@@ -39,9 +41,12 @@ export const accountSlice = createSlice({
     setDeposits: (state, action: PayloadAction<Array<Deposit>>) => {
       state.deposits = action.payload
     },
+    setDepositsLoaded: (state, action: PayloadAction<boolean>) => {
+      state.depositsLoaded = action.payload
+    },
   },
 })
 
-export const { setAccountAddress, setBalance, setDeposits } = accountSlice.actions
+export const { setAccountAddress, setBalance, setDeposits, setDepositsLoaded } = accountSlice.actions
 
 export default accountSlice.reducer

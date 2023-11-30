@@ -32,9 +32,15 @@ const EthersProvider = ({ children }) => {
   const { updateDeposits } = useDeposits()
   const { updateRank } = useRank()
 
-  const registerEventHandlers = () => {
-    const wsProvider = new ethers.WebSocketProvider(process.env.NEXT_PUBLIC_WEBSOCKET_ENDPOINT!)
-    const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, wsProvider)
+  const setContractInstances = (provider: any) => {
+    const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, provider)
+    const tokenContractInstance = new Contract(process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS!, TokenContract.abi, provider)
+
+    setStackingContract(stackingContractInstance)
+    setTokenContract(tokenContractInstance)
+
+    if (!account) 
+      return
 
     const updatePersonalData = (user: string) => {
       updateDeposits(user)
@@ -63,14 +69,6 @@ const EthersProvider = ({ children }) => {
     })
   }
 
-  const setContractInstances = (provider: any) => {
-    const stackingContractInstance = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, provider)
-    const tokenContractInstance = new Contract(process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS!, TokenContract.abi, provider)
-
-    setStackingContract(stackingContractInstance)
-    setTokenContract(tokenContractInstance)
-  }
-
   const initialize = async () => {
     if (!window.ethereum) {
       return
@@ -85,7 +83,6 @@ const EthersProvider = ({ children }) => {
 
     const signer = await provider.getSigner()
     setContractInstances(signer)
-    registerEventHandlers()
   }
 
   useEffect(() => {
