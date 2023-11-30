@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { twMerge } from "tailwind-merge"
 import ChevronLeftIcon from "./icons/ChevronLeftIcon"
 import ChevronRightIcon from "./icons/ChevronRightIcon"
@@ -97,23 +97,17 @@ const PaginationControls = ({
   const handlePrevClick = () => onPageSelect?.(page - 1)
   const handleNextClick = () => onPageSelect?.(page + 1)
   const handlePageClick = (selected: number) => () => onPageSelect?.(selected)
+  const [pageNumbers, setPageNumbers] = useState<number[][]>([])
 
-  pagesTotal = pagesTotal < 1 ? 1 : pagesTotal
+  useEffect(() => {
+    pagesTotal = pagesTotal < 1 ? 1 : pagesTotal
 
-  const pageNumbers: number[][] = []
-  if (pagesTotal <= 7) {
-    pageNumbers.push([1, 2, 3, 4, 5, 6, 7])
-  } else if (page <= 4) {
-    pageNumbers.push([1, 2, 3, 4, 5])
-    pageNumbers.push([pagesTotal])
-  } else if (page >= pagesTotal - 3) {
-    pageNumbers.push([1])
-    pageNumbers.push([pagesTotal - 4, pagesTotal - 3, pagesTotal - 2, pagesTotal - 1, pagesTotal])
-  } else {
-    pageNumbers.push([1])
-    pageNumbers.push([page - 1, page, page + 1])
-    pageNumbers.push([pagesTotal])
-  }
+    if(page < 4){
+      setPageNumbers([[1, 2, 3, 4, 5]])
+    } else {
+      setPageNumbers([[page - 2, page - 1, page, page + 1, page + 2]])
+    }
+  }, [page, pagesTotal])
 
   return (
     <div className="flex gap-1 font-bold">
@@ -132,6 +126,7 @@ const PaginationControls = ({
               key={pageNumber}
               active={pageNumber === page}
               onClick={handlePageClick(pageNumber)}
+              disabled={pageNumber>pagesTotal}
             >
               {pageNumber}
             </PaginationButton>
@@ -141,7 +136,7 @@ const PaginationControls = ({
       <PaginationButton
         className="px-1"
         onClick={handleNextClick}
-        disabled={page === pagesTotal}
+        disabled={page>=pagesTotal}
       >
         <ChevronRightIcon />
       </PaginationButton>

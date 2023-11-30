@@ -39,7 +39,11 @@ export default ({ onNext }: { onNext: () => void }) => {
           <input
             value={amountString ?? ""}
             onChange={(event) => {
-              dispatch(setAmountString(event.target.value))
+              const input = event.target.value
+              const floatPattern = /^\d*\.?\d*$/
+              if (floatPattern.test(input) || input === "") {
+                dispatch(setAmountString(input))
+              }
             }}
             type="text"
             autoComplete="off"

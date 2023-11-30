@@ -84,7 +84,7 @@ export default ({ onNext }: { onNext: () => void }) => {
           Choose plan
         </h2>
         <div className="w-full flex flex-col gap-2 mb-4">
-          {plans.length ? plans.map((plan, index) => (
+          {plans.length > 0 ? plans.map((plan, index) => (
             <PlanItem
               key={index}
               durationNumber={daysToReadablePeriod[plan.days].number}
@@ -102,7 +102,7 @@ export default ({ onNext }: { onNext: () => void }) => {
           }
         </div>
         <p className="text-hint">EWP - Early Withdrawal Penalty</p>
-        <Button disabled={!selectedPlanIndex} className="self-center mt-6 w-[220px]" onClick={onNext}>
+        <Button disabled={selectedPlanIndex == null} className="self-center mt-6 w-[220px]" onClick={onNext}>
           Step 3
         </Button>
       </FormContainer>

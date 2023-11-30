@@ -68,7 +68,7 @@ export default ({ onNext }: { onNext: () => void }) => {
           className="absolute right-0 bottom-0 w-[260px] md:w-[300px] h-auto"
           src={grimaceManImg}
           alt="Grimace"
-          priority={false}
+          priority={true}
         />
       </FormContainer>
     </>

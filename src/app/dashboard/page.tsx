@@ -33,7 +33,7 @@ export default () => {
     <Page
       heading="My Dashboard"
       subheading={(
-        <p className="text-hint font-light text-sm sm:text-base md:text-lg">
+        <p className="text-hint font-light text-xs sm:text-base md:text-lg">
           {accountAddress}
         </p>
       )}
