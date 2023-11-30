@@ -18,11 +18,6 @@ export async function DELETE(req, res) {
 
 export async function GET(req, res) {
   const accountAddress = req.nextUrl.searchParams.get("address")
-  const cacheKey = cacheKeyPrefix + accountAddress
-  const cachedResult = cache.get(cacheKey)
-  if (cachedResult) {
-    return NextResponse.json(cachedResult, { status: 200 })
-  }
 
   const plans = await getPlans()
 
@@ -53,8 +48,6 @@ export async function GET(req, res) {
       - getUserNegativeDividends(deposit.amount, plans[deposit.planIndex], finish, start)
     result.push(deposit)
   }
-
-  cache.put(cacheKey, result)
 
   return NextResponse.json(result, { status: 200 })
 }

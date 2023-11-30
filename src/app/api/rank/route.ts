@@ -14,11 +14,6 @@ export async function DELETE() {
 }
 
 export async function GET() {
-  const cachedResult = cache.get(cacheKey)
-  if (cachedResult) {
-    return NextResponse.json(cachedResult, { status: 200 })
-  }
-
   const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_PROVIDER_ENDPOINT)
   const stackingContract = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, provider)
 
@@ -57,8 +52,6 @@ export async function GET() {
   result.forEach((i) => {
     i.number = index++
   })
-
-  cache.put(cacheKey, result)
 
   return NextResponse.json(result, { status: 200 })
 }
