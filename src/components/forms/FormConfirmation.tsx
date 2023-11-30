@@ -4,8 +4,9 @@ import FormContainer from "@/components/Card"
 import grimaceManImg from "@/assets/img/grimace-man.png"
 import { useAppSelector } from "@/store/hooks"
 import useDeposits from "@/hooks/useDeposits"
+import FormBackArrow from "../FormBackArrow"
 
-export default ({ onNext }: { onNext: () => void }) => {
+export default ({ onNext, onPrev }: { onNext: () => void, onPrev: () => void }) => {
   const depositForm = useAppSelector(state => state.depositForm)
   const { handleDeposit } = useDeposits()
   return (
@@ -70,6 +71,7 @@ export default ({ onNext }: { onNext: () => void }) => {
           alt="Grimace"
           priority={true}
         />
+        <FormBackArrow onClick={onPrev}/>
       </FormContainer>
     </>
   )

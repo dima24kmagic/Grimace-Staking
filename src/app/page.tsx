@@ -55,9 +55,9 @@ export default function Home() {
   } else if (step === 1) {
     content = <FormEnterAmount onNext={() => dispatch(setStep(step + 1))} />
   } else if (step === 2) {
-    content = <FormChoosePlan onNext={() => dispatch(setStep(step + 1))} />
+    content = <FormChoosePlan onNext={() => dispatch(setStep(step + 1))} onPrev={() => dispatch(setStep(step - 1))} />
   } else if (step === 3) {
-    content = <FormConfirmation onNext={() => dispatch(setStep(step + 1))} />
+    content = <FormConfirmation onNext={() => dispatch(setStep(step + 1))} onPrev={() => dispatch(setStep(step - 1))} />
   } else if (step === 4) {
     content = (
       <LoadingSpinner>

@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import usePlans from "@/hooks/usePlans"
 import { selectPlan } from "@/store/depositFormState"
 import { LoadingSpinner, Spinner } from "@/app/page"
+import FormBackArrow from "../FormBackArrow"
 
 const PlanItem = ({
   durationNumber,
@@ -65,7 +66,7 @@ const PlanItem = ({
 
 export const daysToReadablePeriod = { 90: { number: 3, unit: "months" }, 180: { number: 6, unit: "months" }, 360: { number: 1, unit: "year" }, 1800: { number: 5, unit: "years" } }
 
-export default ({ onNext }: { onNext: () => void }) => {
+export default ({ onNext,onPrev }: { onNext: () => void,onPrev: () => void }) => {
   const selectedPlanIndex = useAppSelector(state => state.depositForm.selectedPlanIndex)
   const dispatch = useAppDispatch()
   const { plans, updatePlans } = usePlans()
@@ -105,6 +106,7 @@ export default ({ onNext }: { onNext: () => void }) => {
         <Button disabled={selectedPlanIndex == null} className="self-center mt-6 w-[220px]" onClick={onNext}>
           Step 3
         </Button>
+        <FormBackArrow onClick={onPrev}/>
       </FormContainer>
     </>
   )

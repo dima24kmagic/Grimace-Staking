@@ -6,48 +6,26 @@ import Link from "next/link";
 
 const nftMarketplaceFAQ = [
   {
-    question: "How to make bids?",
+    question: "Why?",
     Answer:
-      "To make a bid, you need to have a connected wallet with sufficient funds. Navigate to the NFT you want to bid on, allow our contract to use your GRIMACE coin balance (enter amount you allow our smart contract to spend on your behalf), and confirm the transaction through your wallet provider. If your bid becomes the highest, you'll be in the running to purchase the NFT.",
+      "To prevent you from the worst sin to imagine - selling GRIMACE!",
   },
   {
     question: "How to add GRIMACE token to MetaMask?",
     Answer: (
       <>
         Once you connected your metamask and choose DogeChain network, in
-        Metamask click on "Import Tokens", in Token Contract Address paste
-        0x2f90907fD1DC1B7a484b6f31Ddf012328c2baB28 (token contract address) and
+        Metamask click on "Import Tokens", in Token Contract Address paste{" "}
+        <p style={{display:"inline-block",margin:"0"}}>"0x2f90907</p>
+        <p style={{display:"inline-block",margin:"0"}}>fD1DC1B7a</p>
+        <p style={{display:"inline-block",margin:"0"}}>484b6f31D</p>
+        <p style={{display:"inline-block",margin:"0"}}>df012328</p>
+        <p style={{display:"inline-block",margin:"0"}}>c2baB28"</p> (token contract address) and
         you will see GRIMACE in Token Symbol automatically
       </>
     ),
   },
-  // {
-  //   question: "How to add DogeChain network to MetaMask?",
-  //   Answer:
-  //     <div>
-  //       Once you connected your metamask and choose DogeChain network, in Metamask click on "Import Tokens", in Token Contract Address paste 0x2f90907fD1DC1B7a484b6f31Ddf012328c2baB28 (token contract address) and you will see GRIMACE in Token Symbol automatically
-  //     </div>,
-  // },
-  {
-    question: "What does this collection represent?",
-    Answer:
-      "This collection represents a curated set of unique digital assets known as Non-Fungible Tokens (NFTs). Each NFT in the collection is one-of-a-kind and holds distinct value and ownership, often associated with art, music, videos, virtual real estate, and more.",
-  },
-  {
-    question: "How to view purchased NFTs?",
-    Answer: (
-      <>
-        Once you won the auction, you can navigate to{" "}
-        <Link
-          style={{ color: "var(--color-purple)", textDecoration: "underline" }}
-          href="/my-nfts"
-        >
-          /my-nfts
-        </Link>{" "}
-        page and view NFT through our viewer that will allow you to explore NFT
-      </>
-    ),
-  },
+  
 ];
 
 const FAQSections = ({}) => {
