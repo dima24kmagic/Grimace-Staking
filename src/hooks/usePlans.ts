@@ -6,7 +6,7 @@ const usePlans = () => {
   const plans = useAppSelector(state => state.depositForm.plans)
 
   const updatePlans = async () => {
-    if (plans.length) {
+    if (plans.length > 0) {
       return plans
     }
 
