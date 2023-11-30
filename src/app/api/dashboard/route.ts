@@ -18,11 +18,6 @@ export async function DELETE(req, res) {
 
 export async function GET(req, res) {
   const accountAddress = req.nextUrl.searchParams.get("address")
-  const cacheKey = cacheKeyPrefix + accountAddress
-  const cachedResult = cache.get(cacheKey)
-  if (cachedResult) {
-    return NextResponse.json(cachedResult, { status: 200 })
-  }
 
   const plans = await getPlans()
 
@@ -41,7 +36,7 @@ export async function GET(req, res) {
       id: index,
       planIndex: Number.parseInt(depInfo.plan),
       days: plans[Number.parseInt(depInfo.plan)].days,
-      amount: Number.parseInt(ethers.formatEther(depInfo.amount)),
+      amount: Number.parseFloat(ethers.formatEther(depInfo.amount)),
       start: formatUnstakeDate(start),
       finish: formatUnstakeDate(finish),
       finishDateSeconds: finish.getTime() / 1000,
@@ -53,8 +48,6 @@ export async function GET(req, res) {
       - getUserNegativeDividends(deposit.amount, plans[deposit.planIndex], finish, start)
     result.push(deposit)
   }
-
-  cache.put(cacheKey, result)
 
   return NextResponse.json(result, { status: 200 })
 }

@@ -7,7 +7,6 @@ const usePlans = () => {
 
   const updatePlans = async () => {
     if (plans.length) {
-      dispatch(selectPlan(2))
       return plans
     }
 
@@ -15,7 +14,6 @@ const usePlans = () => {
     const result = await response.json()
 
     dispatch(setPlans(result))
-    dispatch(selectPlan(2))
 
     return result
   }

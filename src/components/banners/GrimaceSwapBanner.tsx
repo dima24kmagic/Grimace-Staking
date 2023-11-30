@@ -4,6 +4,7 @@ import grimaceSwapImg from "@/assets/img/grimace-swap.png"
 
 export default (props: Partial<BannerProps>) => (
   <Banner
+    url="https://swap.grimacedoge.com/"
     heading={(
       <>
         <b className="font-normal">GRIMACE</b>

@@ -4,6 +4,7 @@ import bitGetImg from "@/assets/img/bitget.png"
 
 export default (props: Partial<BannerProps>) => (
   <Banner
+    url="https://partner.bitget.com/bg/E60X4F"
     heading={(
       <>
         <b className="font-normal">BitGet</b>

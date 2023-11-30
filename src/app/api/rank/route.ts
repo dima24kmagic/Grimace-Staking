@@ -1,11 +1,12 @@
-import type { EventLog } from "ethers"
+import type { EventLog, Log } from "ethers"
 import { Contract, ethers } from "ethers"
 import { NextResponse } from "next/server"
 import cache from "memory-cache"
 import StackingContract from "@/contracts/Stacking.json"
 
 const cacheKey = "rank"
-const startBlock = Number.parseInt(process.env.NEXT_PUBLIC_START_BLOCK ?? "-10000")
+const blockLimit = Number.parseInt(process.env.NEXT_PUBLIC_BLOCK_LIMIT_FOR_EVENTS ?? "5000")
+const startBlock = Number.parseInt(process.env.NEXT_PUBLIC_START_BLOCK ?? "-5000")
 
 export async function DELETE() {
   cache.del(cacheKey)
@@ -13,14 +14,15 @@ export async function DELETE() {
 }
 
 export async function GET() {
-  const cachedResult = cache.get(cacheKey)
-  if (cachedResult) {
-    return NextResponse.json(cachedResult, { status: 200 })
-  }
-
   const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_PROVIDER_ENDPOINT)
   const stackingContract = new Contract(process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!, StackingContract.abi, provider)
-  const newbieEvents = await stackingContract.queryFilter(stackingContract.filters.Newbie, startBlock)
+
+  const newbieEvents = new Array<Log | EventLog>
+  const currentBlockNumber = await provider.getBlockNumber()
+  for (let index = startBlock; index <= currentBlockNumber; index += blockLimit) {
+    const events = await stackingContract.queryFilter(stackingContract.filters.Newbie, index, index + blockLimit - 1)
+    newbieEvents.push(...events)
+  }
 
   const result = new Array<any>()
 
@@ -50,8 +52,6 @@ export async function GET() {
   result.forEach((i) => {
     i.number = index++
   })
-
-  cache.put(cacheKey, result)
 
   return NextResponse.json(result, { status: 200 })
 }

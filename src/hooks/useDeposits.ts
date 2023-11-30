@@ -1,6 +1,6 @@
 import { toast } from "react-toastify"
 import { useAppDispatch, useAppSelector } from "../store/hooks"
-import { setDeposits } from "../store/accountState"
+import { setDeposits, setDepositsLoaded } from "../store/accountState"
 import { approveTokenSpending } from "../utils/tokenSpendings"
 import { clearDepositForm, setStep } from "../store/depositFormState"
 import { useEthersContext } from "./useEthers"
@@ -10,13 +10,16 @@ const useDeposits = () => {
   const { stackingContract, ethers, tokenContract } = useEthersContext()
   const accountAddress = useAppSelector(state => state.account.address)
   const deposits = useAppSelector(state => state.account.deposits)
+  const depositsLoaded = useAppSelector(state => state.account.depositsLoaded)
   const depositForm = useAppSelector(state => state.depositForm)
 
   const updateDeposits = async (address?: string | null) => {
+    dispatch(setDepositsLoaded(false))
     address = address ?? accountAddress
     const response = await fetch(`/api/dashboard?address=${address}`)
     const result = await response.json()
     dispatch(setDeposits(result))
+    dispatch(setDepositsLoaded(true))
   }
 
   const handleDeposit = async () => {
@@ -46,7 +49,7 @@ const useDeposits = () => {
     await stackingContract!.withdraw(depositId)
   }
 
-  return { deposits, updateDeposits, handleDeposit, handleWithdraw }
+  return { deposits, depositsLoaded, updateDeposits, handleDeposit, handleWithdraw }
 }
 
 export default useDeposits

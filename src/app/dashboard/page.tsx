@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation"
 import EarlyUnstakeAlert from "@/components/EarlyUnstakeAlert/EarlyUnstakeAlert"
 
 export default () => {
-  const { deposits, updateDeposits, handleWithdraw } = useDeposits()
+  const { deposits, updateDeposits, handleWithdraw, depositsLoaded } = useDeposits()
   const { updatePlans, plans } = usePlans()
   const accountAddress = useAppSelector(state => state.account.address)
   const router = useRouter()
@@ -38,7 +38,7 @@ export default () => {
         </p>
       )}
     >
-      {deposits.length ? 
+      {depositsLoaded ? 
         <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 auto-rows-fr">
           {deposits.filter(dep => !dep.isTaken).map((dep, index) => (
             <Deposit
