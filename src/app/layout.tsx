@@ -19,7 +19,6 @@ const fredoka = Fredoka({
   weight: "variable",
   variable: "--font-fredoka",
 })
-
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <Provider store={store}>
@@ -41,6 +40,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={fredoka.variable}>
+      <title>Grimace Staking</title>
+      <link rel="icon" type="image/x-icon" href="/favicon.png"/>
       <Providers>
         <body className="min-h-screen flex flex-col font-sans bg-dark antialiased text-white">
           <Header />
