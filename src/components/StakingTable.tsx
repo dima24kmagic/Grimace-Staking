@@ -126,6 +126,7 @@ const PaginationControls = ({
               key={pageNumber}
               active={pageNumber === page}
               onClick={handlePageClick(pageNumber)}
+              disabled={pageNumber>pagesTotal}
             >
               {pageNumber}
             </PaginationButton>
@@ -135,6 +136,7 @@ const PaginationControls = ({
       <PaginationButton
         className="px-1"
         onClick={handleNextClick}
+        disabled={page>=pagesTotal}
       >
         <ChevronRightIcon />
       </PaginationButton>
