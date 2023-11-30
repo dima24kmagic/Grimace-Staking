@@ -45,7 +45,7 @@ const useDeposits = () => {
           depositForm.selectedPlanIndex,
           amountBigInt
         );
-        await updateBalance();
+        setTimeout(() => updateBalance(), 15000);
       }
 
       dispatch(clearDepositForm());

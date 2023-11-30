@@ -56,7 +56,7 @@ export const depositFormSlice = createSlice({
     },
     selectPlan: (state, action: PayloadAction<number | null>) => {
       state.selectedPlanIndex = action.payload
-      if (action.payload && state.amount) {
+      if (action.payload != null && state.amount) {
         state.selectedPlan = state.plans[action.payload]
 
         const date = new Date()
