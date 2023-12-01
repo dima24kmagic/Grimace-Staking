@@ -34,12 +34,12 @@ export async function GET() {
   for (const newbieEvent of newbieEvents) {
     const userAddress = (newbieEvent as EventLog).args[0]
     const depositsCount = await stackingContract.getUserAmountOfDeposits(userAddress)
-    let negativeDividentsTotal = 0
+    let negativeDividentsTotal: bigint = BigInt(0)
     for (let depositIndex = 0; depositIndex < depositsCount; depositIndex++) {
       const negativeDividents = await stackingContract
         .getUserNegativeDividends(userAddress, depositIndex)
 
-      negativeDividentsTotal += Number.parseFloat(negativeDividents)
+      negativeDividentsTotal += BigInt(negativeDividents)
     }
 
     result.push({
