@@ -3,6 +3,7 @@
 import { MouseEvent, useState } from "react";
 import styles from "./FAQSections.module.scss";
 import Link from "next/link";
+import clsx from "clsx";
 
 const nftMarketplaceFAQ = [
   {
@@ -53,7 +54,7 @@ const FAQSections = ({}) => {
 
   return (
     <>
-      <div className={styles.FAQButtonWrapper} onClick={handleOpenSection}>
+      <div className={clsx("uppercase transition-colors hover:text-purple cursor-pointer")} onClick={handleOpenSection}>
         FAQ
       </div>
       {isOpen && (

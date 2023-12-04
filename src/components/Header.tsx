@@ -31,7 +31,7 @@ const NavLink = ({ href, className, ...rest }: ComponentProps<typeof Link>) => {
 const NavLinks = () => (
   <>
     <NavLink href="/dashboard">Dashboard</NavLink>
-    <NavLink href="/rank">Rank</NavLink>    
+    <NavLink href="/rank">Rank</NavLink>
     <FAQSections />
   </>
 )
